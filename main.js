@@ -3,8 +3,8 @@ mapboxgl.accessToken =
 const map = new mapboxgl.Map({
   container: "map", // Specify the container ID
   style: "mapbox://styles/mapbox/light-v11", // Specify which map style to use
-  center: [-46.65601, -23.56158], // Specify the starting position [lng, lat]
-  zoom: 15, // Specify the starting zoom
+  center: [-46.67035,-23.56035], // Specify the starting position [lng, lat]
+  zoom: 17, // Specify the starting zoom
 });
 
 const directions = new MapboxDirections({
@@ -27,15 +27,24 @@ map.scrollZoom.enable();
 
 let obstacle;
 
-fetch("./clearance_map.json")
+fetch("./seu_arquivo_modificado.json")
   .then((response) => response.json())
   .then((data) => {
     clearances = data;
     obstacle = turf.buffer(clearances, 0.01, { units: "kilometers" });
-    console.log("🚀 ~ file: main.js:35 ~ .then ~ obstacle:", obstacle);
-    // faça algo com a variável obstacle
-  })
+    
+  }) 
   .catch((error) => console.error(error));
+
+
+  // fetch("./clearance_map.json")
+  // .then((response) => response.json())
+  // .then((data) => {
+  //   clearances = data;
+  //   obstacle = turf.buffer(clearances, 0.01, { units: "kilometers" });
+    
+  // }) 
+  // .catch((error) => console.error(error));
 
 // const clearances = {
 //   type: 'FeatureCollection',
@@ -118,7 +127,7 @@ map.on("load", () => {
     layout: {},
     paint: {
       "fill-color": "#f03b20",
-      "fill-opacity": 0.5,
+      "fill-opacity": 0.4,
       "fill-outline-color": "#f03b20",
     },
   });
@@ -160,14 +169,14 @@ map.on("load", () => {
     layout: {},
     paint: {
       "fill-color": "#FFC300",
-      "fill-opacity": 0.5,
+      "fill-opacity": 0.3,
       "fill-outline-color": "#FFC300",
     },
   });
 });
 
 let counter = 0;
-const maxAttempts = 15;
+const maxAttempts = 10;
 let emoji = "";
 let collision = "";
 let detail = "";
@@ -232,23 +241,18 @@ directions.on("route", (event) => {
   // map.setLayoutProperty("theRoute", "visibility", "none");
   // map.setLayoutProperty("theBox", "visibility", "none");
 
+  
+
   if (counter >= maxAttempts) {
     noRoutes(reports);
   } else {
-
     let minObstacles = Infinity;
     let bestRoute;
 
     for (const route of event.route) {
-
       console.log(`teste id rota: ${idRota}`);
 
-      map.setLayoutProperty("theRoute", "visibility", "visible");
-      map.setPaintProperty("theRoute", "line-color", "#a037bf");
-      map.setLayoutProperty("theBox", "visibility", "visible");
-      console.log("🚀 ~ Rota: main.js:249 ~ directions.on ~ map:", idRota)
-      
- 
+
       const routeLine = polyline.toGeoJSON(route.geometry);
 
       bbox = turf.bbox(routeLine);
@@ -257,33 +261,34 @@ directions.on("route", (event) => {
       // map.getSource("theRoute").setData(routeLine);
       map.getSource("theBox").setData(polygon);
       const clear = turf.booleanDisjoint(obstacle, routeLine);
-      totalObstaculoRota = turf.lineIntersect(obstacle, routeLine).features.length / 2;
+
+      totalObstaculoRota =
+        turf.lineIntersect(obstacle, routeLine).features.length / 2;
 
       routesInfo[idRota] = {
         routeLine: routeLine,
         bbox: bbox,
         polygon: polygon,
         clear: clear,
-        obstacles: totalObstaculoRota,
+        obstacles: totalObstaculoRota
       };
 
       idRota += 1;
 
-      if (clear === true) {
 
+
+      if (clear === true) {
         map.setPaintProperty("theRoute", "line-color", "#74c476");
         map.setLayoutProperty("theBox", "visibility", "none");
         counter = 0;
 
         if (counter >= maxAttempts) {
-            // exibe a rota com menos obstáculos
-            map.getSource("theRoute").setData(bestRoute);
-            map.setPaintProperty("theRoute", "line-color", "#74c476");
-            map.setLayoutProperty("theBox", "visibility", "none");
-            console.log("🚀 FOI TRUE:", map)
+          // exibe a rota com menos obstáculos
+          map.getSource("theRoute").setData(bestRoute);
+          map.setPaintProperty("theRoute", "line-color", "#74c476");
+          map.setLayoutProperty("theBox", "visibility", "none");
+          console.log("🚀 FOI TRUE:", map);
         }
-
-        
       } else {
         counter = counter + 1;
 
@@ -303,10 +308,9 @@ directions.on("route", (event) => {
         );
 
         if (counter >= maxAttempts) {
-
           let minObstacles = Infinity;
           let bestRoute = null;
-          
+
           for (const id in routesInfo) {
             const { obstacles, routeLine } = routesInfo[id];
             if (obstacles < minObstacles) {
@@ -314,16 +318,15 @@ directions.on("route", (event) => {
               bestRoute = routeLine;
             }
           }
-          
+
           if (bestRoute !== null) {
-            
             map.setPaintProperty("theRoute", "line-color", "#d1a51f");
             map.setLayoutProperty("theBox", "visibility", "none");
             // map.setLayoutProperty("theRoute", "visibility", "visible")
             map.getSource("theRoute").setData(bestRoute);
             console.log("A rota com menos obstáculos é: ", bestRoute);
           }
-          
+
           // console.log("A rota com menos obstáculos é: ", bestRoute);
           // // exibe a rota com menos obstáculos
           // map.getSource("theRoute").setData(bestRoute);
@@ -332,8 +335,7 @@ directions.on("route", (event) => {
           // map.setLayoutProperty("theRoute", "visibility", "visible");
           // map.setLayoutProperty("theBox", "visibility", "none");
           // console.log("🚀 FOI FALSE:", map)
-      }
-
+        }
       }
 
       addCard(counter, reports, clear, detail);
@@ -344,13 +346,8 @@ directions.on("route", (event) => {
       //   bestRoute = routeLine;
       // }
     }
-    
-    
-    }
   }
-);
-
-
+});
 
 function traduzirInput() {
   let input = document.querySelectorAll(
@@ -703,3 +700,76 @@ document.addEventListener("DOMContentLoaded", function () {
 //     }
 //   }
 // });
+
+// for (const route of event.route) {
+
+//   map.setLayoutProperty("theRoute", "visibility", "visible");
+//   map.setPaintProperty("theRoute", "line-color", "#a037bf");
+//   map.setLayoutProperty("theBox", "visibility", "visible");
+
+//   const routeLine = polyline.toGeoJSON(route.geometry);
+
+//   bbox = turf.bbox(routeLine);
+//   polygon = turf.bboxPolygon(bbox);
+
+//   map.getSource("theBox").setData(polygon);
+//   const clear = turf.booleanDisjoint(obstacle, routeLine);
+
+//   totalObstaculoRota = turf.lineIntersect(obstacle, routeLine).features.length / 2;
+
+//   routesInfo[idRota] = {
+//     routeLine: routeLine,
+//     bbox: bbox,
+//     polygon: polygon,
+//     clear: clear,
+//     obstacles: totalObstaculoRota,
+//   };
+
+//   idRota += 1;
+
+//   if (clear === true) {
+
+//     map.setPaintProperty("theRoute", "line-color", "#74c476");
+//     map.setLayoutProperty("theBox", "visibility", "none");
+//     counter = 0;
+
+//   } else {
+//     counter = counter + 1;
+//     polygon = turf.transformScale(polygon, counter * 0.01);
+//     bbox = turf.bbox(polygon);
+//     detail = `takes ${(route.duration / 60).toFixed(0)} minutes and hits ${
+//       turf.lineIntersect(obstacle, routeLine).features.length / 2
+//     } obstacles`;
+
+//     map.setPaintProperty("theRoute", "line-color", "#de2d26");
+
+//     const randomWaypoint = turf.randomPoint(1, { bbox: bbox });
+//     directions.setWaypoint(
+//       0,
+//       randomWaypoint["features"][0].geometry.coordinates
+//     );
+
+//     if (counter >= maxAttempts) {
+
+//       let minObstacles = Infinity;
+//       let bestRoute = null;
+
+//       for (const id in routesInfo) {
+//         const { obstacles, routeLine } = routesInfo[id];
+//         if (obstacles < minObstacles) {
+//           minObstacles = obstacles;
+//           bestRoute = routeLine;
+//         }
+//       }
+//       if (bestRoute !== null) {
+//         map.setPaintProperty("theRoute", "line-color", "#d1a51f");
+//         map.setLayoutProperty("theBox", "visibility", "none");
+//         map.getSource("theRoute").setData(bestRoute);
+
+//       }
+
+//   }
+//   }
+//   addCard(counter, reports, clear, detail);
+
+// }
