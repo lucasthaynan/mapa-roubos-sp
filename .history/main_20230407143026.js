@@ -3,7 +3,7 @@ mapboxgl.accessToken =
 const map = new mapboxgl.Map({
   container: "map", // Specify the container ID
   style: "mapbox://styles/mapbox/light-v11", // Specify which map style to use
-  center: [-46.67035, -23.56035], // Specify the starting position [lng, lat]
+  center: [-46.67035,-23.56035], // Specify the starting position [lng, lat]
   zoom: 17, // Specify the starting zoom
 });
 
@@ -31,10 +31,88 @@ fetch("./seu_arquivo_modificado.json")
   .then((response) => response.json())
   .then((data) => {
     clearances = data;
-    obstacle = turf.buffer(clearances, 0.025, { units: "kilometers" });
-  })
+    obstacle = turf.buffer(clearances, 0.01, { units: "kilometers" });
+    
+  }) 
   .catch((error) => console.error(error));
 
+
+  // fetch("./clearance_map.json")
+  // .then((response) => response.json())
+  // .then((data) => {
+  //   clearances = data;
+  //   obstacle = turf.buffer(clearances, 0.01, { units: "kilometers" });
+    
+  // }) 
+  // .catch((error) => console.error(error));
+
+// const clearances = {
+//   type: 'FeatureCollection',
+//   features: [
+//     {
+//       type: 'Feature',
+//       geometry: {
+//         type: 'Point',
+//         coordinates: [-46.65882, -23.55925]
+//       },
+//       properties: {
+//         clearance: 1
+//       }
+//     },
+//     {
+//       type: 'Feature',
+//       geometry: {
+//         type: 'Point',
+//         coordinates: [-46.63867,-23.562684]
+//       },
+//       properties: {
+//         clearance: 20
+//       }
+//     },
+//     {
+//       type: 'Feature',
+//       geometry: {
+//         type: 'Point',
+//         coordinates: [-46.638,-23.562]
+//       },
+//       properties: {
+//         clearance: 20
+//       }
+//     },
+//     {
+//       type: 'Feature',
+//       geometry: {
+//         type: 'Point',
+//         coordinates: [-46.6581, -23.5593]
+//       },
+//       properties: {
+//         clearance: 20
+//       }
+//     },
+//     {
+//       type: 'Feature',
+//       geometry: {
+//         type: 'Point',
+//         coordinates: [-46.65937,-23.55896]
+//       },
+//       properties: {
+//         clearance: 1
+//       }
+//     },
+//     {
+//       type: 'Feature',
+//       geometry: {
+//         type: 'Point',
+//         coordinates: [-46.65517,-23.56245]
+//       },
+//       properties: {
+//         clearance: 1
+//       }
+//     }
+//   ]
+// };
+
+// const obstacle = turf.buffer(clearances, 0.01, { units: 'kilometers' });
 let bbox = [0, 0, 0, 0];
 let polygon = turf.bboxPolygon(bbox);
 
@@ -98,7 +176,7 @@ map.on("load", () => {
 });
 
 let counter = 0;
-const maxAttempts = 7;
+const maxAttempts = 20;
 let emoji = "";
 let collision = "";
 let detail = "";
@@ -116,11 +194,11 @@ function addCard(id, element, clear, detail) {
   heading.innerHTML =
     id === 0
       ? `${emoji} Esta rota ${collision}`
-      : `${emoji} Testanto rota ${id} ${collision}`;
+      : `${emoji} Rota ${id} ${collision}`;
 
   const details = document.createElement("div");
   details.className = "card-details";
-  details.innerHTML = `Esta ${detail}.`;
+  details.innerHTML = `This ${detail} obstacles.`;
 
   card.appendChild(heading);
   card.appendChild(details);
@@ -134,14 +212,13 @@ function noRoutes(element) {
   // Add the response to the individual report created above
   const heading = document.createElement("div");
   heading.className = "card-header no-route";
-  emoji = "✅";
+  emoji = "🛑";
   heading.innerHTML = `${emoji} Fim da busca.`;
 
   // Add details to the individual report
   const details = document.createElement("div");
   details.className = "card-details";
-  details.innerHTML = `Nenhuma rota sem assaltos foi encontrada no trajeto, em ${counter} tentativas. 
-    <br><br> A melhor rota foi a que teve ${minimoAssaltosRota} registros, ela teve ${percentualMinObstacles.toFixed(2)}% assaltos a menos em relação à média das rotas verificadas.`;
+  details.innerHTML = `No clear route found in ${counter} tries.`;
 
   card.appendChild(heading);
   card.appendChild(details);
@@ -156,8 +233,6 @@ directions.on("clear", () => {
   reports.innerHTML = "";
 });
 
-let percentualMinObstacles
-let minimoAssaltosRota
 let idRota = 1;
 let routesInfo = {};
 let totalObstaculoRotas = [];
@@ -166,14 +241,17 @@ directions.on("route", (event) => {
   // map.setLayoutProperty("theRoute", "visibility", "none");
   // map.setLayoutProperty("theBox", "visibility", "none");
 
+  
+
   if (counter >= maxAttempts) {
     noRoutes(reports);
   } else {
-    // let minObstacles = Infinity;
+    let minObstacles = Infinity;
     let bestRoute;
 
     for (const route of event.route) {
       console.log(`teste id rota: ${idRota}`);
+
 
       const routeLine = polyline.toGeoJSON(route.geometry);
 
@@ -183,18 +261,21 @@ directions.on("route", (event) => {
       // map.getSource("theRoute").setData(routeLine);
       map.getSource("theBox").setData(polygon);
       const clear = turf.booleanDisjoint(obstacle, routeLine);
-      
-      totalObstaculoRota = turf.lineIntersect(obstacle, routeLine).features.length / 2;
+
+      totalObstaculoRota =
+        turf.lineIntersect(obstacle, routeLine).features.length / 2;
 
       routesInfo[idRota] = {
         routeLine: routeLine,
         bbox: bbox,
         polygon: polygon,
         clear: clear,
-        obstacles: totalObstaculoRota,
+        obstacles: totalObstaculoRota
       };
 
       idRota += 1;
+
+
 
       if (clear === true) {
         map.setPaintProperty("theRoute", "line-color", "#74c476");
@@ -213,10 +294,10 @@ directions.on("route", (event) => {
 
         polygon = turf.transformScale(polygon, counter * 0.01);
         bbox = turf.bbox(polygon);
-        collision = "<--";
-        detail = `rota leva ${(route.duration / 60).toFixed(0)} minutos e teve ${
+        collision = "is bad.";
+        detail = `takes ${(route.duration / 60).toFixed(0)} minutes and hits ${
           turf.lineIntersect(obstacle, routeLine).features.length / 2
-        } registros de assalto`;
+        } obstacles`;
 
         map.setPaintProperty("theRoute", "line-color", "#de2d26");
 
@@ -227,47 +308,16 @@ directions.on("route", (event) => {
         );
 
         if (counter >= maxAttempts) {
-          
-          let totalObstacles = 0;
-          let numRoutes = 0;
-
           let minObstacles = Infinity;
           let bestRoute = null;
 
-          let maxObstacles = -Infinity; // nova variável para manter o valor máximo
-
           for (const id in routesInfo) {
             const { obstacles, routeLine } = routesInfo[id];
-            
-            // atualiza a soma e o número de rotas
-            totalObstacles += obstacles;
-            numRoutes++;
-            
             if (obstacles < minObstacles) {
               minObstacles = obstacles;
-              minimoAssaltosRota = minObstacles;
-              console.log("🚀 ~ file: main.js:235 ~ directions.on ~ minObstacles:", minObstacles);
               bestRoute = routeLine;
             }
-            
-            // verifica se o número de obstáculos atual é o máximo encontrado até agora
-            if (obstacles > maxObstacles) {
-              maxObstacles = obstacles;
-            }
           }
-
-          // calcula a média de obstáculos
-          const averageObstacles = totalObstacles / numRoutes;
-          console.log("🚀 ~ file: main.js:263 ~ directions.on ~ averageObstacles:", averageObstacles)
-
-          console.log(`Número de obstáculos da rota com mais obstáculos: ${maxObstacles}`);
-
-          percentualMinObstacles = ((averageObstacles - minObstacles) / averageObstacles) * 100;
-          console.log(`A rota com menos obstáculos tem ${percentualMinObstacles.toFixed(2)}% a menos de obstáculos em relação à média.`);
-
-
-
-
 
           if (bestRoute !== null) {
             map.setPaintProperty("theRoute", "line-color", "#d1a51f");
@@ -276,10 +326,25 @@ directions.on("route", (event) => {
             map.getSource("theRoute").setData(bestRoute);
             console.log("A rota com menos obstáculos é: ", bestRoute);
           }
+
+          // console.log("A rota com menos obstáculos é: ", bestRoute);
+          // // exibe a rota com menos obstáculos
+          // map.getSource("theRoute").setData(bestRoute);
+          // console.log("🚀 ~ file: main.js:305 ~ directions.on ~ bestRoute:", bestRoute)
+          // map.setPaintProperty("theRoute", "line-color", "#d1a51f");
+          // map.setLayoutProperty("theRoute", "visibility", "visible");
+          // map.setLayoutProperty("theBox", "visibility", "none");
+          // console.log("🚀 FOI FALSE:", map)
         }
       }
 
       addCard(counter, reports, clear, detail);
+
+      // atualiza a rota com menos obstáculos
+      // if (totalObstaculoRota < minObstacles) {
+      //   minObstacles = totalObstaculoRota;
+      //   bestRoute = routeLine;
+      // }
     }
   }
 });

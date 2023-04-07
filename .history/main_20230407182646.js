@@ -141,7 +141,7 @@ function noRoutes(element) {
   const details = document.createElement("div");
   details.className = "card-details";
   details.innerHTML = `Nenhuma rota sem assaltos foi encontrada no trajeto, em ${counter} tentativas. 
-    <br><br> A melhor rota foi a que teve ${minimoAssaltosRota} registros, ela teve ${percentualMinObstacles.toFixed(2)}% assaltos a menos em relação à média das rotas verificadas.`;
+    <br><br> A melhor rota foi a que teve ${minimoAssaltosRota} registros`;
 
   card.appendChild(heading);
   card.appendChild(details);
@@ -156,7 +156,7 @@ directions.on("clear", () => {
   reports.innerHTML = "";
 });
 
-let percentualMinObstacles
+
 let minimoAssaltosRota
 let idRota = 1;
 let routesInfo = {};
@@ -262,9 +262,8 @@ directions.on("route", (event) => {
 
           console.log(`Número de obstáculos da rota com mais obstáculos: ${maxObstacles}`);
 
-          percentualMinObstacles = ((averageObstacles - minObstacles) / averageObstacles) * 100;
-          console.log(`A rota com menos obstáculos tem ${percentualMinObstacles.toFixed(2)}% a menos de obstáculos em relação à média.`);
-
+          const percentualMinObstacles = (minObstacles / averageObstacles) * 100;
+          console.log(`A rota com menos obstáculos tem ${percentualMinObstacles.toFixed(2)}% dos obstáculos em relação à média.`);
 
 
 

@@ -141,7 +141,7 @@ function noRoutes(element) {
   const details = document.createElement("div");
   details.className = "card-details";
   details.innerHTML = `Nenhuma rota sem assaltos foi encontrada no trajeto, em ${counter} tentativas. 
-    <br><br> A melhor rota foi a que teve ${minimoAssaltosRota} registros, ela teve ${percentualMinObstacles.toFixed(2)}% assaltos a menos em relação à média das rotas verificadas.`;
+    <br><br> A melhor rota foi a que teve ${minimoAssaltosRota} registros`;
 
   card.appendChild(heading);
   card.appendChild(details);
@@ -156,7 +156,7 @@ directions.on("clear", () => {
   reports.innerHTML = "";
 });
 
-let percentualMinObstacles
+
 let minimoAssaltosRota
 let idRota = 1;
 let routesInfo = {};
@@ -183,8 +183,9 @@ directions.on("route", (event) => {
       // map.getSource("theRoute").setData(routeLine);
       map.getSource("theBox").setData(polygon);
       const clear = turf.booleanDisjoint(obstacle, routeLine);
-      
-      totalObstaculoRota = turf.lineIntersect(obstacle, routeLine).features.length / 2;
+
+      totalObstaculoRota =
+        turf.lineIntersect(obstacle, routeLine).features.length / 2;
 
       routesInfo[idRota] = {
         routeLine: routeLine,
@@ -227,47 +228,18 @@ directions.on("route", (event) => {
         );
 
         if (counter >= maxAttempts) {
-          
-          let totalObstacles = 0;
-          let numRoutes = 0;
-
           let minObstacles = Infinity;
           let bestRoute = null;
 
-          let maxObstacles = -Infinity; // nova variável para manter o valor máximo
-
           for (const id in routesInfo) {
             const { obstacles, routeLine } = routesInfo[id];
-            
-            // atualiza a soma e o número de rotas
-            totalObstacles += obstacles;
-            numRoutes++;
-            
             if (obstacles < minObstacles) {
               minObstacles = obstacles;
-              minimoAssaltosRota = minObstacles;
-              console.log("🚀 ~ file: main.js:235 ~ directions.on ~ minObstacles:", minObstacles);
+              minimoAssaltosRota = minObstacles
+              console.log("🚀 ~ file: main.js:235 ~ directions.on ~ minObstacles:", minObstacles)
               bestRoute = routeLine;
             }
-            
-            // verifica se o número de obstáculos atual é o máximo encontrado até agora
-            if (obstacles > maxObstacles) {
-              maxObstacles = obstacles;
-            }
           }
-
-          // calcula a média de obstáculos
-          const averageObstacles = totalObstacles / numRoutes;
-          console.log("🚀 ~ file: main.js:263 ~ directions.on ~ averageObstacles:", averageObstacles)
-
-          console.log(`Número de obstáculos da rota com mais obstáculos: ${maxObstacles}`);
-
-          percentualMinObstacles = ((averageObstacles - minObstacles) / averageObstacles) * 100;
-          console.log(`A rota com menos obstáculos tem ${percentualMinObstacles.toFixed(2)}% a menos de obstáculos em relação à média.`);
-
-
-
-
 
           if (bestRoute !== null) {
             map.setPaintProperty("theRoute", "line-color", "#d1a51f");

@@ -141,7 +141,7 @@ function noRoutes(element) {
   const details = document.createElement("div");
   details.className = "card-details";
   details.innerHTML = `Nenhuma rota sem assaltos foi encontrada no trajeto, em ${counter} tentativas. 
-    <br><br> A melhor rota foi a que teve ${minimoAssaltosRota} registros, ela teve ${percentualMinObstacles.toFixed(2)}% assaltos a menos em relação à média das rotas verificadas.`;
+    <br><br> A melhor rota foi a que teve ${minimoAssaltosRota} registros`;
 
   card.appendChild(heading);
   card.appendChild(details);
@@ -156,7 +156,7 @@ directions.on("clear", () => {
   reports.innerHTML = "";
 });
 
-let percentualMinObstacles
+
 let minimoAssaltosRota
 let idRota = 1;
 let routesInfo = {};
@@ -185,6 +185,8 @@ directions.on("route", (event) => {
       const clear = turf.booleanDisjoint(obstacle, routeLine);
       
       totalObstaculoRota = turf.lineIntersect(obstacle, routeLine).features.length / 2;
+      console.log("🚀 ~ file: main.js:188 ~ directions.on ~ turf.lineIntersect(obstacle, routeLine).features.length:", turf.lineIntersect(obstacle, routeLine).features.length)
+      console.log("🚀 ~ file: main.js:188 ~ directions.on ~ totalObstaculoRota:", totalObstaculoRota)
 
       routesInfo[idRota] = {
         routeLine: routeLine,
@@ -261,11 +263,6 @@ directions.on("route", (event) => {
           console.log("🚀 ~ file: main.js:263 ~ directions.on ~ averageObstacles:", averageObstacles)
 
           console.log(`Número de obstáculos da rota com mais obstáculos: ${maxObstacles}`);
-
-          percentualMinObstacles = ((averageObstacles - minObstacles) / averageObstacles) * 100;
-          console.log(`A rota com menos obstáculos tem ${percentualMinObstacles.toFixed(2)}% a menos de obstáculos em relação à média.`);
-
-
 
 
 

@@ -156,7 +156,7 @@ directions.on("clear", () => {
   reports.innerHTML = "";
 });
 
-let percentualMinObstacles
+let averageObstacles
 let minimoAssaltosRota
 let idRota = 1;
 let routesInfo = {};
@@ -257,12 +257,12 @@ directions.on("route", (event) => {
           }
 
           // calcula a média de obstáculos
-          const averageObstacles = totalObstacles / numRoutes;
+          averageObstacles = totalObstacles / numRoutes;
           console.log("🚀 ~ file: main.js:263 ~ directions.on ~ averageObstacles:", averageObstacles)
 
           console.log(`Número de obstáculos da rota com mais obstáculos: ${maxObstacles}`);
 
-          percentualMinObstacles = ((averageObstacles - minObstacles) / averageObstacles) * 100;
+          const percentualMinObstacles = ((averageObstacles - minObstacles) / averageObstacles) * 100;
           console.log(`A rota com menos obstáculos tem ${percentualMinObstacles.toFixed(2)}% a menos de obstáculos em relação à média.`);
 
 
