@@ -409,22 +409,22 @@ directions.on("route", (event) => {
         // routesInfo[idRota-1].name = `total_${maxObstacles}_worstRoute`;
         // routesInfo[idRota].name = "theBestRoute"
 
-        // map.addLayer({
-        //   id: "bestRoute",
-        //   type: "line",
-        //   source: {
-        //     type: "geojson",
-        //     data: bestRoute,
-        //   },
-        //   layout: {
-        //     "line-join": "round",
-        //     "line-cap": "round",
-        //   },
-        //   paint: {
-        //     "line-color": "#74c476",
-        //     "line-width": 4,
-        //   },
-        // });
+        map.addLayer({
+          id: "bestRoute",
+          type: "line",
+          source: {
+            type: "geojson",
+            data: bestRoute,
+          },
+          layout: {
+            "line-join": "round",
+            "line-cap": "round",
+          },
+          paint: {
+            "line-color": "#74c476",
+            "line-width": 4,
+          },
+        });
 
         
 
@@ -469,24 +469,6 @@ directions.on("route", (event) => {
           paint: {
             "line-color": "#74c476",
             "line-width": 4,
-          },
-        });
-
-        map.addLayer({
-          id: "bestRoute2",
-          type: "line",
-          source: {
-            type: "geojson",
-            data: bestRoute,
-          },
-          layout: {
-            "line-join": "round",
-            "line-cap": "round",
-          },
-          paint: {
-            "line-color": "#74c476",
-            "line-opacity": 0.3,
-            "line-width": 13,
           },
         });
 

@@ -74,7 +74,7 @@ directions.on("origin", (origin) =>{
 directions.on("destination", (destination) =>{
   console.log(destination)
   console.log(destination.feature.geometry.coordinates)
-  destino.push(destination.feature.geometry.coordinates)
+  origem.push(destination.feature.geometry.coordinates)
 })
 
 
@@ -171,28 +171,37 @@ function mudarCor(map){
 function btnLimparRotaAzul() {
 
   // remove a última rota (em azul) testada no mapa
-  const buttons = document.querySelectorAll('button.geocoder-icon.geocoder-icon-close.active');
-  buttons.forEach(button => {
-    button.click();
-  });
+  // const buttons = document.querySelectorAll('button.geocoder-icon.geocoder-icon-close.active');
+  // buttons.forEach(button => {
+  //   button.click();
+  // });
+
+  let rotasTracadas = Object.values(routesInfo)
+  // console.log(rotasTracadas)
+
+  rotasTracadas.forEach(rota => {
+
+    // console.log(rota)
+    console.log(rota.name)
+
+    if (rota.name.endsWith("to")) {
+      console.log("---> Melhor rota")
+      console.log(rota)
+      console.log(rota.bbox)
+      console.log(rota.bbox[0])
 
        // adiciona os novos pins
-       var customIconA = document.createElement('div');
-       customIconA.className = 'custom-marker-a';
-       customIconA.innerHTML = '<span>A</span>';
- 
-       var marker = new mapboxgl.Marker(customIconA)
-           .setLngLat([origem[1][0], origem[1][1]])
-           .addTo(map);
+      var customIcon = document.createElement('div');
+      customIcon.className = 'custom-marker';
+      customIcon.innerHTML = '<span>B</span>';
 
-        var customIconB = document.createElement('div');
-        customIconB.className = 'custom-marker-b';
-        customIconB.innerHTML = '<span>B</span>';
-  
-        var marker = new mapboxgl.Marker(customIconB)
-            .setLngLat([destino[1][0], destino[1][1]])
-            .addTo(map);
- 
+      var marker = new mapboxgl.Marker(customIcon)
+          .setLngLat([rota.bbox[2], rota.bbox[1]])
+          .addTo(map);
+
+
+    }
+
       // adiciona os novos pins
     // var customIcon = document.createElement('div');
     // customIcon.className = 'custom-marker';
@@ -201,6 +210,8 @@ function btnLimparRotaAzul() {
     // var marker = new mapboxgl.Marker(customIcon)
     //     .setLngLat([-46.6333, -23.55077])
     //     .addTo(map);
+
+  })
 
   // let bboxCoords, bboxSouthWest, bboxNorthEast;
 
@@ -409,22 +420,22 @@ directions.on("route", (event) => {
         // routesInfo[idRota-1].name = `total_${maxObstacles}_worstRoute`;
         // routesInfo[idRota].name = "theBestRoute"
 
-        // map.addLayer({
-        //   id: "bestRoute",
-        //   type: "line",
-        //   source: {
-        //     type: "geojson",
-        //     data: bestRoute,
-        //   },
-        //   layout: {
-        //     "line-join": "round",
-        //     "line-cap": "round",
-        //   },
-        //   paint: {
-        //     "line-color": "#74c476",
-        //     "line-width": 4,
-        //   },
-        // });
+        map.addLayer({
+          id: "bestRoute",
+          type: "line",
+          source: {
+            type: "geojson",
+            data: bestRoute,
+          },
+          layout: {
+            "line-join": "round",
+            "line-cap": "round",
+          },
+          paint: {
+            "line-color": "#74c476",
+            "line-width": 4,
+          },
+        });
 
         
 
@@ -454,41 +465,6 @@ directions.on("route", (event) => {
         routesInfo[worstRouteId].name = `total_${maxObstacles}_worstRoute`;
 
         // map.getSource("theRoute").setData(routesInfo[worstRouteId].routeLine);
-
-        map.addLayer({
-          id: "bestRoute",
-          type: "line",
-          source: {
-            type: "geojson",
-            data: bestRoute,
-          },
-          layout: {
-            "line-join": "round",
-            "line-cap": "round",
-          },
-          paint: {
-            "line-color": "#74c476",
-            "line-width": 4,
-          },
-        });
-
-        map.addLayer({
-          id: "bestRoute2",
-          type: "line",
-          source: {
-            type: "geojson",
-            data: bestRoute,
-          },
-          layout: {
-            "line-join": "round",
-            "line-cap": "round",
-          },
-          paint: {
-            "line-color": "#74c476",
-            "line-opacity": 0.3,
-            "line-width": 13,
-          },
-        });
 
 
         map.addLayer({
@@ -553,6 +529,7 @@ function addWaypointsToMap(coords) {
       },
     },
     layout: {
+      "icon-image": "marker-15",
       "icon-allow-overlap": true,
       "icon-size": 1,
     },

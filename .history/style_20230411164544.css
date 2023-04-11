@@ -69,14 +69,13 @@ body {
 
   /*  CRIANDO PIN NO MAPBOX */
 
-.custom-marker-a,
-.custom-marker-b {
+  .custom-marker {
   position: relative;
   width: 30px;
   height: 30px;
 }
 
-.custom-marker-a::before {
+.custom-marker::before {
   content: '';
   position: absolute;
   top: 0;
@@ -87,27 +86,12 @@ body {
   border-radius: 50%;
 }
 
-.custom-marker-b::before {
-    content: '';
-    position: absolute;
-    top: 0;
-    left: 0;
-    width: 30px;
-    height: 30px;
-    background-color: #8A8ACB;
-    border-radius: 50%;
-  }
-  
-
-
-
-.custom-marker-a span,
-.custom-marker-b span {
+.custom-marker span {
   position: absolute;
   top: 50%;
   left: 50%;
   transform: translate(-50%, -50%);
-  font-size: 12px;
+  font-size: 13px;
   font-weight: 500;
   color: #FFFFFF;
 }

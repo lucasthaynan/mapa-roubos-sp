@@ -409,22 +409,22 @@ directions.on("route", (event) => {
         // routesInfo[idRota-1].name = `total_${maxObstacles}_worstRoute`;
         // routesInfo[idRota].name = "theBestRoute"
 
-        // map.addLayer({
-        //   id: "bestRoute",
-        //   type: "line",
-        //   source: {
-        //     type: "geojson",
-        //     data: bestRoute,
-        //   },
-        //   layout: {
-        //     "line-join": "round",
-        //     "line-cap": "round",
-        //   },
-        //   paint: {
-        //     "line-color": "#74c476",
-        //     "line-width": 4,
-        //   },
-        // });
+        map.addLayer({
+          id: "bestRoute",
+          type: "line",
+          source: {
+            type: "geojson",
+            data: bestRoute,
+          },
+          layout: {
+            "line-join": "round",
+            "line-cap": "round",
+          },
+          paint: {
+            "line-color": "#74c476",
+            "line-width": 4,
+          },
+        });
 
         
 
@@ -454,41 +454,6 @@ directions.on("route", (event) => {
         routesInfo[worstRouteId].name = `total_${maxObstacles}_worstRoute`;
 
         // map.getSource("theRoute").setData(routesInfo[worstRouteId].routeLine);
-
-        map.addLayer({
-          id: "bestRoute",
-          type: "line",
-          source: {
-            type: "geojson",
-            data: bestRoute,
-          },
-          layout: {
-            "line-join": "round",
-            "line-cap": "round",
-          },
-          paint: {
-            "line-color": "#74c476",
-            "line-width": 4,
-          },
-        });
-
-        map.addLayer({
-          id: "bestRoute2",
-          type: "line",
-          source: {
-            type: "geojson",
-            data: bestRoute,
-          },
-          layout: {
-            "line-join": "round",
-            "line-cap": "round",
-          },
-          paint: {
-            "line-color": "#74c476",
-            "line-opacity": 0.3,
-            "line-width": 13,
-          },
-        });
 
 
         map.addLayer({
@@ -538,86 +503,6 @@ directions.on("route", (event) => {
 });
 
 
-function addWaypointsToMap(coords) {
-  map.addLayer({
-    id: "start-point",
-    type: "symbol",
-    source: {
-      type: "geojson",
-      data: {
-        type: "Feature",
-        geometry: {
-          type: "Point",
-          coordinates: coords[0],
-        },
-      },
-    },
-    layout: {
-      "icon-allow-overlap": true,
-      "icon-size": 1,
-    },
-  });
-  
-  map.addLayer({
-    id: "end-point",
-    type: "symbol",
-    source: {
-      type: "geojson",
-      data: {
-        type: "Feature",
-        geometry: {
-          type: "Point",
-          coordinates: coords[1],
-        },
-      },
-    },
-    layout: {
-      "icon-image": "marker-15",
-      "icon-allow-overlap": true,
-      "icon-size": 1,
-    },
-  });
-}
-
-// function removeSelectedRoute(directions) {
-//   directions.on("routeSelected", function (event) {
-//     var selectedRouteIndex = event.routeIndex;
-//     directions.removeRoutes(selectedRouteIndex);
-//   });
-// }
-
-function removeRoutes(map) {
-  if (map.getSource("theRoute")) {
-    map.removeLayer("theRoute");
-    map.removeSource("theRoute");
-  }
-  if (map.getSource("theBox")) {
-    map.removeLayer("theBox");
-    map.removeSource("theBox");
-  }
-  if (map.getSource("clearances")) {
-    map.removeLayer("clearances");
-    map.removeSource("clearances");
-  }
-  if (map.getSource("route")) {
-    map.removeLayer("route");
-    map.removeSource("route");
-  }
-  if (map.getSource("load")) {
-    map.removeLayer("load");
-    map.removeSource("load");
-  }
-
-  if (map.getSource("worstRoute")) {
-    map.removeLayer("worstRoute");
-    map.removeSource("worstRoute");
-  }
-
-  if (map.getSource("routeLine")) {
-    map.removeLayer("routeLine");
-    map.removeSource("routeLine");
-  }
-}
 
 function traduzirInput() {
   // let input = document.querySelectorAll(

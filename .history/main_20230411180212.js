@@ -473,7 +473,7 @@ directions.on("route", (event) => {
         });
 
         map.addLayer({
-          id: "bestRoute2",
+          id: "bestRoute",
           type: "line",
           source: {
             type: "geojson",
