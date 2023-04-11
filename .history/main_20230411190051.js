@@ -560,10 +560,6 @@ function removeRoutes(map) {
 }
 
 function pegarOrigemDestino(){
-  let origemInserida 
-  let destinoInserido
-
-  // pega as informacoes de origem e destino
   let input = document.querySelectorAll(
     '.mapboxgl-ctrl-geocoder > input[type="text"]'
   );
@@ -571,29 +567,12 @@ function pegarOrigemDestino(){
 
     console.log(input.value)
 
-    if (input.placeholder == "Origem") {
-      origemInserida = input.value;
-    } else {
-      destinoInserido = input.value;
-    }
+    // if (input.placeholder == "Choose a starting place") {
+    //   input.placeholder = "Endereço de partida";
+    // } else {
+    //   input.placeholder = "Endereço de destino";
+    // }
   });
-
-  // chamando função para apagar linha azul
-  btnLimparRotaAzul()
-
-  // insere novamente as informacoes de origem e destino
-
-  input.forEach((input) => {
-
-    console.log(input.value)
-
-    if (input.placeholder == "Origem") {
-      input.value = origemInserida;
-    } else {
-      input.value = destinoInserido;
-    }
-  });
-
 }
 
 function traduzirInput() {
@@ -687,8 +666,9 @@ function addCard(id, element, clear, detail) {
 
 // FUNÇAO QUE EXIBE QUANDO UMA ROTA SEM OBSTACULOS NAO É ENCONTRADA
 function noRoutes(element) {
-  pegarOrigemDestino()
-  
+
+  // chamando função para apagar linha azul
+  btnLimparRotaAzul()
 
   const card = document.createElement("div");
   card.className = "card";

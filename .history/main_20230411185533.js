@@ -50,14 +50,14 @@ let origem = []
 let destino = []
 
 directions.on("origin", (origin) =>{
-  // console.log(origin)
-  // console.log(origin.feature.geometry.coordinates)
+  console.log(origin)
+  console.log(origin.feature.geometry.coordinates)
   origem.push(origin.feature.geometry.coordinates)
 })
 
 directions.on("destination", (destination) =>{
-  // console.log(destination)
-  // console.log(destination.feature.geometry.coordinates)
+  console.log(destination)
+  console.log(destination.feature.geometry.coordinates)
   destino.push(destination.feature.geometry.coordinates)
 })
 
@@ -559,43 +559,6 @@ function removeRoutes(map) {
   }
 }
 
-function pegarOrigemDestino(){
-  let origemInserida 
-  let destinoInserido
-
-  // pega as informacoes de origem e destino
-  let input = document.querySelectorAll(
-    '.mapboxgl-ctrl-geocoder > input[type="text"]'
-  );
-  input.forEach((input) => {
-
-    console.log(input.value)
-
-    if (input.placeholder == "Origem") {
-      origemInserida = input.value;
-    } else {
-      destinoInserido = input.value;
-    }
-  });
-
-  // chamando função para apagar linha azul
-  btnLimparRotaAzul()
-
-  // insere novamente as informacoes de origem e destino
-
-  input.forEach((input) => {
-
-    console.log(input.value)
-
-    if (input.placeholder == "Origem") {
-      input.value = origemInserida;
-    } else {
-      input.value = destinoInserido;
-    }
-  });
-
-}
-
 function traduzirInput() {
   // let input = document.querySelectorAll(
   //   '.mapboxgl-ctrl-geocoder > input[type="text"]'
@@ -687,8 +650,9 @@ function addCard(id, element, clear, detail) {
 
 // FUNÇAO QUE EXIBE QUANDO UMA ROTA SEM OBSTACULOS NAO É ENCONTRADA
 function noRoutes(element) {
-  pegarOrigemDestino()
-  
+
+  // chamando função para apagar linha azul
+  btnLimparRotaAzul()
 
   const card = document.createElement("div");
   card.className = "card";

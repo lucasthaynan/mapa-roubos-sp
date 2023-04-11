@@ -563,7 +563,6 @@ function pegarOrigemDestino(){
   let origemInserida 
   let destinoInserido
 
-  // pega as informacoes de origem e destino
   let input = document.querySelectorAll(
     '.mapboxgl-ctrl-geocoder > input[type="text"]'
   );
@@ -580,8 +579,6 @@ function pegarOrigemDestino(){
 
   // chamando função para apagar linha azul
   btnLimparRotaAzul()
-
-  // insere novamente as informacoes de origem e destino
 
   input.forEach((input) => {
 
