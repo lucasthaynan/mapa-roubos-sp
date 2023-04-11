@@ -4,7 +4,7 @@ body {
     height: 100vh;
     font-family: 'Open Sans', sans-serif;
     display: flex; /* Adicionada a propriedade display com o valor flex */
-    /* flex-direction: column; */
+    flex-direction: column;
 }
 
 #map {
@@ -51,17 +51,3 @@ body {
 .card-details {
     padding: 3px 6px;
 }
-
-
-.sidebar_3 {
-    position: relative;
-    top: 0;
-    left: 0;
-    height: 100px;
-    width: 300px;
-    background-color: #fff;
-    box-shadow: 0px 0px 10px rgba(0, 0, 0, 0.2);
-    overflow-y: scroll;
-    z-index: 1;
-  }
-  

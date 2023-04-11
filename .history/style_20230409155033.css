@@ -1,25 +1,27 @@
 body {
     margin: 0;
     padding: 0;
-    height: 100vh;
     font-family: 'Open Sans', sans-serif;
-    display: flex; /* Adicionada a propriedade display com o valor flex */
-    /* flex-direction: column; */
 }
 
 #map {
-    flex-grow: 1; /* Ocupa todo o espaço restante */
-    flex-shrink: 0; /* Não encolhe */
+    position: absolute;
+    top: 0;
+    bottom: 0;
+    width: 75%; /* Alterado o valor da largura para 75% */
 }
 
 .sidebar {
+    position: absolute;
     margin: 20px 20px 30px 20px;
-    width: 25%; /* Alterado o valor da largura para 25% */
+    width: 20%; /* Alterado o valor da largura para 20% */
+    top: 0;
+    bottom: 0;
     padding: 20px;
     background-color: #fff;
     overflow-y: scroll;
+    float: left; /* Adicionada a propriedade float com o valor left */
 }
-
 
 
 .card {
@@ -51,17 +53,3 @@ body {
 .card-details {
     padding: 3px 6px;
 }
-
-
-.sidebar_3 {
-    position: relative;
-    top: 0;
-    left: 0;
-    height: 100px;
-    width: 300px;
-    background-color: #fff;
-    box-shadow: 0px 0px 10px rgba(0, 0, 0, 0.2);
-    overflow-y: scroll;
-    z-index: 1;
-  }
-  

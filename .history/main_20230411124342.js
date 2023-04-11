@@ -23,7 +23,7 @@ const directions = new MapboxDirections({
 });
 
 map.scrollZoom.enable();
-map.addControl(directions, "top-right");
+map.addControl(directions, "top-left");
 
 let obstacle;
 
@@ -160,15 +160,6 @@ directions.on("clear", () => {
   reports.innerHTML = "";
 });
 
-function clearRoute() {
-  map.setLayoutProperty("theRoute", "visibility", "none");
-  map.setLayoutProperty("theBox", "visibility", "none");
-
-  counter = 0;
-  reports.innerHTML = "";
-}
-
-
 // let listaRotasSelecionada = [];
 
 // function teste(listaRotasSelecionada) {
@@ -256,7 +247,9 @@ directions.on("route", (event) => {
         } registros de assalto`;
 
         const randomWaypoint = turf.randomPoint(1, { bbox: bbox });
-        directions.setWaypoint(0, randomWaypoint["features"][0].geometry.coordinates
+        directions.setWaypoint(
+          0,
+          randomWaypoint["features"][0].geometry.coordinates
         );
       }
 

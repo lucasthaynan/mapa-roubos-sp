@@ -13,7 +13,7 @@ const directions = new MapboxDirections({
   profile: "mapbox/driving",
   alternatives: false,
   geometries: "geojson",
-  controls: { instructions: false },
+  controls: { instructions: true },
   flyTo: false,
   language: "pt-BR",
   geocoder: {
@@ -98,7 +98,7 @@ map.on("load", () => {
 });
 
 let counter = 0;
-const maxAttempts = 5;
+const maxAttempts = 10;
 let emoji = "";
 let collision = "";
 let detail = "";
@@ -160,26 +160,17 @@ directions.on("clear", () => {
   reports.innerHTML = "";
 });
 
-function clearRoute() {
-  map.setLayoutProperty("theRoute", "visibility", "none");
-  map.setLayoutProperty("theBox", "visibility", "none");
+let listaRotasSelecionada = [];
 
-  counter = 0;
-  reports.innerHTML = "";
+function teste(listaRotasSelecionada) {
+  document
+    .querySelectorAll('.mapboxgl-ctrl-geocoder > input[type="text"]')
+    .forEach((input) => {
+      console.log(input.value);
+      listaRotasSelecionada.push(input.value);
+    });
+  return listaRotasSelecionada;
 }
-
-
-// let listaRotasSelecionada = [];
-
-// function teste(listaRotasSelecionada) {
-//   document
-//     .querySelectorAll('.mapboxgl-ctrl-geocoder > input[type="text"]')
-//     .forEach((input) => {
-//       console.log(input.value);
-//       listaRotasSelecionada.push(input.value);
-//     });
-//   return listaRotasSelecionada;
-// }
 
 let percentualMinObstacles;
 let minimoAssaltosRota;
@@ -233,10 +224,6 @@ directions.on("route", (event) => {
         clear: clear,
         obstacles: totalObstaculoRota,
         instructions: routeInstructions,
-        durationSec: route.duration, // add duration to routesInfo
-        durationMin: Math.ceil(route.duration / 60) // convert duration to minutes
-
-
         // name: route.summary // add the name of the route
       };
 
@@ -256,7 +243,9 @@ directions.on("route", (event) => {
         } registros de assalto`;
 
         const randomWaypoint = turf.randomPoint(1, { bbox: bbox });
-        directions.setWaypoint(0, randomWaypoint["features"][0].geometry.coordinates
+        directions.setWaypoint(
+          0,
+          randomWaypoint["features"][0].geometry.coordinates
         );
       }
 
@@ -283,11 +272,6 @@ directions.on("route", (event) => {
           minObstacles = obstacles;
           minimoAssaltosRota = minObstacles;
           bestRoute = routeLine;
-
-          bestRouteId = Object.keys(routesInfo).reduce((a, b) => routesInfo[a].obstacles < routesInfo[b].obstacles ? a : b);
-        routesInfo[bestRouteId].name = `total_${minObstacles}_bestRoute`;
-
-        map.getSource("theRoute").setData(routesInfo[bestRouteId].routeLine);
         }
         if (obstacles > maxObstacles) {
           maxObstacles = obstacles;
@@ -326,33 +310,6 @@ directions.on("route", (event) => {
         map.getSource("theRoute").setData(bestRoute);
         // routesInfo[idRota-1].name = `total_${maxObstacles}_worstRoute`;
         // routesInfo[idRota].name = "theBestRoute"
-
-        for (const id in routesInfo) {
-          const { obstacles } = routesInfo[id];
-      
-          if (obstacles < minObstacles) {
-            minObstacles = obstacles;
-            bestRouteId = id;
-          }
-      
-          if (obstacles > maxObstacles) {
-            maxObstacles = obstacles;
-            worstRouteId = id;
-          }
-        }
-      
-        for (const id in routesInfo) {
-          if (id === bestRouteId) {
-            routesInfo[id].name = `total_${routesInfo[id].obstacles}_bestRoute`;
-          } else {
-            routesInfo[id].name = `total_${routesInfo[id].obstacles}`;
-          }
-        }
-
-        worstRouteId = Object.keys(routesInfo).reduce((a, b) => routesInfo[a].obstacles > routesInfo[b].obstacles ? a : b);
-        routesInfo[worstRouteId].name = `total_${maxObstacles}_worstRoute`;
-
-        // map.getSource("theRoute").setData(routesInfo[worstRouteId].routeLine);
 
 
         map.addLayer({
