@@ -199,6 +199,44 @@ function btnLimparRotaAzul() {
             .setLngLat([destino[1][0], destino[1][1]])
             .addTo(map);
  
+      // adiciona os novos pins
+    // var customIcon = document.createElement('div');
+    // customIcon.className = 'custom-marker';
+    // customIcon.innerHTML = '<span>A</span>';
+
+    // var marker = new mapboxgl.Marker(customIcon)
+    //     .setLngLat([-46.6333, -23.55077])
+    //     .addTo(map);
+
+  // let bboxCoords, bboxSouthWest, bboxNorthEast;
+
+//   const routes = routesInfo;
+
+//   for (let i = 0; i < routes.length; i++) {
+//     const route = routes[i];
+//     const { name, bbox } = route;
+
+//     if (name.endsWith("bestRoute")) {
+//       bboxCoords = bbox;
+//       bboxSouthWest = { lng: bbox[0], lat: bbox[1] };
+//       bboxNorthEast = { lng: bbox[2], lat: bbox[3] };
+//       break;
+//     }
+//   }
+
+// console.log("bboxCoords:", bboxCoords);
+// console.log("bboxSouthWest:", bboxSouthWest);
+// console.log("bboxNorthEast:", bboxNorthEast);
+
+  // adiciona os novos pins
+  // var customIcon = document.createElement('div');
+  // customIcon.className = 'custom-marker';
+  // customIcon.innerHTML = '<span>A</span>';
+
+  // var marker = new mapboxgl.Marker(customIcon)
+  //     .setLngLat([-46.6333, -23.55077])
+  //     .addTo(map);
+
 
 }
 
@@ -206,6 +244,17 @@ function btnLimparRotaAzul() {
 document.getElementById("click-all-buttons").addEventListener("click", btnLimparRotaAzul);
 
 
+// let listaRotasSelecionada = [];
+
+// function teste(listaRotasSelecionada) {
+//   document
+//     .querySelectorAll('.mapboxgl-ctrl-geocoder > input[type="text"]')
+//     .forEach((input) => {
+//       console.log(input.value);
+//       listaRotasSelecionada.push(input.value);
+//     });
+//   return listaRotasSelecionada;
+// }
 
 let percentualMinObstacles;
 let minimoAssaltosRota;
@@ -230,6 +279,14 @@ directions.on("route", (event) => {
   } else {
     for (const route of event.route) {
 
+
+      // const routeId = JSON.stringify(route.geometry.coordinates);
+      // if (testedRoutes.has(routeId)) {
+      //   console.log(`Route ${routeId} has already been tested`);
+      //   continue;
+      // }
+
+      // testedRoutes.add(routeId);
 
       const routeLine = polyline.toGeoJSON(route.geometry);
 
@@ -482,13 +539,12 @@ directions.on("route", (event) => {
         routeLayerId = "worstRoute"; // assign ID to the route layer
         
       }
-      // btnLimparRotaAzul()
+      btnLimparRotaAzul()
       console.log(routesInfo)
 
       // btnLimparRotaAzul()
       
     }
-    // btnLimparRotaAzul()
   }
   
 });
@@ -666,10 +722,6 @@ function addCard(id, element, clear, detail) {
 
 // FUNÇAO QUE EXIBE QUANDO UMA ROTA SEM OBSTACULOS NAO É ENCONTRADA
 function noRoutes(element) {
-
-  // chamando função para apagar linha azul
-  btnLimparRotaAzul()
-
   const card = document.createElement("div");
   card.className = "card";
   // Add the response to the individual report created above

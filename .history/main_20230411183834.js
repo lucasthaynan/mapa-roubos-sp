@@ -667,9 +667,8 @@ function addCard(id, element, clear, detail) {
 // FUNÇAO QUE EXIBE QUANDO UMA ROTA SEM OBSTACULOS NAO É ENCONTRADA
 function noRoutes(element) {
 
-  // chamando função para apagar linha azul
   btnLimparRotaAzul()
-
+  
   const card = document.createElement("div");
   card.className = "card";
   // Add the response to the individual report created above

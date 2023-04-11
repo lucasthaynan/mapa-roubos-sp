@@ -167,11 +167,9 @@ function mudarCor(map){
 }
 
 
-// function limparRotaAzul(map){
-//   map.removeSource('directions-route-line-casing')
-//   map.removeLayer('directions-route-line-casing')
-//   // directions.setLayoutProperty("directions-route-line-casing", "visibility", "none");
-// }
+function limparRotaAzul(){
+  map.removeLayer('directions-route-line-casing')
+}
 
 
 function btnLimparRotaAzul() {
@@ -199,6 +197,44 @@ function btnLimparRotaAzul() {
             .setLngLat([destino[1][0], destino[1][1]])
             .addTo(map);
  
+      // adiciona os novos pins
+    // var customIcon = document.createElement('div');
+    // customIcon.className = 'custom-marker';
+    // customIcon.innerHTML = '<span>A</span>';
+
+    // var marker = new mapboxgl.Marker(customIcon)
+    //     .setLngLat([-46.6333, -23.55077])
+    //     .addTo(map);
+
+  // let bboxCoords, bboxSouthWest, bboxNorthEast;
+
+//   const routes = routesInfo;
+
+//   for (let i = 0; i < routes.length; i++) {
+//     const route = routes[i];
+//     const { name, bbox } = route;
+
+//     if (name.endsWith("bestRoute")) {
+//       bboxCoords = bbox;
+//       bboxSouthWest = { lng: bbox[0], lat: bbox[1] };
+//       bboxNorthEast = { lng: bbox[2], lat: bbox[3] };
+//       break;
+//     }
+//   }
+
+// console.log("bboxCoords:", bboxCoords);
+// console.log("bboxSouthWest:", bboxSouthWest);
+// console.log("bboxNorthEast:", bboxNorthEast);
+
+  // adiciona os novos pins
+  // var customIcon = document.createElement('div');
+  // customIcon.className = 'custom-marker';
+  // customIcon.innerHTML = '<span>A</span>';
+
+  // var marker = new mapboxgl.Marker(customIcon)
+  //     .setLngLat([-46.6333, -23.55077])
+  //     .addTo(map);
+
 
 }
 
@@ -206,6 +242,17 @@ function btnLimparRotaAzul() {
 document.getElementById("click-all-buttons").addEventListener("click", btnLimparRotaAzul);
 
 
+// let listaRotasSelecionada = [];
+
+// function teste(listaRotasSelecionada) {
+//   document
+//     .querySelectorAll('.mapboxgl-ctrl-geocoder > input[type="text"]')
+//     .forEach((input) => {
+//       console.log(input.value);
+//       listaRotasSelecionada.push(input.value);
+//     });
+//   return listaRotasSelecionada;
+// }
 
 let percentualMinObstacles;
 let minimoAssaltosRota;
@@ -230,6 +277,14 @@ directions.on("route", (event) => {
   } else {
     for (const route of event.route) {
 
+
+      // const routeId = JSON.stringify(route.geometry.coordinates);
+      // if (testedRoutes.has(routeId)) {
+      //   console.log(`Route ${routeId} has already been tested`);
+      //   continue;
+      // }
+
+      // testedRoutes.add(routeId);
 
       const routeLine = polyline.toGeoJSON(route.geometry);
 
@@ -404,7 +459,41 @@ directions.on("route", (event) => {
 
         // map.getSource("theRoute").setData(routesInfo[worstRouteId].routeLine);
 
-// adicionando rota com mais assaltos (vermelha)
+        map.addLayer({
+          id: "bestRoute",
+          type: "line",
+          source: {
+            type: "geojson",
+            data: bestRoute,
+          },
+          layout: {
+            "line-join": "round",
+            "line-cap": "round",
+          },
+          paint: {
+            "line-color": "#74c476",
+            "line-width": 4,
+          },
+        });
+
+        map.addLayer({
+          id: "bestRoute2",
+          type: "line",
+          source: {
+            type: "geojson",
+            data: bestRoute,
+          },
+          layout: {
+            "line-join": "round",
+            "line-cap": "round",
+          },
+          paint: {
+            "line-color": "#74c476",
+            "line-opacity": 0.3,
+            "line-width": 13,
+          },
+        });
+
 
         map.addLayer({
           id: "worstRoute",
@@ -440,57 +529,16 @@ directions.on("route", (event) => {
           },
         });
 
-
-        // adicionando rota mais segura (verde)
-
-        map.addLayer({
-          id: "bestRoute",
-          type: "line",
-          source: {
-            type: "geojson",
-            data: bestRoute,
-          },
-          layout: {
-            "line-join": "round",
-            "line-cap": "round",
-          },
-          paint: {
-            "line-color": "#74c476",
-            "line-width": 4,
-          },
-        });
-
-        map.addLayer({
-          id: "bestRoute2",
-          type: "line",
-          source: {
-            type: "geojson",
-            data: bestRoute,
-          },
-          layout: {
-            "line-join": "round",
-            "line-cap": "round",
-          },
-          paint: {
-            "line-color": "#74c476",
-            "line-opacity": 0.2,
-            "line-width": 13,
-          },
-        });
-
-
         routeLayerId = "worstRoute"; // assign ID to the route layer
-        
       }
-      // btnLimparRotaAzul()
+
       console.log(routesInfo)
 
       // btnLimparRotaAzul()
       
     }
-    // btnLimparRotaAzul()
   }
-  
+
 });
 
 
@@ -666,10 +714,6 @@ function addCard(id, element, clear, detail) {
 
 // FUNÇAO QUE EXIBE QUANDO UMA ROTA SEM OBSTACULOS NAO É ENCONTRADA
 function noRoutes(element) {
-
-  // chamando função para apagar linha azul
-  btnLimparRotaAzul()
-
   const card = document.createElement("div");
   card.className = "card";
   // Add the response to the individual report created above
