@@ -111,10 +111,22 @@ section.container {
     font-weight: 300;
     line-height: 20px;
     text-align: center;
-    
+
+  /* opacity: 0; */
 
 }
 
+.fade-in {
+    opacity: 1;
+    transition: opacity 0.5s ease-in-out;
+    display: flex;
+  }
+  
+  .fade-out {
+    opacity: 0;
+    transition: opacity 0.5s ease-in-out;
+    display: none;
+  }
 
 section.container.melhor-rota > p > strong {
     color: #74C476;

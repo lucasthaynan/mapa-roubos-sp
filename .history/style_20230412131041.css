@@ -111,10 +111,23 @@ section.container {
     font-weight: 300;
     line-height: 20px;
     text-align: center;
-    
 
 }
 
+/* classe para fade in */
+.fade-in {
+    opacity: 1;
+    display: flex;
+    transition: opacity 0.5s ease-in-out;
+  }
+  
+  /* classe para fade out */
+  .fade-out {
+    opacity: 2;
+    display: none;
+    transition: opacity 0.5s ease-in-out;
+  }
+  
 
 section.container.melhor-rota > p > strong {
     color: #74C476;
@@ -157,14 +170,19 @@ section.container.pior-rota > p > strong {
     color: wheat;
 }
 
-/* barra que exibe os dados por rota - ANTIGA */
-.sidebar_3 {
-    display: none;
+
+/* .sidebar_3 {
+    position: relative;
+    top: 0;
+    left: 0;
+    height: 100px;
+    width: 300px;
+    background-color: #fff;
+    box-shadow: 0px 0px 10px rgba(0, 0, 0, 0.2);
+    overflow-y: scroll;
+    z-index: 1;
   }
-  
-#reports {
-    display: none;
-  }
+   */
 
 
   /*  CRIANDO PIN NO MAPBOX */
@@ -225,3 +243,4 @@ section.container.pior-rota > p > strong {
       transform: rotate(360deg);
     }
   }
+  

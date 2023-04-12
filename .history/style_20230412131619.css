@@ -104,17 +104,29 @@ section.container {
     color: #FFFFFF;
     padding: 25px;
     border-radius: 15px;
-    display: none;
+    /* display: none; */
     flex-direction: column;
     align-items: center;
     font-size: 16px;
     font-weight: 300;
     line-height: 20px;
     text-align: center;
-    
+    /* opacity: 0; */
 
 }
 
+.fade-in {
+    opacity: 1;
+    transition: opacity 0.5s ease-in-out;
+    display: flex; /* adicionado para exibir o elemento após o fade in */
+  }
+  
+  .fade-out {
+    opacity: 0;
+    transition: opacity 0.5s ease-in-out;
+    display: none; /* adicionado para ocultar o elemento após o fade out */
+  }
+  
 
 section.container.melhor-rota > p > strong {
     color: #74C476;
@@ -157,14 +169,19 @@ section.container.pior-rota > p > strong {
     color: wheat;
 }
 
-/* barra que exibe os dados por rota - ANTIGA */
-.sidebar_3 {
-    display: none;
+
+/* .sidebar_3 {
+    position: relative;
+    top: 0;
+    left: 0;
+    height: 100px;
+    width: 300px;
+    background-color: #fff;
+    box-shadow: 0px 0px 10px rgba(0, 0, 0, 0.2);
+    overflow-y: scroll;
+    z-index: 1;
   }
-  
-#reports {
-    display: none;
-  }
+   */
 
 
   /*  CRIANDO PIN NO MAPBOX */
@@ -225,3 +242,4 @@ section.container.pior-rota > p > strong {
       transform: rotate(360deg);
     }
   }
+  

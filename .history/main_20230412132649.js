@@ -619,16 +619,27 @@ function ocultarRotas() {
 // CONTAINER COM OS DADOS
 
 function containerLoadingOn() {
-
-  document.querySelector("section.container.loading").style.display = "flex"
+  const container = document.querySelector("section.container.loading");
+  // container.style.display = "flex";
+  container.classList.remove('fade-out');
+  container.classList.add('fade-in');
+  setTimeout(() => {
+    container.style.display = 'flex';
+  }, 100);
 }
 
 function containerLoadingOff() {
-  document.querySelector("section.container.loading").style.display = "none"
-  document.querySelector("section.container.loading").style.opacity = "0"
-  document.querySelector("section.container.melhor-rota").style.display = "flex"
-  document.querySelector("section.container.pior-rota").style.display = "flex"
+  const container = document.querySelector("section.container.loading");
+  container.classList.remove('fade-in');
+  container.classList.add('fade-out');
+  setTimeout(() => {
+    container.style.display = 'none';
+  }, 500);
+  
+  document.querySelector("section.container.melhor-rota").style.display = "flex";
+  document.querySelector("section.container.pior-rota").style.display = "flex";
 }
+
 
 
 function pegarOrigemDestino() {

@@ -139,7 +139,7 @@ map.on("load", () => {
 });
 
 let counter = 0;
-const maxAttempts = 10;
+const maxAttempts = 5;
 
 directions.on("clear", () => {
   console.log("Limpando rotas...");
@@ -215,7 +215,6 @@ let minObstacles = Infinity;
 let maxObstacles = -Infinity;
 
 directions.on("route", (event) => {
-  
   if (counter >= maxAttempts) {
     noRoutes(reports);
   } else {
@@ -275,8 +274,6 @@ directions.on("route", (event) => {
       }
 
       addCard(counter, reports, clear, detail);
-
-      containerLoadingOn()
     }
 
     if (counter >= maxAttempts) {
@@ -309,15 +306,14 @@ directions.on("route", (event) => {
         }
         if (obstacles > maxObstacles) {
           maxObstacles = obstacles;
-          
+          percentualMaxObstacles = ((averageObstacles - maxObstacles) / averageObstacles) * 100;
           worstRoute = routeLine;
         }
       }
       const averageObstacles = totalObstacles / numRoutes;
 
-      percentualMaxObstacles = ((maxObstacles - minObstacles) / averageObstacles) * 100;
-      percentualMinObstacles = ((averageObstacles - minObstacles) / averageObstacles) * 100;
-      
+      percentualMinObstacles =
+        ((averageObstacles - minObstacles) / averageObstacles) * 100;
       console.log(
         `A rota com menos obstáculos tem ${percentualMinObstacles.toFixed(
           2
@@ -509,8 +505,6 @@ directions.on("route", (event) => {
         });
 
         routeLayerId = "worstRoute"; // assign ID to the route layer
-
-        
       }
       // btnLimparRotaAzul()
       console.log(routesInfo);
@@ -616,21 +610,6 @@ function ocultarRotas() {
   map.setLayoutProperty("theRoute", "visibility", "none");
 }
 
-// CONTAINER COM OS DADOS
-
-function containerLoadingOn() {
-
-  document.querySelector("section.container.loading").style.display = "flex"
-}
-
-function containerLoadingOff() {
-  document.querySelector("section.container.loading").style.display = "none"
-  document.querySelector("section.container.loading").style.opacity = "0"
-  document.querySelector("section.container.melhor-rota").style.display = "flex"
-  document.querySelector("section.container.pior-rota").style.display = "flex"
-}
-
-
 function pegarOrigemDestino() {
   let origemInserida;
   let destinoInserido;
@@ -734,9 +713,8 @@ const reports = document.getElementById("reports");
 // FUNÇAO PARA ADICIONAR CARD COM INFOS DAS ROTAS NA TELA
 function addCard(id, element, clear, detail) {
 
-  document.querySelector("section.container.loading > p").innerHTML = `Buscando a melhor rota... ${id} de 10`
 
-  // CODIGO ANTIDO
+  document.querySelector("body > div.sidebar > section.container.melhor-rota > p").innerHTML = `A melhor rota registrou 12.5% assaltos a menos, em 2022, em relação à média das rotas verificadas`
   const card = document.createElement("div");
   card.className = "card";
   // Add the response to the individual report created above
@@ -763,11 +741,10 @@ function noRoutes(element) {
 
   // chamando função para ocultar rotas indesejadas
   ocultarRotas();
-  containerLoadingOff()
 
-  document.querySelector("section.container.melhor-rota > p").innerHTML = `A melhor rota registrou <strong>${percentualMinObstacles.toFixed(1)}% assaltos a menos</strong>, em 2022, em relação à média das 10 rotas verificadas`
+  document.querySelector("section.container.melhor-rota > p").innerHTML = `A melhor rota registrou <strong>${percentualMinObstacles.toFixed(1)}% assaltos a menos</strong>, em 2022, em relação à média das rotas verificadas`
 
-  document.querySelector("section.container.pior-rota > p").innerHTML = `A pior rota registrou <strong>${percentualMaxObstacles.toFixed(1)}% assaltos a mais</strong> em relação ao melhor trajeto`
+  document.querySelector("section.container.pior-rota > p").innerHTML = `A pior rota registrou <strong>${percentualMaxObstacles.toFixed(1)}% assaltos a mais</strong> em relação à média das demais rotas`
   // CONDIGO ANTIGO
   const card = document.createElement("div");
   card.className = "card";

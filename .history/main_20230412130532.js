@@ -616,11 +616,9 @@ function ocultarRotas() {
   map.setLayoutProperty("theRoute", "visibility", "none");
 }
 
-// CONTAINER COM OS DADOS
-
 function containerLoadingOn() {
-
   document.querySelector("section.container.loading").style.display = "flex"
+  document.querySelector("section.container.loading").style.opacity = "1"
 }
 
 function containerLoadingOff() {
@@ -734,7 +732,7 @@ const reports = document.getElementById("reports");
 // FUNÇAO PARA ADICIONAR CARD COM INFOS DAS ROTAS NA TELA
 function addCard(id, element, clear, detail) {
 
-  document.querySelector("section.container.loading > p").innerHTML = `Buscando a melhor rota... ${id} de 10`
+  document.querySelector("section.container.loading > p").innerHTML = `Testando rotas... ${id} de 10`
 
   // CODIGO ANTIDO
   const card = document.createElement("div");

@@ -275,7 +275,7 @@ directions.on("route", (event) => {
       }
 
       addCard(counter, reports, clear, detail);
-
+      
       containerLoadingOn()
     }
 
@@ -509,8 +509,6 @@ directions.on("route", (event) => {
         });
 
         routeLayerId = "worstRoute"; // assign ID to the route layer
-
-        
       }
       // btnLimparRotaAzul()
       console.log(routesInfo);
@@ -616,18 +614,12 @@ function ocultarRotas() {
   map.setLayoutProperty("theRoute", "visibility", "none");
 }
 
-// CONTAINER COM OS DADOS
-
 function containerLoadingOn() {
-
   document.querySelector("section.container.loading").style.display = "flex"
 }
 
 function containerLoadingOff() {
   document.querySelector("section.container.loading").style.display = "none"
-  document.querySelector("section.container.loading").style.opacity = "0"
-  document.querySelector("section.container.melhor-rota").style.display = "flex"
-  document.querySelector("section.container.pior-rota").style.display = "flex"
 }
 
 
@@ -734,7 +726,7 @@ const reports = document.getElementById("reports");
 // FUNÇAO PARA ADICIONAR CARD COM INFOS DAS ROTAS NA TELA
 function addCard(id, element, clear, detail) {
 
-  document.querySelector("section.container.loading > p").innerHTML = `Buscando a melhor rota... ${id} de 10`
+  document.querySelector("section.container.loading > p").innerHTML = `Testando rotas... ${id} de 10`
 
   // CODIGO ANTIDO
   const card = document.createElement("div");
@@ -763,7 +755,6 @@ function noRoutes(element) {
 
   // chamando função para ocultar rotas indesejadas
   ocultarRotas();
-  containerLoadingOff()
 
   document.querySelector("section.container.melhor-rota > p").innerHTML = `A melhor rota registrou <strong>${percentualMinObstacles.toFixed(1)}% assaltos a menos</strong>, em 2022, em relação à média das 10 rotas verificadas`
 
