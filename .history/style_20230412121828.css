@@ -1,0 +1,210 @@
+body {
+    margin: 0;
+    padding: 0;
+    height: 100vh;
+    font-family: 'Open Sans', sans-serif;
+    display: flex; /* Adicionada a propriedade display com o valor flex */
+    /* flex-direction: column; */
+}
+
+#map {
+    flex-grow: 1; /* Ocupa todo o espaço restante */
+    flex-shrink: 0; /* Não encolhe */
+}
+
+canvas.mapboxgl-canvas {
+    width: 100vw;
+}
+
+/*  MUDANDO LAYOUT ORIGINAL DA BARRA DE ORIGEM E DESTINO */
+.sidebar {
+    /* margin: 200px 20px 30px 20px; */
+    width: 300px; /* Alterado o valor da largura para 25% */
+    /* padding: 20px; */
+    /* background-color: #fff; */
+    /* overflow-y: scroll; */
+    position: fixed;
+    top: 180px;
+    left: 60px;
+    display: flex;
+    flex-direction: column;
+    gap: 20px;
+}
+
+
+
+#map > div.mapboxgl-control-container > div.mapboxgl-ctrl-top-left {
+    top: 50px;
+    left: 50px;
+}
+
+#map > div.mapboxgl-control-container > div.mapboxgl-ctrl-top-left > div > div > div > div.mapbox-directions-profile.mapbox-directions-component-keyline.mapbox-directions-clearfix {
+    display: none;
+}
+
+#map > div.mapboxgl-control-container > div.mapboxgl-ctrl-top-left > div > div > div > div:nth-child(1) {
+    display: flex;
+    flex-direction: column;
+    gap: 8px;
+}
+
+#map > div.mapboxgl-control-container > div.mapboxgl-ctrl-top-left > div > div > div > div:nth-child(1) > button {
+    display: none;
+}
+
+#mapbox-directions-origin-input > div {
+    background-color: #00000091;
+}
+
+#mapbox-directions-destination-input > div {
+    background-color: #00000091;
+}
+
+#mapbox-directions-destination-input > div > input[type=text] {
+    box-shadow: 0 1px 0 0 rgba(255, 255, 255, 0);
+    color: #FFFFFF;
+}
+
+#mapbox-directions-origin-input > div > input[type=text] {
+    box-shadow: 0 1px 0 0 rgba(255, 255, 255, 0);
+    color: #FFFFFF;
+}
+
+#mapbox-directions-origin-input > div > div > button {
+    background-color: #ffffff3e;
+    border-radius: 100px;
+}
+
+#mapbox-directions-destination-input > div > div > button {
+    background-color: #ffffff3e;
+    border-radius: 100px;
+}
+
+#mapbox-directions-origin-input > div > div > span {
+    background-color: #ffffff;
+    border-radius: 100px;
+}
+
+#mapbox-directions-destination-input > div > div > span {
+    background-color: #ffffff;
+    border-radius: 100px;
+}
+
+
+
+/* FIM DAS ALTERACOES DO LAYOUT PADRAO */
+
+
+/*  ADICIONANDO CONTAINER SOBRE AS ROTAS */
+
+
+
+section.container {
+    background-color: rgba(0, 0, 0, 0.6);
+    color: #FFFFFF;
+    padding: 20px;
+    border-radius: 15px;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    font-size: 16px;
+    font-weight: 300;
+    line-height: 20px;
+    text-align: center;
+}
+
+section.container.melhor-rota > p > strong {
+    color: #74C476;
+}
+
+.card {
+    font-size: small;
+    border-bottom: solid #d3d3d3 2px;
+    margin-bottom: 6px;
+}
+
+.card-header {
+    font-weight: bold;
+    padding: 6px;
+}
+
+.no-route {
+    background-color: #d3d3d3;
+    color: rgb(25, 174, 49);
+}
+
+.obstacle-found {
+    background-color: #d3d3d3;
+    color: #fff;
+}
+
+.route-found {
+    background-color: #33a532;
+    color: #fff;
+}
+
+.card-details {
+    padding: 3px 6px;
+    color: wheat;
+}
+
+
+/* .sidebar_3 {
+    position: relative;
+    top: 0;
+    left: 0;
+    height: 100px;
+    width: 300px;
+    background-color: #fff;
+    box-shadow: 0px 0px 10px rgba(0, 0, 0, 0.2);
+    overflow-y: scroll;
+    z-index: 1;
+  }
+   */
+
+
+  /*  CRIANDO PIN NO MAPBOX */
+
+.custom-marker-a,
+.custom-marker-b {
+  position: relative;
+  width: 30px;
+  height: 30px;
+}
+
+.custom-marker-a::before {
+  content: '';
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 30px;
+  height: 30px;
+  background-color: #3BB2D0;
+  border-radius: 50%;
+}
+
+.custom-marker-b::before {
+    content: '';
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 30px;
+    height: 30px;
+    background-color: #8A8ACB;
+    border-radius: 50%;
+  }
+  
+
+
+
+.custom-marker-a span,
+.custom-marker-b span {
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  font-size: 12px;
+  font-weight: 500;
+  color: #FFFFFF;
+}
+
