@@ -4,7 +4,7 @@ const map = new mapboxgl.Map({
   container: "map", // Specify the container ID
   style: "mapbox://styles/mapbox/dark-v11", // Specify which map style to use
   center: [-46.63467,-23.55470], // Specify the starting position [lng, lat]
-  zoom: 12.5, // Specify the starting zoom
+  zoom: 12, // Specify the starting zoom
 });
 
 const directions = new MapboxDirections({
@@ -215,10 +215,23 @@ let worstRouteId = null;
 let minObstacles = Infinity;
 let maxObstacles = -Infinity;
 
-
-
 directions.on("route", (event) => {
-  
+
+  directions.on("route", function (event) {
+    if (event.route.length > 0) {
+      // Obtem a bounding box da rota gerada
+      const bboxMap = turf.bbox(event.route[0].geometry);
+
+      // Cria um objeto de bounds do Mapbox GL a partir da bounding box
+      const bounds = new mapboxgl.LngLatBounds(
+        [bboxMap[0], bboxMap[1]],
+        [bboxMap[2], bboxMap[3]]
+      );
+
+      // Aproxima o zoom do mapa para mostrar toda a rota
+      map.fitBounds(bounds, { padding: 50 });
+    }
+  });
   
   if (counter >= maxAttempts) {
     noRoutes(reports);

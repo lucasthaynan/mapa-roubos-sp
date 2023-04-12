@@ -3,8 +3,8 @@ mapboxgl.accessToken =
 const map = new mapboxgl.Map({
   container: "map", // Specify the container ID
   style: "mapbox://styles/mapbox/dark-v11", // Specify which map style to use
-  center: [-46.63467,-23.55470], // Specify the starting position [lng, lat]
-  zoom: 12.5, // Specify the starting zoom
+  center: [-46.6333, -23.55077], // Specify the starting position [lng, lat]
+  zoom: 12, // Specify the starting zoom
 });
 
 const directions = new MapboxDirections({
@@ -215,10 +215,7 @@ let worstRouteId = null;
 let minObstacles = Infinity;
 let maxObstacles = -Infinity;
 
-
-
 directions.on("route", (event) => {
-  
   
   if (counter >= maxAttempts) {
     noRoutes(reports);

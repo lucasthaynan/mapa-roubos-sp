@@ -54,20 +54,10 @@ canvas.mapboxgl-canvas {
 
 #mapbox-directions-origin-input > div {
     background-color: #00000091;
-    border-radius: 0 12px 12px 0;
 }
 
 #mapbox-directions-destination-input > div {
     background-color: #00000091;
-    border-radius: 0 12px 12px 0;
-}
-
-#map > div.mapboxgl-control-container > div.mapboxgl-ctrl-top-left > div > div > div > div:nth-child(1) > div.mapbox-directions-origin > label {
-    border-radius: 12px 0 0 12px;
-}
-
-#map > div.mapboxgl-control-container > div.mapboxgl-ctrl-top-left > div > div > div > div:nth-child(1) > div.mapbox-directions-destination > label {
-    border-radius: 12px 0 0 12px;
 }
 
 #mapbox-directions-destination-input > div > input[type=text] {
@@ -231,7 +221,7 @@ section.container.loading p {
 
 
 .svg-rotating {
-    animation: spin 0.9s linear infinite;
+    animation: spin 2s linear infinite;
   }
   
   @keyframes spin {
@@ -248,27 +238,22 @@ section.container.loading p {
 
   @media (max-width: 500px) {
 
-    #map > div.mapboxgl-control-container {
+    .mapboxgl-control-container {
         display: flex;
         justify-content: center;
     }
 
     .mapboxgl-ctrl-top-left {
-        left:auto;
-        top: auto;
+        left: none;
+        top: none;
     }
 
     #map > div.mapboxgl-control-container > div.mapboxgl-ctrl-top-left {
-
-        left: auto;
-        top: 20px;
+        left: none;
+        top: none;
     }
 
-
-    .sidebar {
-        margin: 200px 20px 30px 20px;
-        /* top: none; */
-        bottom: 10px;
+    section.container.melhor-rota > p > strong {
+        color: #ad1ed1;
     }
-
   }

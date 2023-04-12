@@ -231,7 +231,7 @@ section.container.loading p {
 
 
 .svg-rotating {
-    animation: spin 0.9s linear infinite;
+    animation: spin 2s linear infinite;
   }
   
   @keyframes spin {
