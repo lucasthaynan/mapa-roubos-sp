@@ -14,7 +14,7 @@ const directions = new MapboxDirections({
   alternatives: false,
   geometries: "geojson",
   controls: { instructions: false },
-  flyTo: false,
+  flyTo: true,
   language: "pt-BR",
   placeholderOrigin: "Origem",
   placeholderDestination: "Destino",
@@ -25,6 +25,7 @@ const directions = new MapboxDirections({
   },
   steps: true,
 });
+
 
 
 // Adiciona um listener para o evento `result` do MapboxDirections
@@ -201,6 +202,11 @@ function btnLimparRotaAzul() {
 //   .getElementById("click-all-buttons")
 //   .addEventListener("click", btnLimparRotaAzul);
 
+function delay(ms) {
+  return new Promise(resolve => setTimeout(resolve, ms));
+}
+
+
 let percentualMinObstacles;
 let minimoAssaltosRota;
 let percentualMaxObstacles;
@@ -217,7 +223,7 @@ let maxObstacles = -Infinity;
 
 
 
-directions.on("route", (event) => {
+directions.on("route", async (event) => {
   
   
   if (counter >= maxAttempts) {
@@ -227,9 +233,25 @@ directions.on("route", (event) => {
       const routeLine = polyline.toGeoJSON(route.geometry);
 
       bbox = turf.bbox(routeLine);
+      console.log(counter)
+      
       polygon = turf.bboxPolygon(bbox);
       map.getSource("theBox").setData(polygon);
       const clear = turf.booleanDisjoint(obstacle, routeLine);
+
+      // Cria um objeto de bounds do Mapbox GL a partir da bounding box
+      const bounds = new mapboxgl.LngLatBounds(
+        [bbox[0], bbox[1]],
+        [bbox[2], bbox[3]]
+      );
+
+      if (counter == 0) {
+        // Aproxima o zoom do mapa para mostrar todo o polygon e centraliza na tela
+        map.fitBounds(bounds, { padding: 220, maxZoom: map.getMaxZoom(), duration: 1500});
+        await delay(1300);
+
+      } 
+      
 
       totalObstaculoRota =
         turf.lineIntersect(obstacle, routeLine).features.length / 2;
@@ -270,6 +292,8 @@ directions.on("route", (event) => {
         )} minutos e teve ${
           turf.lineIntersect(obstacle, routeLine).features.length / 2
         } registros de assalto`;
+
+        
 
         const randomWaypoint = turf.randomPoint(1, { bbox: bbox });
         directions.setWaypoint(
@@ -941,3 +965,146 @@ function noRoutes(element) {
 //   }
 
 // });
+
+
+
+// directions.on("route", (event) => {
+
+  
+//   if (counter >= maxAttempts) {
+//     noRoutes(reports);
+//   } else {
+//     for (const route of event.route) {
+//       const routeLine = polyline.toGeoJSON(route.geometry);
+
+//       bbox = turf.bbox(routeLine);
+//       polygon = turf.bboxPolygon(bbox);
+//       map.getSource("theBox").setData(polygon);
+//       const clear = turf.booleanDisjoint(obstacle, routeLine);
+
+//       // Cria um objeto de bounds do Mapbox GL a partir da bounding box
+//       const bounds = new mapboxgl.LngLatBounds(
+//         [bbox[0], bbox[1]],
+//         [bbox[2], bbox[3]]
+//       );
+
+//       // Aproxima o zoom do mapa para mostrar toda a rota e centraliza na tela
+//       map.fitBounds(bounds, { padding: 50, maxZoom: map.getMaxZoom() });
+//       map.setCenter(bounds.getCenter());
+
+//       totalObstaculoRota =
+//         turf.lineIntersect(obstacle, routeLine).features.length / 2;
+
+//       const routeInstructions = []; // new variable to store street-by-street instructions
+
+//       for (const leg of route.legs) {
+//         for (const step of leg.steps) {
+//           routeInstructions.push(step.maneuver.instruction);
+//         }
+//       }
+//       };
+
+//       idRota += 1;
+//       if (clear === true) {
+//         counter = 0;
+//       } else {
+//         counter = counter + 1;
+
+//         polygon = turf.transformScale(polygon, counter * 0.01);
+//         bbox = turf.bbox(polygon);
+
+
+//         const randomWaypoint = turf.randomPoint(1, { bbox: bbox });
+//         directions.setWaypoint(
+//           0,
+//           randomWaypoint["features"][0].geometry.coordinates
+//         );
+//       }
+
+//     }
+
+//     if (counter >= maxAttempts) {
+//       let totalObstacles = 0;
+//       let numRoutes = 0;
+
+//       let minObstacles = Infinity;
+//       let bestRoute = null;
+
+//       let maxObstacles = -Infinity;
+//       let worstRoute = null;
+
+//       for (const id in routesInfo) {
+//         const { obstacles, routeLine } = routesInfo[id];
+
+//         totalObstacles += obstacles;
+//         numRoutes++;
+
+//         if (obstacles < minObstacles) {
+//           minObstacles = obstacles;
+//           minimoAssaltosRota = minObstacles;
+//           bestRoute = routeLine;
+
+//           bestRouteId = Object.keys(routesInfo).reduce((a, b) =>
+//             routesInfo[a].obstacles < routesInfo[b].obstacles ? a : b
+//           );
+//         }
+//         if (obstacles > maxObstacles) {
+//           maxObstacles = obstacles;
+          
+//           worstRoute = routeLine;
+//         }
+
+//       if (minObstacles === maxObstacles) {
+//         // Rotas com o mesmo número de obstáculos
+//         map.setPaintProperty("theRoute", "line-color", "#9370db");
+//         map.setLayoutProperty("theBox", "visibility", "none");
+//         map.getSource("theRoute").setData(bestRoute);
+
+
+//         map.getSource("theRoute").setData(routesInfo[bestRouteId].routeLine);
+//         routeLayerId = "theRoute";
+//       } else {
+//         const bestRoute = routesInfo[bestRouteId].routeLine;
+//         const startCoord = bestRoute.coordinates[0];
+//         const endCoord =
+//           bestRoute.coordinates[bestRoute.coordinates.length - 1];
+//         const waypoints = [startCoord, endCoord];
+
+//         addWaypointsToMap(waypoints);
+//         // Rotas com diferentes números de obstáculos
+//         map.setPaintProperty("theRoute", "line-color", "#74c476");
+//         map.setLayoutProperty("theBox", "visibility", "none");
+//         map.getSource("theRoute").setData(bestRoute);
+
+
+//         for (const id in routesInfo) {
+//           const { obstacles } = routesInfo[id];
+
+//           if (obstacles < minObstacles) {
+//             minObstacles = obstacles;
+//             bestRouteId = id;
+//           }
+
+//           if (obstacles > maxObstacles) {
+//             maxObstacles = obstacles;
+//             worstRouteId = id;
+//           }
+//         }
+
+//         for (const id in routesInfo) {
+//           if (id === bestRouteId) {
+//             routesInfo[id].name = `total_${routesInfo[id].obstacles}_bestRoute`;
+//           } else {
+//             routesInfo[id].name = `total_${routesInfo[id].obstacles}`;
+//           }
+//         }
+
+//         worstRouteId = Object.keys(routesInfo).reduce((a, b) =>
+//           routesInfo[a].obstacles > routesInfo[b].obstacles ? a : b
+//         );
+//         routesInfo[worstRouteId].name = `total_${maxObstacles}_worstRoute`;
+
+//         map.getSource("theRoute").setData(routesInfo[worstRouteId].routeLine);
+
+//   });
+// }
