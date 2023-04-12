@@ -3,9 +3,10 @@ mapboxgl.accessToken =
 const map = new mapboxgl.Map({
   container: "map", // Specify the container ID
   style: "mapbox://styles/mapbox/dark-v11", // Specify which map style to use
-  center: [-46.63467,-23.55470], // Specify the starting position [lng, lat]
-  zoom: 12.5, // Specify the starting zoom
+  center: [-46.62889,-23.55594], // Specify the starting position [lng, lat]
+  zoom: 10.8, // Specify the starting zoom
 });
+
 
 const directions = new MapboxDirections({
   accessToken: mapboxgl.accessToken,
@@ -26,6 +27,8 @@ const directions = new MapboxDirections({
   steps: true,
 });
 
+
+// directions.on('clear', resetMap);
 
 
 // Adiciona um listener para o evento `result` do MapboxDirections
@@ -58,7 +61,7 @@ directions.on("origin", (origin) => {
   const novaOrigem = origin.feature.geometry.coordinates;
   if (origem === null || !coordenadasIguais(novaOrigem, origem)) {
     origem = novaOrigem;
-    console.log('Origem atualizada:', origem);
+    console.log("Origem atualizada:", origem);
   }
 });
 
@@ -66,18 +69,17 @@ directions.on("destination", (destination) => {
   const novoDestino = destination.feature.geometry.coordinates;
   if (destino === null || !coordenadasIguais(novoDestino, destino)) {
     destino = novoDestino;
-    console.log('Destino atualizado:', destino);
+    console.log("Destino atualizado:", destino);
   }
 });
 
 directions.on("loading", () => {
   console.log("Rota alterada --> loading");
-})
-
+});
 
 directions.on("profile", () => {
   console.log("Rota alterada --> profile");
-})
+});
 
 map.on("load", () => {
   console.log("Obstaculos carregados!");
@@ -140,14 +142,15 @@ map.on("load", () => {
 });
 
 let counter = 0;
-const maxAttempts = 15;
+const maxAttempts = 10;
 
 directions.on("clear", () => {
   console.log("Limpando rotas...");
   map.setLayoutProperty("theRoute", "visibility", "none");
+  // resetMap()
   // map.setLayoutProperty("theBox", "visibility", "none");
 
-  removeRoutes(map)
+  removeRoutes(map);
   // counter = 0;
   // reports.innerHTML = "";
 });
@@ -203,9 +206,8 @@ function btnLimparRotaAzul() {
 //   .addEventListener("click", btnLimparRotaAzul);
 
 function delay(ms) {
-  return new Promise(resolve => setTimeout(resolve, ms));
+  return new Promise((resolve) => setTimeout(resolve, ms));
 }
-
 
 let percentualMinObstacles;
 let minimoAssaltosRota;
@@ -221,11 +223,7 @@ let worstRouteId = null;
 let minObstacles = Infinity;
 let maxObstacles = -Infinity;
 
-
-
 directions.on("route", async (event) => {
-  
-  
   if (counter >= maxAttempts) {
     noRoutes(reports);
   } else {
@@ -233,25 +231,48 @@ directions.on("route", async (event) => {
       const routeLine = polyline.toGeoJSON(route.geometry);
 
       bbox = turf.bbox(routeLine);
-      console.log(counter)
-      
+      console.log(counter);
+
       polygon = turf.bboxPolygon(bbox);
       map.getSource("theBox").setData(polygon);
       const clear = turf.booleanDisjoint(obstacle, routeLine);
 
-      // Cria um objeto de bounds do Mapbox GL a partir da bounding box
-      const bounds = new mapboxgl.LngLatBounds(
-        [bbox[0], bbox[1]],
-        [bbox[2], bbox[3]]
-      );
-
       if (counter == 0) {
+        // Cria um objeto de bounds do Mapbox GL a partir da bounding box
+        const bounds = new mapboxgl.LngLatBounds(
+          [bbox[0], bbox[1]],
+          [bbox[2], bbox[3]]
+        );
         // Aproxima o zoom do mapa para mostrar todo o polygon e centraliza na tela
-        map.fitBounds(bounds, { padding: 220, maxZoom: map.getMaxZoom(), duration: 1500});
-        await delay(1300);
-
-      } 
-      
+        if (window.innerWidth < 500) {
+          map.fitBounds(bounds, {
+            padding: {
+              top: 170,
+              right: 50,
+              bottom: 300,
+              left: 50
+            },
+            maxZoom: map.getMaxZoom(),
+            duration: 1500,
+          });
+          // delay para esperar dar o zoom que aproxima do trajeto
+          await delay(1500);
+        } else {
+          map.fitBounds(bounds, {
+            padding: {
+              top: 170,
+              right: 170,
+              bottom: 170,
+              left: 380
+            },
+            maxZoom: map.getMaxZoom(),
+            duration: 1500,
+          });
+          // delay para esperar dar o zoom que aproxima do trajeto
+          await delay(1500);
+        }
+        
+      }
 
       totalObstaculoRota =
         turf.lineIntersect(obstacle, routeLine).features.length / 2;
@@ -293,8 +314,6 @@ directions.on("route", async (event) => {
           turf.lineIntersect(obstacle, routeLine).features.length / 2
         } registros de assalto`;
 
-        
-
         const randomWaypoint = turf.randomPoint(1, { bbox: bbox });
         directions.setWaypoint(
           0,
@@ -304,7 +323,7 @@ directions.on("route", async (event) => {
 
       addCard(counter, reports, clear, detail);
 
-      containerLoadingOn()
+      containerLoadingOn();
     }
 
     if (counter >= maxAttempts) {
@@ -337,15 +356,17 @@ directions.on("route", async (event) => {
         }
         if (obstacles > maxObstacles) {
           maxObstacles = obstacles;
-          
+
           worstRoute = routeLine;
         }
       }
       const averageObstacles = totalObstacles / numRoutes;
 
-      percentualMaxObstacles = ((maxObstacles - minObstacles) / averageObstacles) * 100;
-      percentualMinObstacles = ((averageObstacles - minObstacles) / averageObstacles) * 100;
-      
+      percentualMaxObstacles =
+        ((maxObstacles - minObstacles) / averageObstacles) * 100;
+      percentualMinObstacles =
+        ((averageObstacles - minObstacles) / averageObstacles) * 100;
+
       console.log(
         `A rota com menos obstáculos tem ${percentualMinObstacles.toFixed(
           2
@@ -361,39 +382,39 @@ directions.on("route", async (event) => {
         routeLayerId = "theRoute"; // assign ID to the route layer
 
         map.addLayer({
-            id: "bestRouteIgual",
-            type: "line",
-            source: {
-              type: "geojson",
-              data: bestRoute,
-            },
-            layout: {
-              "line-join": "round",
-              "line-cap": "round",
-            },
-            paint: {
-              "line-color": "#9370db",
-              "line-width": 4,
-            },
-          });
+          id: "bestRouteIgual",
+          type: "line",
+          source: {
+            type: "geojson",
+            data: bestRoute,
+          },
+          layout: {
+            "line-join": "round",
+            "line-cap": "round",
+          },
+          paint: {
+            "line-color": "#9370db",
+            "line-width": 4,
+          },
+        });
 
-          map.addLayer({
-            id: "bestRouteIgual2",
-            type: "line",
-            source: {
-              type: "geojson",
-              data: bestRoute,
-            },
-            layout: {
-              "line-join": "round",
-              "line-cap": "round",
-            },
-            paint: {
-              "line-color": "#9370db",
-              "line-opacity": 0.3,
-              "line-width": 13,
-            },
-          });
+        map.addLayer({
+          id: "bestRouteIgual2",
+          type: "line",
+          source: {
+            type: "geojson",
+            data: bestRoute,
+          },
+          layout: {
+            "line-join": "round",
+            "line-cap": "round",
+          },
+          paint: {
+            "line-color": "#9370db",
+            "line-opacity": 0.3,
+            "line-width": 13,
+          },
+        });
 
         bestRouteId = Object.keys(routesInfo).reduce((a, b) =>
           routesInfo[a].obstacles < routesInfo[b].obstacles ? a : b
@@ -537,8 +558,6 @@ directions.on("route", async (event) => {
         });
 
         routeLayerId = "worstRoute"; // assign ID to the route layer
-
-        
       }
       // btnLimparRotaAzul()
       console.log(routesInfo);
@@ -623,11 +642,12 @@ function removeRoutes(map) {
 }
 
 function verLayer() {
-  map.queryRenderedFeatures()
-    .filter(d => d.layer.type == 'line') // filtra layers do tipo line
-    .map(d => d.layer.id) // pega os ids delas
+  map
+    .queryRenderedFeatures()
+    .filter((d) => d.layer.type == "line") // filtra layers do tipo line
+    .map((d) => d.layer.id) // pega os ids delas
     .filter((d, i, a) => a.indexOf(d) == i) // filtra os valores únicos de ids
-    .forEach(id => console.log(id)); // imprime os ids únicos no console
+    .forEach((id) => console.log(id)); // imprime os ids únicos no console
 }
 
 function ocultarRotas() {
@@ -639,17 +659,16 @@ function ocultarRotas() {
 // CONTAINER COM OS DADOS
 
 function containerLoadingOn() {
-
-  document.querySelector("section.container.loading").style.display = "flex"
+  document.querySelector("section.container.loading").style.display = "flex";
 }
 
 function containerLoadingOff() {
-  document.querySelector("section.container.loading").style.display = "none"
-  document.querySelector("section.container.loading").style.opacity = "0"
-  document.querySelector("section.container.melhor-rota").style.display = "flex"
-  document.querySelector("section.container.pior-rota").style.display = "flex"
+  document.querySelector("section.container.loading").style.display = "none";
+  document.querySelector("section.container.loading").style.opacity = "0";
+  document.querySelector("section.container.melhor-rota").style.display =
+    "flex";
+  document.querySelector("section.container.pior-rota").style.display = "flex";
 }
-
 
 function pegarOrigemDestino() {
   let origemInserida;
@@ -669,9 +688,7 @@ function pegarOrigemDestino() {
     }
   });
 
-  
-  
-  // chamando função para ocultar rotas 
+  // chamando função para ocultar rotas
   // ocultarRotas()
 
   // insere novamente as informacoes de origem e destino
@@ -753,8 +770,9 @@ const reports = document.getElementById("reports");
 
 // FUNÇAO PARA ADICIONAR CARD COM INFOS DAS ROTAS NA TELA
 function addCard(id, element, clear, detail) {
-
-  document.querySelector("section.container.loading > p").innerHTML = `Buscando a melhor rota... <strong>${id}</strong> de ${maxAttempts}`
+  document.querySelector(
+    "section.container.loading > p"
+  ).innerHTML = `Buscando a melhor rota... <strong>${id}</strong> de ${maxAttempts}`;
 
   // CODIGO ANTIDO
   const card = document.createElement("div");
@@ -780,14 +798,21 @@ function addCard(id, element, clear, detail) {
 
 // FUNÇAO QUE EXIBE QUANDO UMA ROTA SEM OBSTACULOS NAO É ENCONTRADA
 function noRoutes(element) {
-
   // chamando função para ocultar rotas indesejadas
   ocultarRotas();
-  containerLoadingOff()
+  containerLoadingOff();
 
-  document.querySelector("section.container.melhor-rota > p").innerHTML = `A melhor rota registrou <strong>${percentualMinObstacles.toFixed(1)}% assaltos a menos</strong>, em 2022, em relação à média das ${maxAttempts} rotas verificadas`
+  document.querySelector(
+    "section.container.melhor-rota > p"
+  ).innerHTML = `A melhor rota registrou <strong>${percentualMinObstacles.toFixed(
+    1
+  )}% assaltos a menos</strong>, em 2022, em relação à média das ${maxAttempts} rotas verificadas`;
 
-  document.querySelector("section.container.pior-rota > p").innerHTML = `A pior rota teve <strong>${percentualMaxObstacles.toFixed(1)}% assaltos a mais</strong> em comparação ao melhor trajeto`
+  document.querySelector(
+    "section.container.pior-rota > p"
+  ).innerHTML = `A pior rota teve <strong>${percentualMaxObstacles.toFixed(
+    1
+  )}% assaltos a mais</strong> em comparação ao melhor trajeto`;
   // CONDIGO ANTIGO
   const card = document.createElement("div");
   card.className = "card";
@@ -966,11 +991,8 @@ function noRoutes(element) {
 
 // });
 
-
-
 // directions.on("route", (event) => {
 
-  
 //   if (counter >= maxAttempts) {
 //     noRoutes(reports);
 //   } else {
@@ -1013,7 +1035,6 @@ function noRoutes(element) {
 //         polygon = turf.transformScale(polygon, counter * 0.01);
 //         bbox = turf.bbox(polygon);
 
-
 //         const randomWaypoint = turf.randomPoint(1, { bbox: bbox });
 //         directions.setWaypoint(
 //           0,
@@ -1050,7 +1071,7 @@ function noRoutes(element) {
 //         }
 //         if (obstacles > maxObstacles) {
 //           maxObstacles = obstacles;
-          
+
 //           worstRoute = routeLine;
 //         }
 
@@ -1059,7 +1080,6 @@ function noRoutes(element) {
 //         map.setPaintProperty("theRoute", "line-color", "#9370db");
 //         map.setLayoutProperty("theBox", "visibility", "none");
 //         map.getSource("theRoute").setData(bestRoute);
-
 
 //         map.getSource("theRoute").setData(routesInfo[bestRouteId].routeLine);
 //         routeLayerId = "theRoute";
@@ -1075,7 +1095,6 @@ function noRoutes(element) {
 //         map.setPaintProperty("theRoute", "line-color", "#74c476");
 //         map.setLayoutProperty("theBox", "visibility", "none");
 //         map.getSource("theRoute").setData(bestRoute);
-
 
 //         for (const id in routesInfo) {
 //           const { obstacles } = routesInfo[id];
