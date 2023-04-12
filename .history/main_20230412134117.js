@@ -767,7 +767,7 @@ function noRoutes(element) {
 
   document.querySelector("section.container.melhor-rota > p").innerHTML = `A melhor rota registrou <strong>${percentualMinObstacles.toFixed(1)}% assaltos a menos</strong>, em 2022, em relação à média das ${maxAttempts} rotas verificadas`
 
-  document.querySelector("section.container.pior-rota > p").innerHTML = `A pior rota teve <strong>${percentualMaxObstacles.toFixed(1)}% assaltos a mais</strong> em comparação ao melhor trajeto`
+  document.querySelector("section.container.pior-rota > p").innerHTML = `A pior rota registrou <strong>${percentualMaxObstacles.toFixed(1)}% assaltos a mais</strong> em comparação ao melhor trajeto`
   // CONDIGO ANTIGO
   const card = document.createElement("div");
   card.className = "card";

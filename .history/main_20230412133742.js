@@ -139,7 +139,7 @@ map.on("load", () => {
 });
 
 let counter = 0;
-const maxAttempts = 15;
+const maxAttempts = 10;
 
 directions.on("clear", () => {
   console.log("Limpando rotas...");
@@ -734,7 +734,7 @@ const reports = document.getElementById("reports");
 // FUNÇAO PARA ADICIONAR CARD COM INFOS DAS ROTAS NA TELA
 function addCard(id, element, clear, detail) {
 
-  document.querySelector("section.container.loading > p").innerHTML = `Buscando a melhor rota... <strong>${id}</strong> de ${maxAttempts}`
+  document.querySelector("section.container.loading > p").innerHTML = `Buscando a melhor rota... <strong>${id}</strong> de 10`
 
   // CODIGO ANTIDO
   const card = document.createElement("div");
@@ -765,9 +765,9 @@ function noRoutes(element) {
   ocultarRotas();
   containerLoadingOff()
 
-  document.querySelector("section.container.melhor-rota > p").innerHTML = `A melhor rota registrou <strong>${percentualMinObstacles.toFixed(1)}% assaltos a menos</strong>, em 2022, em relação à média das ${maxAttempts} rotas verificadas`
+  document.querySelector("section.container.melhor-rota > p").innerHTML = `A melhor rota registrou <strong>${percentualMinObstacles.toFixed(1)}% assaltos a menos</strong>, em 2022, em relação à média das 10 rotas verificadas`
 
-  document.querySelector("section.container.pior-rota > p").innerHTML = `A pior rota teve <strong>${percentualMaxObstacles.toFixed(1)}% assaltos a mais</strong> em comparação ao melhor trajeto`
+  document.querySelector("section.container.pior-rota > p").innerHTML = `A pior rota registrou <strong>${percentualMaxObstacles.toFixed(1)}% assaltos a mais</strong> em comparação ao melhor trajeto`
   // CONDIGO ANTIGO
   const card = document.createElement("div");
   card.className = "card";

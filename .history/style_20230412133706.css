@@ -131,7 +131,10 @@ section.container.loading p {
     font-weight: 300;
 
 }
-
+section.container.loading p strong {
+    font-weight: 400;
+    color: #FFC300;
+}
 
 .card {
     font-size: small;

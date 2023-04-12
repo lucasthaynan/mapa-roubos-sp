@@ -126,12 +126,10 @@ section.container.pior-rota > p > strong {
     font-weight: 500px;
 }
 
-section.container.loading p {
+body > div.sidebar > section.container.loading > p {
     font-size: 14px;
-    font-weight: 300;
-
+    font-weight: 400px;
 }
-
 
 .card {
     font-size: small;
