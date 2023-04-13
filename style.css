@@ -2,9 +2,11 @@ body {
     margin: 0;
     padding: 0;
     height: 100vh;
+    width: 100vw;
     font-family: 'Open Sans', sans-serif;
     display: flex; /* Adicionada a propriedade display com o valor flex */
     /* flex-direction: column; */
+    background-color: #272626;
 }
 
 #map {
@@ -241,6 +243,14 @@ section.container.loading p {
       transform: rotate(360deg);
     }
   }
+
+  section.container.nova-busca > div {
+    background-color: #3BB2D0;
+    padding: 5px 20px;
+    border-radius: 10px;
+    cursor: pointer;
+  }
+  
 
 
   /*  DESIGN RESPONSIVO */
