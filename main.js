@@ -1,18 +1,18 @@
+
+// Função para desabilitar a entrada de texto no Geocoder
+
 function bloquearEntradaOrigemDestino(map) {
-  // Desabilitar a entrada de texto no Geocoder
   var inputs = document.querySelectorAll(".mapboxgl-ctrl-geocoder input");
   inputs.forEach(function (input) {
     input.disabled = true;
   });
 }
 
-function novaBusca() {
-  console.log("Novabusca");
-}
 
 mapboxgl.accessToken =
   "pk.eyJ1IjoibHVjYXN0aGF5bmFuLWVzdGFkYW8iLCJhIjoiY2xnM3N1amQzMGlqeDNrbWdla3doY2o2dCJ9.OXh3OY3_HFqAiF-zzZ6SDQ";
 
+// criando mapa com mapbox
 const map = new mapboxgl.Map({
   container: "map", // Specify the container ID
   style: "mapbox://styles/mapbox/dark-v11", // Specify which map style to use
@@ -20,6 +20,7 @@ const map = new mapboxgl.Map({
   zoom: 10.8, // Specify the starting zoom
 });
 
+// chamando metodo para criar as direcoes no mapa com mapbox gl
 let directions = new MapboxDirections({
   accessToken: mapboxgl.accessToken,
   unit: "metric",
@@ -47,6 +48,7 @@ map.addControl(directions, "top-left");
 
 let obstacle;
 
+// carregando os dados de assaltos (obstáculos)
 fetch("./seu_arquivo_modificado.json")
   .then((response) => response.json())
   .then((data) => {
@@ -160,7 +162,7 @@ directions.on("clear", () => {
   // resetMap()
   // map.setLayoutProperty("theBox", "visibility", "none");
 
-  removeRoutes(map);
+  // removeRoutes(map);
   counter = 0;
   // reports.innerHTML = "";
 });
@@ -209,11 +211,17 @@ let bestRouteId = null;
 let worstRouteId = null;
 let minObstacles = Infinity;
 let maxObstacles = -Infinity;
+let rotasIguais = false
 
 directions.on("route", async (event) => {
   if (counter >= maxAttempts) {
-    noRoutes(reports);
-    // bloquearEntradaOrigemDestino(map);
+
+    // chama a função que mostra os dados sobre as rotas geradas
+    gerarResultado(reports, rotasIguais); // rotasIguais é true ou false
+
+    // champ a função que bloqueia as entradas de origem e destino
+    bloquearEntradaOrigemDestino(map);
+
   } else {
     for (const route of event.route) {
       const routeLine = polyline.toGeoJSON(route.geometry);
@@ -231,6 +239,7 @@ directions.on("route", async (event) => {
           [bbox[0], bbox[1]],
           [bbox[2], bbox[3]]
         );
+
         // Aproxima o zoom do mapa para mostrar todo o polygon e centraliza na tela
         if (window.innerWidth < 500) {
           map.fitBounds(bounds, {
@@ -268,6 +277,8 @@ directions.on("route", async (event) => {
 
       for (const leg of route.legs) {
         for (const step of leg.steps) {
+
+          // salvando dados de ruas/intrucoes das rotas
           routeInstructions.push(step.maneuver.instruction);
         }
       }
@@ -283,7 +294,6 @@ directions.on("route", async (event) => {
         durationSec: route.duration, // add duration to routesInfo
         durationMin: Math.ceil(route.duration / 60), // convert duration to minutes
 
-        // name: route.summary // add the name of the route
       };
 
       idRota += 1;
@@ -360,7 +370,10 @@ directions.on("route", async (event) => {
         )}% a menos de obstáculos em relação à média.`
       );
 
+      // caso as rotas tenham o mesmo número de assaltos(obstaculos)
       if (minObstacles === maxObstacles) {
+        rotasIguais = true
+        console.log("Rotas com o mesmo numero de assaltos")
         // Rotas com o mesmo número de obstáculos
         map.setPaintProperty("theRoute", "line-color", "#9370db");
         map.setLayoutProperty("theBox", "visibility", "none");
@@ -572,6 +585,7 @@ function addWaypointsToMap(coords) {
   });
 }
 
+//  funcao que permite ver os ids das layers do tipo line
 function verLayer() {
   map
     .queryRenderedFeatures()
@@ -581,10 +595,20 @@ function verLayer() {
     .forEach((id) => console.log(id)); // imprime os ids únicos no console
 }
 
+// funcao que oculta as rotas indesejadas do mapa
 function ocultarRotas() {
   map.setLayoutProperty("directions-route-line-casing", "visibility", "none");
   map.setLayoutProperty("directions-route-line", "visibility", "none");
   map.setLayoutProperty("theRoute", "visibility", "none");
+}
+
+// funcao que oculta as rotas finais geradas (melhor e pior rota)
+function ocultarRotasVerdeVermelha() {
+  map.setLayoutProperty("bestRoute", "visibility", "none");
+  map.setLayoutProperty("bestRoute2", "visibility", "none");
+  map.setLayoutProperty("worstRoute", "visibility", "none");
+  map.setLayoutProperty("worstRoute2", "visibility", "none");
+
 }
 
 // CONTAINER COM OS DADOS
@@ -593,13 +617,20 @@ function containerLoadingOn() {
   document.querySelector("section.container.loading").style.display = "flex";
 }
 
-function containerLoadingOff() {
+function containerLoadingOff(rotasIguais) {
+
   document.querySelector("section.container.loading").style.display = "none";
   document.querySelector("section.container.loading").style.opacity = "0";
-  document.querySelector("section.container.melhor-rota").style.display =
-    "flex";
-  document.querySelector("section.container.pior-rota").style.display = "flex";
+
+  if (rotasIguais == false) {
+    document.querySelector("section.container.melhor-rota").style.display = "flex";
+    document.querySelector("section.container.pior-rota").style.display = "flex";
+  } else {
+    document.querySelector("section.container.rotas-iguais").style.display = "flex";
+  }
+
   document.querySelector("section.container.nova-busca").style.display = "flex";
+
 }
 
 function pegarOrigemDestino() {
@@ -701,70 +732,71 @@ function addCard(id, element, clear, detail) {
     "section.container.loading > p"
   ).innerHTML = `Buscando a melhor rota... <strong>${id}</strong> de ${maxAttempts}`;
 
-  // CODIGO ANTIDO
-  const card = document.createElement("div");
-  card.className = "card";
-  // Add the response to the individual report created above
-  const heading = document.createElement("div");
-  // Set the class type based on clear value
-  heading.className =
-    clear === true ? "card-header route-found" : "card-header obstacle-found";
-  heading.innerHTML =
-    id === 0
-      ? `${emoji} Esta rota ${collision}`
-      : `${emoji} Testanto rota ${id} ${collision}`;
 
-  const details = document.createElement("div");
-  details.className = "card-details";
-  details.innerHTML = `Esta ${detail}.`;
-
-  card.appendChild(heading);
-  card.appendChild(details);
-  element.insertBefore(card, element.firstChild);
 }
 
 // FUNÇAO QUE EXIBE QUANDO UMA ROTA SEM OBSTACULOS NAO É ENCONTRADA
-function noRoutes(element) {
+function gerarResultado(element, rotasIguais) {
   // chamando função para ocultar rotas indesejadas
   ocultarRotas();
-  containerLoadingOff();
+  containerLoadingOff(rotasIguais);
 
-  document.querySelector(
-    "section.container.melhor-rota > p"
-  ).innerHTML = `A melhor rota registrou <strong>${percentualMinObstacles.toFixed(
-    1
-  )}% assaltos a menos</strong>, em 2022, em relação à média das ${maxAttempts} rotas verificadas`;
+  if (rotasIguais == false) {
+    document.querySelector(
+      "section.container.melhor-rota > p"
+    ).innerHTML = `A melhor rota registrou <strong>${percentualMinObstacles.toFixed(1)}% assaltos a menos</strong>, em 2022, em relação à média das ${maxAttempts} rotas verificadas`;
+  
+    document.querySelector(
+      "section.container.pior-rota > p"
+    ).innerHTML = `A pior rota teve <strong>${percentualMaxObstacles.toFixed(1)}% mais assaltos </strong> do que o melhor trajeto`;
+  
+  } else {
 
-  document.querySelector(
-    "section.container.pior-rota > p"
-  ).innerHTML = `A pior rota teve <strong>${percentualMaxObstacles.toFixed(
-    1
-  )}% mais assaltos </strong> do que o melhor trajeto`;
+    document.querySelector(
+      "section.container.rotas-iguais > p"
+    ).innerHTML = `As ${maxAttempts} rotas verificas tiveram o mesmo número de assaltos.`;
+  
+  }
 
+
+  
   // Altera a propriedade interactive para true
 
   // bloquearEntradaDeDados(directions)
-  // CONDIGO ANTIGO
-  const card = document.createElement("div");
-  card.className = "card";
-  // Add the response to the individual report created above
-  const heading = document.createElement("div");
-  heading.className = "card-header no-route";
-  emoji = "✅";
-  heading.innerHTML = `${emoji} Fim da busca.`;
 
-  // Add details to the individual report
-  const details = document.createElement("div");
-  details.className = "card-details";
-  details.innerHTML = `Nenhuma rota sem assaltos foi encontrada no trajeto, em ${counter} tentativas. 
-    <br><br> A melhor rota foi a que teve ${minimoAssaltosRota} registros, ela registrou ⬇ ${percentualMinObstacles.toFixed(
-    2
-  )}% assaltos a menos em relação à média das rotas verificadas.`;
-
-  card.appendChild(heading);
-  card.appendChild(details);
-  element.insertBefore(card, element.firstChild);
 }
 
 
 
+// Adicione um event listener para o botão que reinicia a entrada dos pontos A e B
+function reiniciarDirecoes() {
+  // Remove o controle existente do mapa
+  map.removeControl(directions);
+
+  ocultarRotasVerdeVermelha()
+  // Cria uma nova instância do MapboxDirections
+  directions = new MapboxDirections({
+    accessToken: mapboxgl.accessToken,
+    unit: "metric",
+    profile: "mapbox/driving",
+    alternatives: false,
+    geometries: "geojson",
+    controls: { instructions: false },
+    flyTo: true,
+    interactive: false,
+    language: "pt-BR",
+    placeholderOrigin: "Origem",
+    placeholderDestination: "Destino",
+    languagePlaceholderOrigin: "Origem",
+    languagePlaceholderDestination: "Destino",
+    geocoder: {
+      language: "pt-BR",
+    },
+    steps: true,
+  });
+
+  // Adiciona a nova instância do MapboxDirections ao mapa
+  map.addControl(directions, "top-left");
+
+
+};
