@@ -753,7 +753,7 @@ function gerarResultado(element, rotasIguais) {
   
     document.querySelector(
       "section.container.melhor-rota > p.text"
-    ).innerHTML = `A melhor rota registrou <strong>${percentualMinObstacles.toFixed(1)}% assaltos a menos</strong>, em 2022, em relação à média das ${maxAttempts} rotas verificadas`;
+    ).innerHTML = `A melhor rota registrou <strong>${percentualMinObstacles.toFixed(1)}% assaltos a menos</strong> em relação à média das ${maxAttempts} rotas verificadas`;
   
     document.querySelector(
       "section.container.pior-rota > p.text"
@@ -816,20 +816,20 @@ function reiniciarDirecoes() {
 };
 
 
-function hasBestRoute(array) {
-  for (var i = 0; i < array.length; i++) {
-    var item = array[i];
-    var name = item.name;
+// function hasBestRoute(array) {
+//   for (var i = 0; i < array.length; i++) {
+//     var item = array[i];
+//     var name = item.name;
     
-    if (name.endsWith("bestRoute")) {
-      console.log(name)
-      return true;
+//     if (name.endsWith("bestRoute")) {
+//       console.log(name)
+//       return true;
       
-    }
-  }
+//     }
+//   }
   
-  return false;
-}
+//   return false;
+// }
 
 //  salvador instrucoes da melhor e pior rota
 let instrucoesMelhorRota = [];

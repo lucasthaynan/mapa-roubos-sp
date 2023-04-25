@@ -289,7 +289,7 @@ section.container.loading p {
 
       section.container.pior-rota,
       section.container.loading {
-        margin-bottom: 30px;
+        margin-bottom: 0px;
       }
     
       section.container {
@@ -299,13 +299,21 @@ section.container.loading p {
         line-height: 18px;
       }
 
+      .instrutions {
+        height: 155px !important;
     
+    }
+
+  
+
 
   }
 
  p.text {
     margin-bottom: 5px;
  }
+
+
 
   /* infos de tempo e distancia da rota */
 
@@ -332,7 +340,7 @@ p.btn-instrucoes {
   /* adicionando barra de rolagem nas instrucoes */
 
 .instrutions {
-    height: 300px;
+    height: 200px;
     overflow: scroll;
     overflow-x:hidden;
     display: none;
@@ -380,6 +388,7 @@ p.routeInstructionText {
     font-size: 13px;
     /* padding: 0px; */
     margin: 0;
+    line-height: 17px;
 }
 
   /* Estilo de cada item da lista de instruções
