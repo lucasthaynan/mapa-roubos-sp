@@ -154,7 +154,7 @@ map.on("load", () => {
 });
 
 let counter = 0;
-const maxAttempts = 3;
+const maxAttempts = 10;
 
 directions.on("clear", () => {
   console.log("Limpando rotas...");
@@ -901,12 +901,12 @@ function mostrarInstrucoes(){
     document.querySelector(".melhor-rota > div.instrutions").style.display = "flex";
     document.querySelector(".container.pior-rota").style.display = "none";
     mostrarInstrucoesAtivo = true
-    document.querySelector(".melhor-rota > p.btn-instrucoes").innerText = "Ocultar instruções";
+    document.querySelector(".melhor-rota > p.btn-instrucoes").innerText = "▴ Ocultar instruções";
   } else {
     document.querySelector(".melhor-rota > div.instrutions").style.display = "none";
     document.querySelector(".container.pior-rota").style.display = "flex";
     mostrarInstrucoesAtivo = false
-    document.querySelector(".melhor-rota > p.btn-instrucoes").innerText = "Detalhes da rota";
+    document.querySelector(".melhor-rota > p.btn-instrucoes").innerText = "▸ Detalhes da rota";
   }
 }
 
