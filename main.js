@@ -296,7 +296,7 @@ directions.on("route", async (event) => {
         instructions: routeInstructions,
         durationSec: route.duration, // add duration to routesInfo
         durationMin: Math.ceil(route.duration / 60), // convert duration to minutes
-
+        distanceKm: turf.length(routeLine, { units: "kilometers" }), // add distance in kilometers to routesInfo
       };
 
       idRota += 1;
@@ -741,22 +741,33 @@ function addCard(id, element, clear, detail) {
 // FUNÇAO QUE EXIBE QUANDO UMA ROTA SEM OBSTACULOS NAO É ENCONTRADA
 function gerarResultado(element, rotasIguais) {
   // chamando função para ocultar rotas indesejadas
+  obtendoInfosRotas(routesInfo)
   ocultarRotas();
   containerLoadingOff(rotasIguais);
+  
 
   if (rotasIguais == false) {
     document.querySelector(
-      "section.container.melhor-rota > p"
+      "section.container.melhor-rota > p.infos-rota"
+    ).innerHTML = `${tempoMelhorRota} min • ${distanciaMelhorRota.toFixed(1)} km`;
+  
+    document.querySelector(
+      "section.container.melhor-rota > p.text"
     ).innerHTML = `A melhor rota registrou <strong>${percentualMinObstacles.toFixed(1)}% assaltos a menos</strong>, em 2022, em relação à média das ${maxAttempts} rotas verificadas`;
   
     document.querySelector(
-      "section.container.pior-rota > p"
+      "section.container.pior-rota > p.text"
     ).innerHTML = `A pior rota teve <strong>${percentualMaxObstacles.toFixed(1)}% mais assaltos </strong> do que o melhor trajeto`;
+    
+    document.querySelector(
+      "section.container.pior-rota > p.infos-rota"
+    ).innerHTML = `${tempoPiorRota} min • ${distanciaPiorRota.toFixed(1)} km`;
   
+
   } else {
 
     document.querySelector(
-      "section.container.rotas-iguais > p"
+      "section.container.rotas-iguais > p.text"
     ).innerHTML = `As ${maxAttempts} rotas verificadas tiveram o mesmo número de assaltos.`;
   
   }
@@ -822,9 +833,14 @@ function hasBestRoute(array) {
 
 //  salvador instrucoes da melhor e pior rota
 let instrucoesMelhorRota = [];
-let instrucoesPiorRota = [];
+let tempoMelhorRota = 0;
+let distanciaMelhorRota = 0;
 
-function achandoBestRoute(routesInfo) {
+let instrucoesPiorRota = [];
+let tempoPiorRota = 0;
+let distanciaPiorRota = 0;
+
+function obtendoInfosRotas(routesInfo) {
 
   for (var key in routesInfo) {
     var item = routesInfo[key];
@@ -834,11 +850,15 @@ function achandoBestRoute(routesInfo) {
     if (name.endsWith("bestRoute")) {
       console.log(name)
       instrucoesMelhorRota = instructions;
+      tempoMelhorRota = item.durationMin;
+      distanciaMelhorRota = item.distanceKm;
 
     } 
     if (name.endsWith("worstRoute")) {
       console.log(name)
       instrucoesPiorRota = instructions;
+      tempoPiorRota = item.durationMin;
+      distanciaPiorRota = item.distanceKm;
 
     } 
   }
@@ -848,7 +868,6 @@ function achandoBestRoute(routesInfo) {
 
 function inserindoInstrucoesRotas(routesInfo) {
 
-  achandoBestRoute(routesInfo)
   // Obtém o elemento <ul> em que as instruções serão exibidas
   var routeInstructionsElement = document.getElementById("routeInstructions");
 		
