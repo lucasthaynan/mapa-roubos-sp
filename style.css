@@ -302,3 +302,93 @@ section.container.loading p {
     
 
   }
+
+/* instrucoes das rotas */
+
+p.btn-instrucoes {
+
+    color: gray;
+    font-weight: 500;
+    text-decoration: underline;
+    cursor: pointer;
+    font-size: 15px;
+    margin-top: 5px;
+    margin-bottom: 5px;
+}
+
+
+  /* adicionando barra de rolagem nas instrucoes */
+
+.instrutions {
+    height: 300px;
+    overflow: scroll;
+    overflow-x:hidden;
+    display: none;
+    margin-top: 15px;
+}
+
+
+div.instrutions::-webkit-scrollbar {
+    width: 7px;
+    border-radius: 5px;
+    background-color: rgba(116, 116, 116, 0.398);
+  }
+  
+  div.instrutions::-webkit-scrollbar-thumb {
+    background-color: gray;
+    border-radius: 5px;
+  }
+  
+  div.instrutions::-moz-scrollbar {
+    width: 10px;
+    border-radius: 5px;
+    background-color: rgba(131, 131, 131, 0.354);
+  }
+  
+  div.instrutions::-moz-scrollbar-thumb {
+    background-color: gray;
+    border-radius: 5px;
+  }
+  
+  #routeInstructions > div {
+    padding-left: 7px;
+    padding-right: 20px;
+  }
+
+
+div#routeInstructions {
+    display: flex;
+    flex-direction: column;
+    align-items: flex-start;
+    gap: 12px;
+}
+
+p.routeInstructionText {
+    text-align: left;
+    font-size: 13px;
+    /* padding: 0px; */
+    margin: 0;
+}
+
+  /* Estilo de cada item da lista de instruções
+  .routeInstruction {
+    margin: 10px 0;
+    padding: 10px;
+    border: 1px solid black;
+    border-radius: 5px;
+    background-color: #f2f2f2;
+}
+
+/* Estilo do número de cada item da lista de instruções */
+/* .routeInstructionNumber {
+    font-weight: bold;
+    font-size: 1.2em;
+    margin-right: 10px;
+    color: #666;
+}
+
+/* Estilo do texto de cada item da lista de instruções */
+/* .routeInstructionText {
+    font-size: 1.1em;
+    color: #333;
+} */ 

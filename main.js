@@ -222,6 +222,9 @@ directions.on("route", async (event) => {
     // champ a função que bloqueia as entradas de origem e destino
     bloquearEntradaOrigemDestino(map);
 
+    // inserindo instrucoes
+    inserindoInstrucoesRotas(routesInfo)
+
   } else {
     for (const route of event.route) {
       const routeLine = polyline.toGeoJSON(route.geometry);
@@ -754,7 +757,7 @@ function gerarResultado(element, rotasIguais) {
 
     document.querySelector(
       "section.container.rotas-iguais > p"
-    ).innerHTML = `As ${maxAttempts} rotas verificas tiveram o mesmo número de assaltos.`;
+    ).innerHTML = `As ${maxAttempts} rotas verificadas tiveram o mesmo número de assaltos.`;
   
   }
 
@@ -800,3 +803,91 @@ function reiniciarDirecoes() {
 
 
 };
+
+
+function hasBestRoute(array) {
+  for (var i = 0; i < array.length; i++) {
+    var item = array[i];
+    var name = item.name;
+    
+    if (name.endsWith("bestRoute")) {
+      console.log(name)
+      return true;
+      
+    }
+  }
+  
+  return false;
+}
+
+//  salvador instrucoes da melhor e pior rota
+let instrucoesMelhorRota = [];
+let instrucoesPiorRota = [];
+
+function achandoBestRoute(routesInfo) {
+
+  for (var key in routesInfo) {
+    var item = routesInfo[key];
+    var name = item.name;
+    var instructions = item.instructions
+    
+    if (name.endsWith("bestRoute")) {
+      console.log(name)
+      instrucoesMelhorRota = instructions;
+
+    } 
+    if (name.endsWith("worstRoute")) {
+      console.log(name)
+      instrucoesPiorRota = instructions;
+
+    } 
+  }
+
+}
+
+
+function inserindoInstrucoesRotas(routesInfo) {
+
+  achandoBestRoute(routesInfo)
+  // Obtém o elemento <ul> em que as instruções serão exibidas
+  var routeInstructionsElement = document.getElementById("routeInstructions");
+		
+  // Itera sobre as instruções e cria um elemento <div> para cada uma
+  for (var i = 0; i < instrucoesMelhorRota.length; i++) {
+    var instructionNumber = i + 1;
+    var instructionText = instrucoesMelhorRota[i];
+    
+    var instructionElement = document.createElement("div");
+    instructionElement.classList.add("routeInstruction");
+    
+    // var instructionNumberElement = document.createElement("span");
+    // instructionNumberElement.classList.add("routeInstructionNumber");
+    // instructionNumberElement.innerHTML = instructionNumber + ".";
+    
+    var instructionTextElement = document.createElement("p");
+    instructionTextElement.classList.add("routeInstructionText");
+    instructionTextElement.innerHTML = `<strong>${instructionNumber}</strong>. ${instructionText}`
+    
+    // instructionElement.appendChild(instructionNumberElement);
+    instructionElement.appendChild(instructionTextElement);
+    
+    routeInstructionsElement.appendChild(instructionElement);
+  }
+}
+
+mostrarInstrucoesAtivo = false
+
+function mostrarInstrucoes(){
+  if (mostrarInstrucoesAtivo == false){
+    document.querySelector(".melhor-rota > div.instrutions").style.display = "flex";
+    document.querySelector(".container.pior-rota").style.display = "none";
+    mostrarInstrucoesAtivo = true
+    document.querySelector(".melhor-rota > p.btn-instrucoes").innerText = "Ocultar instruções";
+  } else {
+    document.querySelector(".melhor-rota > div.instrutions").style.display = "none";
+    document.querySelector(".container.pior-rota").style.display = "flex";
+    mostrarInstrucoesAtivo = false
+    document.querySelector(".melhor-rota > p.btn-instrucoes").innerText = "Detalhes da rota";
+  }
+}
+
