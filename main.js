@@ -8,6 +8,35 @@ function bloquearEntradaOrigemDestino(map) {
   });
 }
 
+// function novasRotasGeradas(){
+//   map.removeControl(directions);
+  
+//   setTimeout(() => {
+//     map.addControl(directions, "top-left");
+//   }, 1000);
+
+//   // if (map.getLayer("start-point")) {
+//   //   map.removeLayer("start-point");
+//   // }
+  
+//   // map.addLayer({
+//   //   id: "start-point",
+//   //   type: "circle",
+//   //   source: {
+//   //     type: "geojson",
+//   //     data: {
+//   //       type: "FeatureCollection",
+//   //       features: "Feature"
+//   //     },
+//   //   },
+//   //   paint: {
+//   //     "circle-radius": 10,
+//   //     "circle-color": "#f30",
+//   //   },
+//   // });
+  
+// }
+
 
 mapboxgl.accessToken =
   "pk.eyJ1IjoibHVjYXN0aGF5bmFuLWVzdGFkYW8iLCJhIjoiY2xnM3N1amQzMGlqeDNrbWdla3doY2o2dCJ9.OXh3OY3_HFqAiF-zzZ6SDQ";
@@ -40,6 +69,12 @@ let directions = new MapboxDirections({
   },
   steps: true,
 });
+
+// function desativarInterativideMapa() {
+//   let canvasContainer = document.querySelector('.mapboxgl-canvas-container');
+//   canvasContainer.style.pointerEvents = 'none';
+//   canvasContainer.style.cursor = 'default';
+// }
 
 // Adiciona um listener para o evento `result` do MapboxDirections
 
@@ -127,7 +162,7 @@ map.on("load", () => {
     },
     paint: {
       "line-color": "#cccccc",
-      "line-opacity": 0.5,
+      "line-opacity": 0,
       "line-width": 13,
       "line-blur": 0.5,
     },
@@ -159,6 +194,7 @@ const maxAttempts = 10;
 directions.on("clear", () => {
   console.log("Limpando rotas...");
   map.setLayoutProperty("theRoute", "visibility", "none");
+  
   // resetMap()
   // map.setLayoutProperty("theBox", "visibility", "none");
 
@@ -214,7 +250,17 @@ let maxObstacles = -Infinity;
 let rotasIguais = false
 
 directions.on("route", async (event) => {
+
+  
+  // map.setLayoutProperty("directions-route-line-casing", "visibility", "visible");
+  // map.setLayoutProperty("directions-route-line", "visibility", "visible");
+
+  map.setLayoutProperty('theRoute', 'visibility', 'visible');
+  map.setLayoutProperty('theBox', 'visibility', 'visible');
+
+
   if (counter >= maxAttempts) {
+    map.setLayoutProperty("theBox", "visibility", "none");
 
     // chama a função que mostra os dados sobre as rotas geradas
     gerarResultado(reports, rotasIguais); // rotasIguais é true ou false
@@ -314,7 +360,9 @@ directions.on("route", async (event) => {
           turf.lineIntersect(obstacle, routeLine).features.length / 2
         } registros de assalto`;
 
-        const randomWaypoint = turf.randomPoint(1, { bbox: bbox });
+        
+
+        let randomWaypoint = turf.randomPoint(1, { bbox: bbox });
         directions.setWaypoint(
           0,
           randomWaypoint["features"][0].geometry.coordinates
@@ -427,15 +475,15 @@ directions.on("route", async (event) => {
         map.getSource("theRoute").setData(routesInfo[bestRouteId].routeLine);
         routeLayerId = "theRoute";
       } else {
-        const bestRoute = routesInfo[bestRouteId].routeLine;
+        let bestRoute = routesInfo[bestRouteId].routeLine;
         const startCoord = bestRoute.coordinates[0];
         const endCoord =
           bestRoute.coordinates[bestRoute.coordinates.length - 1];
         const waypoints = [startCoord, endCoord];
 
-        addWaypointsToMap(waypoints);
+        // addWaypointsToMap(waypoints);
         // Rotas com diferentes números de obstáculos
-        map.setPaintProperty("theRoute", "line-color", "#74c476");
+        // map.setPaintProperty("theRoute", "line-color", "#74c476");
         map.setLayoutProperty("theBox", "visibility", "none");
         map.getSource("theRoute").setData(bestRoute);
 
@@ -606,13 +654,31 @@ function ocultarRotas() {
 }
 
 // funcao que oculta as rotas finais geradas (melhor e pior rota)
-function ocultarRotasVerdeVermelha() {
-  map.setLayoutProperty("bestRoute", "visibility", "none");
-  map.setLayoutProperty("bestRoute2", "visibility", "none");
-  map.setLayoutProperty("worstRoute", "visibility", "none");
-  map.setLayoutProperty("worstRoute2", "visibility", "none");
+// function ocultarRotasVerdeVermelha() {
+//   map.setLayoutProperty("bestRoute", "visibility", "none");
+//   map.setLayoutProperty("bestRoute2", "visibility", "none");
+//   map.setLayoutProperty("worstRoute", "visibility", "none");
+//   map.setLayoutProperty("worstRoute2", "visibility", "none");
 
-}
+//   map.removeLayer("bestRoute");
+//   map.removeLayer("bestRoute2");
+//   setTimeout(() => {
+//     map.removeSource("bestRoute");
+//     map.removeSource("bestRoute2");
+//   }, 1000);
+
+//   map.removeLayer("worstRoute");
+//   map.removeLayer("worstRoute2");
+//   setTimeout(() => {
+//     map.removeSource("worstRoute");
+//     map.removeSource("worstRoute2");
+//   }, 1000);
+
+//   // deixar objeto vazio
+//   routesInfo = {};
+  
+
+// }
 
 // CONTAINER COM OS DADOS
 
@@ -623,7 +689,7 @@ function containerLoadingOn() {
 function containerLoadingOff(rotasIguais) {
 
   document.querySelector("section.container.loading").style.display = "none";
-  document.querySelector("section.container.loading").style.opacity = "0";
+  // document.querySelector("section.container.loading").style.opacity = "0";
 
   if (rotasIguais == false) {
     document.querySelector("section.container.melhor-rota").style.display = "flex";
@@ -645,7 +711,7 @@ function pegarOrigemDestino() {
     '.mapboxgl-ctrl-geocoder > input[type="text"]'
   );
   input.forEach((input) => {
-    console.log(input.value);
+    // console.log(input.value);
 
     if (input.placeholder == "Origem") {
       origemInserida = input.value;
@@ -657,7 +723,7 @@ function pegarOrigemDestino() {
   // insere novamente as informacoes de origem e destino
 
   input.forEach((input) => {
-    console.log(input.value);
+    // console.log(input.value);
 
     if (input.placeholder == "Origem") {
       input.value = origemInserida;
@@ -731,6 +797,11 @@ const reports = document.getElementById("reports");
 
 // FUNÇAO PARA ADICIONAR CARD COM INFOS DAS ROTAS NA TELA
 function addCard(id, element, clear, detail) {
+
+  pegarOrigemDestino()
+
+  // desativarInterativideMapa()
+
   document.querySelector(
     "section.container.loading > p"
   ).innerHTML = `Buscando a melhor rota... <strong>${id}</strong> de ${maxAttempts}`;
@@ -784,36 +855,49 @@ function gerarResultado(element, rotasIguais) {
 
 // Adicione um event listener para o botão que reinicia a entrada dos pontos A e B
 function reiniciarDirecoes() {
-  // Remove o controle existente do mapa
+
   map.removeControl(directions);
 
-  ocultarRotasVerdeVermelha()
-  // Cria uma nova instância do MapboxDirections
-  directions = new MapboxDirections({
-    accessToken: mapboxgl.accessToken,
-    unit: "metric",
-    profile: "mapbox/driving",
-    alternatives: false,
-    geometries: "geojson",
-    controls: { instructions: false },
-    flyTo: true,
-    interactive: false,
-    language: "pt-BR",
-    placeholderOrigin: "Origem",
-    placeholderDestination: "Destino",
-    languagePlaceholderOrigin: "Origem",
-    languagePlaceholderDestination: "Destino",
-    geocoder: {
-      language: "pt-BR",
-    },
-    steps: true,
-  });
+  setTimeout(() => {
+    map.addControl(directions, "top-left");
+  }, 500);
 
-  // Adiciona a nova instância do MapboxDirections ao mapa
-  map.addControl(directions, "top-left");
+  map.setLayoutProperty("bestRoute", "visibility", "none");
+  map.setLayoutProperty("bestRoute2", "visibility", "none");
+  map.setLayoutProperty("worstRoute", "visibility", "none");
+  map.setLayoutProperty("worstRoute2", "visibility", "none");
 
+  if (map.getLayer("start-point")) {
+    map.removeLayer("start-point");
+  }
+
+  if (map.getLayer('end-point')) {
+      map.removeLayer('end-point');
+    }
+
+  map.removeLayer("bestRoute");
+  map.removeLayer("bestRoute2");
+  map.removeSource("bestRoute");
+  map.removeSource("bestRoute2");
+
+  map.removeLayer("worstRoute");
+  map.removeLayer("worstRoute2");
+  map.removeSource("worstRoute");
+  map.removeSource("worstRoute2");
+  
+  // deixar objeto vazio
+  routesInfo = {};
+
+  // ocultando container de informacoes das rotas
+  document.querySelector("section.container.melhor-rota").style.display = "none";
+  document.querySelector("section.container.pior-rota").style.display = "none";
+  document.querySelector("section.container.nova-busca").style.display = "none";
+
+  
 
 };
+
+
 
 
 // function hasBestRoute(array) {
@@ -868,8 +952,12 @@ function obtendoInfosRotas(routesInfo) {
 
 function inserindoInstrucoesRotas(routesInfo) {
 
+  console.log("inserindo instrucoes da rota")
   // Obtém o elemento <ul> em que as instruções serão exibidas
   var routeInstructionsElement = document.getElementById("routeInstructions");
+
+  // excluindo dados casa exista
+  routeInstructionsElement.innerHTML = ""
 		
   // Itera sobre as instruções e cria um elemento <div> para cada uma
   for (var i = 0; i < instrucoesMelhorRota.length; i++) {
