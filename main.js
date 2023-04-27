@@ -47,7 +47,12 @@ const map = new mapboxgl.Map({
   style: "mapbox://styles/mapbox/dark-v11", // Specify which map style to use
   center: [-46.62889, -23.55594], // Specify the starting position [lng, lat]
   zoom: 10.8, // Specify the starting zoom
+  
 });
+// map.scrollZoom.disable();
+
+// Add zoom and rotation controls to the map.
+map.addControl(new mapboxgl.NavigationControl());
 
 // chamando metodo para criar as direcoes no mapa com mapbox gl
 let directions = new MapboxDirections({
@@ -58,7 +63,7 @@ let directions = new MapboxDirections({
   geometries: "geojson",
   controls: { instructions: false },
   flyTo: true,
-  interactive: true,
+  interactive: false,
   language: "pt-BR",
   placeholderOrigin: "Origem",
   placeholderDestination: "Destino",
@@ -68,7 +73,11 @@ let directions = new MapboxDirections({
     language: "pt-BR",
   },
   steps: true,
+  
 });
+
+
+  
 
 // function desativarInterativideMapa() {
 //   let canvasContainer = document.querySelector('.mapboxgl-canvas-container');
@@ -129,6 +138,10 @@ directions.on("profile", () => {
 // Adicione um event listener para quando as direções forem carregadas
 
 map.on("load", () => {
+
+  // desabilitando o scroll zoom do mapa
+  map.scrollZoom.disable();
+
   console.log("Obstaculos carregados!");
   map.addLayer({
     id: "clearances",
@@ -166,6 +179,7 @@ map.on("load", () => {
       "line-width": 13,
       "line-blur": 0.5,
     },
+
   });
 
   // Source and layer for the bounding box
@@ -186,6 +200,7 @@ map.on("load", () => {
       "fill-outline-color": "#FFC300",
     },
   });
+
 });
 
 let counter = 0;
