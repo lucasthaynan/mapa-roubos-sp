@@ -8,36 +8,6 @@ function bloquearEntradaOrigemDestino(map) {
   });
 }
 
-// function novasRotasGeradas(){
-//   map.removeControl(directions);
-  
-//   setTimeout(() => {
-//     map.addControl(directions, "top-left");
-//   }, 1000);
-
-//   // if (map.getLayer("start-point")) {
-//   //   map.removeLayer("start-point");
-//   // }
-  
-//   // map.addLayer({
-//   //   id: "start-point",
-//   //   type: "circle",
-//   //   source: {
-//   //     type: "geojson",
-//   //     data: {
-//   //       type: "FeatureCollection",
-//   //       features: "Feature"
-//   //     },
-//   //   },
-//   //   paint: {
-//   //     "circle-radius": 10,
-//   //     "circle-color": "#f30",
-//   //   },
-//   // });
-  
-// }
-
-
 mapboxgl.accessToken =
   "pk.eyJ1IjoibHVjYXN0aGF5bmFuLWVzdGFkYW8iLCJhIjoiY2xnM3N1amQzMGlqeDNrbWdla3doY2o2dCJ9.OXh3OY3_HFqAiF-zzZ6SDQ";
 
@@ -49,7 +19,6 @@ const map = new mapboxgl.Map({
   zoom: 10.8, // Specify the starting zoom
   
 });
-// map.scrollZoom.disable();
 
 // Add zoom and rotation controls to the map.
 map.addControl(new mapboxgl.NavigationControl());
@@ -63,7 +32,7 @@ let directions = new MapboxDirections({
   geometries: "geojson",
   controls: { instructions: false },
   flyTo: true,
-  interactive: false,
+  interactive: true,
   language: "pt-BR",
   placeholderOrigin: "Origem",
   placeholderDestination: "Destino",
@@ -140,7 +109,7 @@ directions.on("profile", () => {
 map.on("load", () => {
 
   // desabilitando o scroll zoom do mapa
-  map.scrollZoom.disable();
+  // map.scrollZoom.disable();
 
   console.log("Obstaculos carregados!");
   map.addLayer({
@@ -249,9 +218,9 @@ function delay(ms) {
   return new Promise((resolve) => setTimeout(resolve, ms));
 }
 
-let percentualMinObstacles;
-let minimoAssaltosRota;
-let percentualMaxObstacles;
+let percentualMinObstacles = 0
+let minimoAssaltosRota = 0
+let percentualMaxObstacles = 0
 let idRota = 1;
 let routesInfo = {};
 let totalObstaculoRotas = [];
@@ -293,9 +262,11 @@ directions.on("route", async (event) => {
       bbox = turf.bbox(routeLine);
       console.log(counter);
 
+
       polygon = turf.bboxPolygon(bbox);
       map.getSource("theBox").setData(polygon);
       const clear = turf.booleanDisjoint(obstacle, routeLine);
+
 
       if (counter == 0) {
         // Cria um objeto de bounds do Mapbox GL a partir da bounding box
@@ -361,9 +332,7 @@ directions.on("route", async (event) => {
       };
 
       idRota += 1;
-      if (clear === true) {
-        counter = 0;
-      } else {
+      
         counter = counter + 1;
 
         polygon = turf.transformScale(polygon, counter * 0.01);
@@ -382,12 +351,14 @@ directions.on("route", async (event) => {
           0,
           randomWaypoint["features"][0].geometry.coordinates
         );
-      }
+      
 
       addCard(counter, reports, clear, detail);
 
       containerLoadingOn();
     }
+
+
 
     if (counter >= maxAttempts) {
       let totalObstacles = 0;
@@ -611,45 +582,45 @@ directions.on("route", async (event) => {
   }
 });
 
-function addWaypointsToMap(coords) {
-  map.addLayer({
-    id: "start-point",
-    type: "symbol",
-    source: {
-      type: "geojson",
-      data: {
-        type: "Feature",
-        geometry: {
-          type: "Point",
-          coordinates: coords[0],
-        },
-      },
-    },
-    layout: {
-      "icon-allow-overlap": true,
-      "icon-size": 1,
-    },
-  });
+// function addWaypointsToMap(coords) {
+//   map.addLayer({
+//     id: "start-point",
+//     type: "symbol",
+//     source: {
+//       type: "geojson",
+//       data: {
+//         type: "Feature",
+//         geometry: {
+//           type: "Point",
+//           coordinates: coords[0],
+//         },
+//       },
+//     },
+//     layout: {
+//       "icon-allow-overlap": true,
+//       "icon-size": 1,
+//     },
+//   });
 
-  map.addLayer({
-    id: "end-point",
-    type: "symbol",
-    source: {
-      type: "geojson",
-      data: {
-        type: "Feature",
-        geometry: {
-          type: "Point",
-          coordinates: coords[1],
-        },
-      },
-    },
-    layout: {
-      "icon-allow-overlap": true,
-      "icon-size": 1,
-    },
-  });
-}
+//   map.addLayer({
+//     id: "end-point",
+//     type: "symbol",
+//     source: {
+//       type: "geojson",
+//       data: {
+//         type: "Feature",
+//         geometry: {
+//           type: "Point",
+//           coordinates: coords[1],
+//         },
+//       },
+//     },
+//     layout: {
+//       "icon-allow-overlap": true,
+//       "icon-size": 1,
+//     },
+//   });
+// }
 
 //  funcao que permite ver os ids das layers do tipo line
 function verLayer() {
@@ -660,6 +631,14 @@ function verLayer() {
     .filter((d, i, a) => a.indexOf(d) == i) // filtra os valores únicos de ids
     .forEach((id) => console.log(id)); // imprime os ids únicos no console
 }
+
+function verLayerIndex() {
+  map
+    .getStyle()
+    .layers // obtém todas as camadas do estilo
+    .forEach((layer) => console.log(layer.id, layer['z-index'])); // imprime o id e z-index de cada camada
+}
+
 
 // funcao que oculta as rotas indesejadas do mapa
 function ocultarRotas() {
@@ -780,34 +759,36 @@ document.addEventListener("DOMContentLoaded", function () {
   traduzirInput();
 });
 
-function updateSidebar(routeInfo) {
-  const sidebar = document.getElementById("sidebar2");
-  sidebar.innerHTML = "";
+// function updateSidebar(routeInfo) {
+//   const sidebar = document.getElementById("sidebar2");
+//   sidebar.innerHTML = "";
 
-  const title = document.createElement("h2");
-  title.textContent = `Rota ${routeInfo.name}`;
-  sidebar.appendChild(title);
+//   const title = document.createElement("h2");
+//   title.textContent = `Rota ${routeInfo.name}`;
+//   sidebar.appendChild(title);
 
-  const subtitle = document.createElement("h3");
-  subtitle.textContent = `Assaltos: ${routeInfo.obstacles}`;
-  sidebar.appendChild(subtitle);
+//   const subtitle = document.createElement("h3");
+//   subtitle.textContent = `Assaltos: ${routeInfo.obstacles}`;
+//   sidebar.appendChild(subtitle);
 
-  const instructionsTitle = document.createElement("h4");
-  instructionsTitle.textContent = "Instruções:";
-  sidebar.appendChild(instructionsTitle);
+//   const instructionsTitle = document.createElement("h4");
+//   instructionsTitle.textContent = "Instruções:";
+//   sidebar.appendChild(instructionsTitle);
 
-  const instructionsList = document.createElement("ul");
-  for (const instruction of routeInfo.instructions) {
-    const item = document.createElement("li");
-    item.textContent = instruction;
-    instructionsList.appendChild(item);
-  }
-  sidebar.appendChild(instructionsList);
-}
+//   const instructionsList = document.createElement("ul");
+//   for (const instruction of routeInfo.instructions) {
+//     const item = document.createElement("li");
+//     item.textContent = instruction;
+//     instructionsList.appendChild(item);
+//   }
+//   sidebar.appendChild(instructionsList);
+// }
 
-let emoji = "";
-let collision = "";
+// let emoji = "";
+// let collision = "";
+
 let detail = "";
+
 const reports = document.getElementById("reports");
 
 // FUNÇAO PARA ADICIONAR CARD COM INFOS DAS ROTAS NA TELA
@@ -839,7 +820,7 @@ function gerarResultado(element, rotasIguais) {
   
     document.querySelector(
       "section.container.melhor-rota > p.text"
-    ).innerHTML = `A melhor rota registrou <strong>${percentualMinObstacles.toFixed(1)}% assaltos a menos</strong> em relação à média das ${maxAttempts} rotas verificadas`;
+    ).innerHTML = `A melhor rota registrou <strong>${percentualMinObstacles.toFixed(1)}% assaltos a menos</strong> em relação à média das ${maxAttempts} verificadas`;
   
     document.querySelector(
       "section.container.pior-rota > p.text"
@@ -855,14 +836,12 @@ function gerarResultado(element, rotasIguais) {
     document.querySelector(
       "section.container.rotas-iguais > p.text"
     ).innerHTML = `As ${maxAttempts} rotas verificadas tiveram o mesmo número de assaltos.`;
+    document.querySelector(
+      "section.container.rotas-iguais > p.infos-rota"
+    ).innerHTML = `${tempoMelhorRota} min • ${distanciaMelhorRota.toFixed(1)} km`;
   
   }
 
-
-  
-  // Altera a propriedade interactive para true
-
-  // bloquearEntradaDeDados(directions)
 
 }
 
@@ -877,28 +856,47 @@ function reiniciarDirecoes() {
     map.addControl(directions, "top-left");
   }, 500);
 
-  map.setLayoutProperty("bestRoute", "visibility", "none");
-  map.setLayoutProperty("bestRoute2", "visibility", "none");
-  map.setLayoutProperty("worstRoute", "visibility", "none");
-  map.setLayoutProperty("worstRoute2", "visibility", "none");
-
   if (map.getLayer("start-point")) {
     map.removeLayer("start-point");
   }
 
   if (map.getLayer('end-point')) {
-      map.removeLayer('end-point');
-    }
+    map.removeLayer('end-point');
+  }
 
-  map.removeLayer("bestRoute");
-  map.removeLayer("bestRoute2");
-  map.removeSource("bestRoute");
-  map.removeSource("bestRoute2");
 
-  map.removeLayer("worstRoute");
-  map.removeLayer("worstRoute2");
-  map.removeSource("worstRoute");
-  map.removeSource("worstRoute2");
+  if (rotasIguais == true) {
+
+    map.setLayoutProperty("bestRouteIgual", "visibility", "none");
+    map.setLayoutProperty("bestRouteIgual2", "visibility", "none");
+
+    map.removeLayer("bestRouteIgual");
+    map.removeSource("bestRouteIgual");
+
+    map.removeLayer("bestRouteIgual2");
+    map.removeSource("bestRouteIgual2");
+
+    // resetando variável
+    rotasIguais = false
+
+  } else {
+
+    map.setLayoutProperty("bestRoute", "visibility", "none");
+    map.setLayoutProperty("bestRoute2", "visibility", "none");
+    map.setLayoutProperty("worstRoute", "visibility", "none");
+    map.setLayoutProperty("worstRoute2", "visibility", "none");
+  
+    map.removeLayer("bestRoute");
+    map.removeLayer("bestRoute2");
+    map.removeSource("bestRoute");
+    map.removeSource("bestRoute2");
+  
+    map.removeLayer("worstRoute");
+    map.removeLayer("worstRoute2");
+    map.removeSource("worstRoute");
+    map.removeSource("worstRoute2");
+
+  }
   
   // deixar objeto vazio
   routesInfo = {};
@@ -906,9 +904,8 @@ function reiniciarDirecoes() {
   // ocultando container de informacoes das rotas
   document.querySelector("section.container.melhor-rota").style.display = "none";
   document.querySelector("section.container.pior-rota").style.display = "none";
-  document.querySelector("section.container.nova-busca").style.display = "none";
-
-  
+  document.querySelector("section.container.rotas-iguais").style.display = "none";
+  document.querySelector("section.container.nova-busca").style.display = "none";  
 
 };
 
@@ -982,15 +979,11 @@ function inserindoInstrucoesRotas(routesInfo) {
     var instructionElement = document.createElement("div");
     instructionElement.classList.add("routeInstruction");
     
-    // var instructionNumberElement = document.createElement("span");
-    // instructionNumberElement.classList.add("routeInstructionNumber");
-    // instructionNumberElement.innerHTML = instructionNumber + ".";
-    
     var instructionTextElement = document.createElement("p");
     instructionTextElement.classList.add("routeInstructionText");
     instructionTextElement.innerHTML = `<strong>${instructionNumber}</strong>. ${instructionText}`
     
-    // instructionElement.appendChild(instructionNumberElement);
+
     instructionElement.appendChild(instructionTextElement);
     
     routeInstructionsElement.appendChild(instructionElement);
