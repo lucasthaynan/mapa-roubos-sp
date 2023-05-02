@@ -17,6 +17,7 @@ const map = new mapboxgl.Map({
   style: "mapbox://styles/mapbox/dark-v11", // Specify which map style to use
   center: [-46.62889, -23.55594], // Specify the starting position [lng, lat]
   zoom: 10.8, // Specify the starting zoom
+  // zoom: 15, // Specify the starting zoom
   
 });
 
@@ -104,6 +105,48 @@ directions.on("profile", () => {
   console.log("Rota alterada --> profile");
 });
 
+
+
+const data = {
+  type: "FeatureCollection",
+  features: [
+    {
+      type: "Feature",
+      geometry: {
+        type: "Point",
+        coordinates: [-46.4195544052641, -23.562599528566],
+      },
+      properties: { clearance: 0, assaltos: 10 },
+    },
+    {
+      type: "Feature",
+      geometry: {
+        type: "Point",
+        coordinates: [-46.3995427585613, -23.5591913820374],
+      },
+      properties: { clearance: 1, assaltos: 8 },
+    },
+    {
+      type: "Feature",
+      geometry: {
+        type: "Point",
+        coordinates: [-46.528715561, -23.584177993],
+      },
+      properties: { clearance: 2, assaltos: 2 },
+    },
+    {
+      type: "Feature",
+      geometry: {
+        type: "Point",
+        coordinates: [-46.7689812638353, -23.5889454432406],
+      },
+      properties: { clearance: 3, assaltos: 1 },
+    },
+  ],
+};
+
+
+
 // Adicione um event listener para quando as direções forem carregadas
 
 map.on("load", () => {
@@ -127,6 +170,36 @@ map.on("load", () => {
       "fill-outline-color": "#f03b20",
     },
   });
+
+  
+
+  //  // Adicionando a layer de heatmap
+  //  map.addLayer({
+  //   id: "heatmap",
+  //   type: "heatmap",
+  //   source: {
+  //     type: "geojson",
+  //     data: obstacle,
+  //   },
+  //   paint: {
+  //     // Ajuste a escala de cores conforme apropriado
+  //     "heatmap-color": [
+  //       "interpolate",
+  //       ["linear"],
+  //       ["heatmap-density"],
+  //       0, "rgba(0, 0, 255, 0)",
+  //       0.2, "royalblue",
+  //       0.4, "cyan",
+  //       0.6, "yellow",
+  //       0.8, "orange",
+  //       1, "red"
+  //     ],
+  //     // Ajuste a opacidade e o raio conforme apropriado
+  //     "heatmap-opacity": 0.4,
+  //     "heatmap-radius": 5
+  //   }
+  // });
+  
 
   map.addSource("theRoute", {
     type: "geojson",
@@ -173,8 +246,108 @@ map.on("load", () => {
 
 });
 
+
+
+function addAreasMaiorVolume() {
+  map.addSource("earthquakes", {
+    type: "geojson",
+    data: clearances,
+    cluster: true,
+    clusterMaxZoom: 20,
+    clusterRadius: 300,
+  });
+  
+  
+  map.addLayer({
+    id: "clusters",
+    type: "circle",
+    source: "earthquakes",
+    filter: ["has", "point_count"],
+    paint: {
+      "circle-color": [
+        "step",
+        ["get", "point_count"],
+        "#f03b20",
+        10,
+        "#f03b20",
+        750,
+        "#f03b20",
+      ],
+      "circle-radius": ["step", ["get", "point_count"], 10, 5, 50, 230, 400],
+
+        "circle-opacity": 0.5,
+        "circle-stroke-width": 1,
+        "circle-stroke-color": "#f03b20",
+        "circle-stroke-opacity": 1,
+        "circle-pitch-scale": "map",
+    },
+  });
+
+  // TAMANHOS IGUAIS
+  // map.addLayer({
+  //   id: "clusters",
+  //   type: "circle",
+  //   source: "earthquakes",
+  //   filter: ["has", "point_count"],
+  //   paint: {
+  //     "circle-color": [
+  //       "step",
+  //       ["get", "point_count"],
+  //       "#f03b20",
+  //       10,
+  //       "#f03b20",
+  //       750,
+  //       "#f03b20",
+  //     ],
+  //     "circle-radius": [
+  //       "interpolate",
+  //       ["linear"],
+  //       ["sqrt", ["get", "point_count"]],
+  //       0,
+  //       10,
+  //       1000,
+  //       30,
+  //     ],
+  
+  //     "circle-opacity": 0.4,
+  //     "circle-stroke-width": 1,
+  //     "circle-stroke-color": "#f03b20",
+  //     "circle-stroke-opacity": 1,
+  //     "circle-pitch-scale": "map",
+  //   },
+  // });
+  
+  map.addLayer({
+    id: "cluster-count",
+    type: "symbol",
+    source: "earthquakes",
+    filter: ["has", "point_count"],
+    layout: {
+      "text-field": ["get", "point_count"],
+      "text-font": ["DIN Offc Pro Medium", "Arial Unicode MS Bold"],
+      "text-size": 12,
+    },
+  });
+
+  // Modificar tamanho do círculo para criar efeito de pulsação
+let t = 0;
+setInterval(() => {
+  t++;
+  const scale = 1 + Math.abs(Math.sin(t / 10)) * 0.3; // calcula o tamanho do círculo
+  map.setPaintProperty("clusters", "circle-radius", [
+    "step",
+    ["get", "point_count"],
+    50 * scale,
+    299,
+    60 * scale,
+    300,
+    100 * scale,
+  ]);
+}, 50);
+}
+
 let counter = 0;
-const maxAttempts = 10;
+const maxAttempts = 3;
 
 directions.on("clear", () => {
   console.log("Limpando rotas...");
@@ -255,6 +428,8 @@ directions.on("route", async (event) => {
 
     // inserindo instrucoes
     inserindoInstrucoesRotas(routesInfo)
+
+    addAreasMaiorVolume()
 
   } else {
     for (const route of event.route) {
