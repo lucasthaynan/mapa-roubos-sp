@@ -32,7 +32,7 @@ let directions = new MapboxDirections({
   geometries: "geojson",
   controls: { instructions: false },
   flyTo: true,
-  interactive: true,
+  interactive: false,
   language: "pt-BR",
   placeholderOrigin: "Origem",
   placeholderDestination: "Destino",
@@ -110,7 +110,7 @@ map.on("load", () => {
 
 
   // desabilitando o scroll zoom do mapa
-  // map.scrollZoom.disable();
+  map.scrollZoom.disable();
 
   console.log("Obstaculos carregados!");
   map.addLayer({
