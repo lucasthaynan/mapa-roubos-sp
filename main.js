@@ -108,6 +108,7 @@ directions.on("profile", () => {
 
 map.on("load", () => {
 
+
   // desabilitando o scroll zoom do mapa
   // map.scrollZoom.disable();
 
@@ -180,7 +181,7 @@ directions.on("clear", () => {
   map.setLayoutProperty("theRoute", "visibility", "none");
   
   // resetMap()
-  // map.setLayoutProperty("theBox", "visibility", "none");
+  map.setLayoutProperty("theBox", "visibility", "none");
 
   // removeRoutes(map);
   counter = 0;
@@ -961,6 +962,15 @@ function obtendoInfosRotas(routesInfo) {
 
 }
 
+
+function tempoInfosRotas(routesInfo) {
+
+  for (var key in routesInfo) {
+    var item = routesInfo[key];
+    console.log(item.name + ": " + item.durationMin)
+
+}
+}
 
 function inserindoInstrucoesRotas(routesInfo) {
 
