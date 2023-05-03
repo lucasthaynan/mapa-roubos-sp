@@ -215,7 +215,7 @@ function addAreasMaiorVolume() {
         30,
       ],
   
-      "circle-opacity": 0.4,
+      "circle-opacity": 0.2,
       "circle-stroke-width": 1,
       "circle-stroke-color": "#f03b20",
       "circle-stroke-opacity": 1,
@@ -340,7 +340,7 @@ directions.on("route", async (event) => {
     // inserindo instrucoes
     inserindoInstrucoesRotas(routesInfo)
 
-    addAreasMaiorVolume()
+    // addAreasMaiorVolume()
 
   } else {
     for (const route of event.route) {
