@@ -17,7 +17,6 @@ const map = new mapboxgl.Map({
   style: "mapbox://styles/mapbox/dark-v11", // Specify which map style to use
   center: [-46.62889, -23.55594], // Specify the starting position [lng, lat]
   zoom: 10.8, // Specify the starting zoom
-  // zoom: 15, // Specify the starting zoom
   
 });
 
@@ -105,48 +104,6 @@ directions.on("profile", () => {
   console.log("Rota alterada --> profile");
 });
 
-
-
-const data = {
-  type: "FeatureCollection",
-  features: [
-    {
-      type: "Feature",
-      geometry: {
-        type: "Point",
-        coordinates: [-46.4195544052641, -23.562599528566],
-      },
-      properties: { clearance: 0, assaltos: 10 },
-    },
-    {
-      type: "Feature",
-      geometry: {
-        type: "Point",
-        coordinates: [-46.3995427585613, -23.5591913820374],
-      },
-      properties: { clearance: 1, assaltos: 8 },
-    },
-    {
-      type: "Feature",
-      geometry: {
-        type: "Point",
-        coordinates: [-46.528715561, -23.584177993],
-      },
-      properties: { clearance: 2, assaltos: 2 },
-    },
-    {
-      type: "Feature",
-      geometry: {
-        type: "Point",
-        coordinates: [-46.7689812638353, -23.5889454432406],
-      },
-      properties: { clearance: 3, assaltos: 1 },
-    },
-  ],
-};
-
-
-
 // Adicione um event listener para quando as direções forem carregadas
 
 map.on("load", () => {
@@ -171,35 +128,9 @@ map.on("load", () => {
     },
   });
 
-  
-
-  //  // Adicionando a layer de heatmap
-  //  map.addLayer({
-  //   id: "heatmap",
-  //   type: "heatmap",
-  //   source: {
-  //     type: "geojson",
-  //     data: obstacle,
-  //   },
-  //   paint: {
-  //     // Ajuste a escala de cores conforme apropriado
-  //     "heatmap-color": [
-  //       "interpolate",
-  //       ["linear"],
-  //       ["heatmap-density"],
-  //       0, "rgba(0, 0, 255, 0)",
-  //       0.2, "royalblue",
-  //       0.4, "cyan",
-  //       0.6, "yellow",
-  //       0.8, "orange",
-  //       1, "red"
-  //     ],
-  //     // Ajuste a opacidade e o raio conforme apropriado
-  //     "heatmap-opacity": 0.4,
-  //     "heatmap-radius": 5
-  //   }
-  // });
-  
+  // if (mapaReiniciado == false) {
+  //   addAreasMaiorVolume()
+  // }
 
   map.addSource("theRoute", {
     type: "geojson",
@@ -246,8 +177,8 @@ map.on("load", () => {
 
 });
 
-
-
+//  ADICIONANDO CIRCULOS
+ 
 function addAreasMaiorVolume() {
   map.addSource("earthquakes", {
     type: "geojson",
@@ -258,6 +189,7 @@ function addAreasMaiorVolume() {
   });
   
   
+
   map.addLayer({
     id: "clusters",
     type: "circle",
@@ -273,49 +205,23 @@ function addAreasMaiorVolume() {
         750,
         "#f03b20",
       ],
-      "circle-radius": ["step", ["get", "point_count"], 10, 5, 50, 230, 400],
-
-        "circle-opacity": 0.5,
-        "circle-stroke-width": 1,
-        "circle-stroke-color": "#f03b20",
-        "circle-stroke-opacity": 1,
-        "circle-pitch-scale": "map",
+      "circle-radius": [
+        "interpolate",
+        ["linear"],
+        ["sqrt", ["get", "point_count"]],
+        0,
+        10,
+        1000,
+        30,
+      ],
+  
+      "circle-opacity": 0.4,
+      "circle-stroke-width": 1,
+      "circle-stroke-color": "#f03b20",
+      "circle-stroke-opacity": 1,
+      "circle-pitch-scale": "map",
     },
   });
-
-  // TAMANHOS IGUAIS
-  // map.addLayer({
-  //   id: "clusters",
-  //   type: "circle",
-  //   source: "earthquakes",
-  //   filter: ["has", "point_count"],
-  //   paint: {
-  //     "circle-color": [
-  //       "step",
-  //       ["get", "point_count"],
-  //       "#f03b20",
-  //       10,
-  //       "#f03b20",
-  //       750,
-  //       "#f03b20",
-  //     ],
-  //     "circle-radius": [
-  //       "interpolate",
-  //       ["linear"],
-  //       ["sqrt", ["get", "point_count"]],
-  //       0,
-  //       10,
-  //       1000,
-  //       30,
-  //     ],
-  
-  //     "circle-opacity": 0.4,
-  //     "circle-stroke-width": 1,
-  //     "circle-stroke-color": "#f03b20",
-  //     "circle-stroke-opacity": 1,
-  //     "circle-pitch-scale": "map",
-  //   },
-  // });
   
   map.addLayer({
     id: "cluster-count",
@@ -346,6 +252,9 @@ setInterval(() => {
 }, 50);
 }
 
+
+
+
 let counter = 0;
 const maxAttempts = 3;
 
@@ -360,6 +269,8 @@ directions.on("clear", () => {
   counter = 0;
   // reports.innerHTML = "";
 });
+
+
 
 // function btnLimparRotaAzul() {
 //   // remove a última rota (em azul) testada no mapa
@@ -1022,9 +933,12 @@ function gerarResultado(element, rotasIguais) {
 }
 
 
+let mapaReiniciado = false
 
 // Adicione um event listener para o botão que reinicia a entrada dos pontos A e B
 function reiniciarDirecoes() {
+
+  mapaReiniciado = true
 
   map.removeControl(directions);
 
@@ -1039,6 +953,18 @@ function reiniciarDirecoes() {
   if (map.getLayer('end-point')) {
     map.removeLayer('end-point');
   }
+
+  // if (map.getLayer('clusters')) {
+  //   map.removeLayer('clusters');
+  //   map.removeSource("clusters");
+  // }
+
+  // if (map.getLayer('cluster-count')) {
+  //   map.removeLayer('cluster-count');
+  //   map.removeSource("cluster-count");
+  // }
+
+  
 
 
   if (rotasIguais == true) {
@@ -1191,3 +1117,14 @@ function mostrarInstrucoes(){
   }
 }
 
+function removeLayersAndSources() {
+  if (map.getLayer("clusters")) {
+    map.removeLayer("clusters");
+  }
+  if (map.getLayer("cluster-count")) {
+    map.removeLayer("cluster-count");
+  }
+  if (map.getSource("earthquakes")) {
+    map.removeSource("earthquakes");
+  }
+}

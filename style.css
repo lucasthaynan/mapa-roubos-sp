@@ -246,9 +246,15 @@ section.container.loading p {
 
   section.container.nova-busca > div {
     background-color: #3BB2D0;
-    padding: 5px 20px;
+    padding: 10px 20px;
     border-radius: 10px;
     cursor: pointer;
+    width: 100%;
+  }
+
+  body > div.container-geral > div > section.container.nova-busca {
+    background-color: rgb(0 0 0 / 0%);
+    padding: 5px 20px;
   }
   
 
@@ -318,16 +324,20 @@ section.container.loading p {
   /* infos de tempo e distancia da rota */
 
 p.infos-rota {
-    font-size: 12px;
+    font-size: 14px;
     color: #b5b5b5;
     margin: 0;
+}
+
+section.container > img {
+  width: 180px;
 }
 
 /* instrucoes das rotas */
 
 p.btn-instrucoes {
 
-    color: gray;
+    color: #5c905e;
     font-weight: 500;
     /* text-decoration: underline; */
     cursor: pointer;

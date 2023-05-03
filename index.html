@@ -32,6 +32,8 @@
   <div id="map"></div>
   <div class="container-geral">
     <div class="sidebar">
+      
+
       <section class="container loading">
         <div class="icon-load">
           <svg class="svg-rotating" xmlns="http://www.w3.org/2000/svg" width="130px" height="130px"
@@ -43,6 +45,11 @@
         </div>
         <p class="text-load">Buscando rota... 1 de 10</p>
       </section>
+
+      <section class="container nova-busca">
+        <div onclick="reiniciarDirecoes()">Traçar nova rota</div>
+      </section>
+      
       <section class="container melhor-rota">
 
         <img src="./imagens/melhor-rota-icone.svg" alt="">
@@ -76,9 +83,7 @@
 
       </section>
 
-      <section class="container nova-busca">
-        <div onclick="reiniciarDirecoes()">Traçar nova rota</div>
-      </section>
+      
       <!-- <h1>Detalhes</h1> -->
       <!-- <button id="click-all-buttons">Clique em todos os botões</button> -->
       <div id="sidebar2" class="sidebar_3"></div>
