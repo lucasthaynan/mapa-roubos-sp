@@ -283,7 +283,7 @@ setInterval(() => {
 
 
 let counter = 0;
-const maxAttempts = 3;
+const maxAttempts = 10;
 
 directions.on("clear", () => {
   console.log("Limpando rotas...");
@@ -347,7 +347,7 @@ let rotasIguais = false
 
 directions.on("route", async (event) => {
 
-  
+  desabilitaBtnDirecoes()
   // map.setLayoutProperty("directions-route-line-casing", "visibility", "visible");
   // map.setLayoutProperty("directions-route-line", "visibility", "visible");
 
@@ -367,7 +367,7 @@ directions.on("route", async (event) => {
     // inserindo instrucoes
     inserindoInstrucoesRotas(routesInfo)
 
-    desabilitaBtnDirecoes()
+    
 
     // addAreasMaiorVolume()
 
