@@ -32,7 +32,7 @@ let directions = new MapboxDirections({
   geometries: "geojson",
   controls: { instructions: false },
   flyTo: true,
-  interactive: false,
+  interactive: true,
   language: "pt-BR",
   placeholderOrigin: "Origem",
   placeholderDestination: "Destino",
@@ -69,6 +69,16 @@ fetch("./seu_arquivo_modificado.json")
     obstacle = turf.buffer(clearances, 0.035, { units: "kilometers" });
   })
   .catch((error) => console.error(error));
+
+// carregando os dados de assaltos (obstáculos)
+let limitesSaoPaulo 
+fetch("./malha_sao_paulo_3550308.geojson")
+  .then((response) => response.json())
+  .then((data) => {
+    limitesSaoPaulo = data;
+  })
+  .catch((error) => console.error(error));
+
 
 let bbox = [0, 0, 0, 0];
 let polygon = turf.bboxPolygon(bbox);
@@ -111,6 +121,23 @@ map.on("load", () => {
 
   // desabilitando o scroll zoom do mapa
   map.scrollZoom.disable();
+
+  map.addLayer({
+    'id': 'sp-boundary',
+    'type': 'line',
+    'source': {
+      'type': 'geojson',
+      'data': limitesSaoPaulo,
+    },
+    'paint': {
+      'line-color': '#000000',
+      'line-width': 2.5,
+      "line-opacity": 0.6,
+
+    }
+  });
+
+
 
   console.log("Obstaculos carregados!");
   map.addLayer({
@@ -339,6 +366,8 @@ directions.on("route", async (event) => {
 
     // inserindo instrucoes
     inserindoInstrucoesRotas(routesInfo)
+
+    desabilitaBtnDirecoes()
 
     // addAreasMaiorVolume()
 
@@ -1127,4 +1156,9 @@ function removeLayersAndSources() {
   if (map.getSource("earthquakes")) {
     map.removeSource("earthquakes");
   }
+}
+
+function desabilitaBtnDirecoes() {
+  document.querySelector("#mapbox-directions-origin-input > div > div > button").style.display = "none"
+  document.querySelector("#mapbox-directions-destination-input > div > div > button").style.display = "none"
 }
