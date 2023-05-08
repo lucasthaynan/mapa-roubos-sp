@@ -120,7 +120,7 @@ map.on("load", () => {
 
 
   // desabilitando o scroll zoom do mapa
-  map.scrollZoom.disable();
+  // map.scrollZoom.disable();
 
   map.addLayer({
     'id': 'sp-boundary',
@@ -212,7 +212,7 @@ function addAreasMaiorVolume() {
     data: clearances,
     cluster: true,
     clusterMaxZoom: 20,
-    clusterRadius: 300,
+    clusterRadius: 200,
   });
   
   
@@ -283,7 +283,7 @@ setInterval(() => {
 
 
 let counter = 0;
-const maxAttempts = 10;
+const maxAttempts = 3;
 
 directions.on("clear", () => {
   console.log("Limpando rotas...");
@@ -764,31 +764,31 @@ function ocultarRotas() {
 }
 
 // funcao que oculta as rotas finais geradas (melhor e pior rota)
-// function ocultarRotasVerdeVermelha() {
-//   map.setLayoutProperty("bestRoute", "visibility", "none");
-//   map.setLayoutProperty("bestRoute2", "visibility", "none");
-//   map.setLayoutProperty("worstRoute", "visibility", "none");
-//   map.setLayoutProperty("worstRoute2", "visibility", "none");
+function ocultarRotasVerdeVermelha() {
+  map.setLayoutProperty("bestRoute", "visibility", "none");
+  map.setLayoutProperty("bestRoute2", "visibility", "none");
+  map.setLayoutProperty("worstRoute", "visibility", "none");
+  map.setLayoutProperty("worstRoute2", "visibility", "none");
 
-//   map.removeLayer("bestRoute");
-//   map.removeLayer("bestRoute2");
-//   setTimeout(() => {
-//     map.removeSource("bestRoute");
-//     map.removeSource("bestRoute2");
-//   }, 1000);
+  // map.removeLayer("bestRoute");
+  // map.removeLayer("bestRoute2");
+  // setTimeout(() => {
+  //   map.removeSource("bestRoute");
+  //   map.removeSource("bestRoute2");
+  // }, 1000);
 
-//   map.removeLayer("worstRoute");
-//   map.removeLayer("worstRoute2");
-//   setTimeout(() => {
-//     map.removeSource("worstRoute");
-//     map.removeSource("worstRoute2");
-//   }, 1000);
+  map.removeLayer("worstRoute");
+  map.removeLayer("worstRoute2");
+  setTimeout(() => {
+    map.removeSource("worstRoute");
+    map.removeSource("worstRoute2");
+  }, 1000);
 
-//   // deixar objeto vazio
-//   routesInfo = {};
+  // deixar objeto vazio
+  routesInfo = {};
   
 
-// }
+}
 
 // CONTAINER COM OS DADOS
 
@@ -1101,6 +1101,39 @@ function tempoInfosRotas(routesInfo) {
 
 }
 }
+
+function trajetoRotas(routesInfo) {
+
+  for (var key in routesInfo) {
+    var item = routesInfo[key];
+    var name = item.name;
+    var instructions = item.instructions
+    
+    if (name.endsWith("bestRoute")) {
+      console.log(item.routeLine.coordinates)
+
+      const routeLine = {
+        coordinates: [],
+      };
+      
+      for (let i = 0; i < item.routeLine.coordinates.length; i += 100) {
+        routeLine.item.routeLine.coordinates.push(item.routeLine.coordinates.slice(i, i + 100));
+      }
+      
+      console.log(routeLine);
+
+    } 
+    if (name.endsWith("worstRoute")) {
+      console.log(name)
+      instrucoesPiorRota = instructions;
+      tempoPiorRota = item.durationMin;
+      distanciaPiorRota = item.distanceKm;
+
+    } 
+  }
+
+}
+
 
 function inserindoInstrucoesRotas(routesInfo) {
 
