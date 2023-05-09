@@ -549,7 +549,7 @@ directions.on("route", async (event) => {
             "line-cap": "round",
           },
           paint: {
-            "line-color": "#9370db",
+            "line-color": "#FFFFFF",
             "line-width": 4,
           },
         });
@@ -566,7 +566,7 @@ directions.on("route", async (event) => {
             "line-cap": "round",
           },
           paint: {
-            "line-color": "#9370db",
+            "line-color": "#FFFFFF",
             "line-opacity": 0.3,
             "line-width": 13,
           },
@@ -1254,7 +1254,6 @@ function mostrarInstrucoes(tipoRota){
     map.setPaintProperty("bestRoute", "line-color", "rgba(95, 194, 203, 0.3)");
     map.setPaintProperty("bestRoute2", "line-color", "rgba(95, 194, 203, 0.3)");
 
-    
 
     console.log("pior-rota")
  

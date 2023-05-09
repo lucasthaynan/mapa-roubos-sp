@@ -232,6 +232,18 @@ section.container.pior-rota > div.percentual {
   background-color: var(--rosa);
 }
 
+section.container.rotas-iguais > div.percentual {
+  background-color: #656565;
+}
+
+section.container.rotas-iguais {
+  width: 180px;
+}
+
+section.container.rotas-iguais p.text {
+  font-weight: 400;
+}
+
 
 div.btn-voltar {
   position: fixed;
@@ -512,6 +524,7 @@ p.infos-rota {
     color: #b5b5b5;
     margin: 0;
     font-weight: 400;
+    text-transform: uppercase;
 }
 
 section.container > img {
