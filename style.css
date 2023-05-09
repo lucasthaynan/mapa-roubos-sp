@@ -20,6 +20,8 @@ body {
   --cinza: rgba(101, 101, 101, 1); /* #656565 */
   --branco: rgba(255, 255, 255, 1); /* #ffffff */
   --branco-claro: rgba(255, 255, 255, 0.5); /* #ffffff */
+  --cinza-claro: rgba(227, 227, 227, 1);
+  --preto: rgba(2, 2, 2, 1);
 }
 
 
@@ -175,6 +177,19 @@ section.container {
 
 }
 
+.container-instrutions {
+  display: flex;
+  height: 270px;
+  width: 400px;
+  background-color: rgba(0, 0, 0, 0.6);
+  /* padding: 25px; */
+  color: var(--branco);
+  border-radius: 25px;
+  flex-direction: column;
+  align-content: center;
+  align-items: center;
+  text-align: center;
+}
 
 section.container.melhor-rota > p > strong {
     color: var(--azul);
@@ -208,6 +223,21 @@ section.container.melhor-rota > div.percentual {
 section.container.pior-rota > div.percentual {
   background-color: var(--rosa);
 }
+
+
+div.btn-voltar {
+  position: fixed;
+    width: 80px;
+    padding: 13px 17px;
+    border-radius: 50px;
+    margin-top: -20px;
+    margin-bottom: 10px;
+    font-size: 12px;
+    font-weight: 600;
+    background-color: var(--cinza-claro);
+    color: var(--preto);
+}
+
 
 
 .card {
@@ -383,6 +413,8 @@ section.container.pior-rota > div.percentual {
 
  p.text {
     margin-bottom: 5px;
+    font-weight: 400;
+    font-size: 17px;
  }
 
 
@@ -417,11 +449,44 @@ p.btn-instrucoes {
   /* adicionando barra de rolagem nas instrucoes */
 
 .instrutions {
-    height: 200px;
+    height: 240px;
     overflow: scroll;
     overflow-x:hidden;
     display: none;
-    margin-top: 15px;
+    margin: 25px;
+}
+
+div.infos-rota-selecao {
+  background-color: var(--azul);
+  border-radius: 10px 10px 0 0;
+  display: flex;
+  justify-content: space-between;
+  flex-direction: row;
+  font-size: 12px;
+  width: 100%;
+}
+
+div.infos-rota-selecao > div {
+  padding: 35px 25px;
+  display: flex;
+  flex-direction: column;
+  gap: 4px;
+}
+
+div.infos-rota-selecao > div p {
+  margin: 0;
+}
+
+div.infos-rota-selecao > div:nth-child(1) {
+  text-align: start;
+}
+
+div.infos-rota-selecao > div:nth-child(2) {
+  text-align: end;
+}
+
+section.container.instrutions {
+  width: 400px;
 }
 
 

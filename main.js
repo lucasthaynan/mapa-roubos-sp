@@ -1180,12 +1180,13 @@ mostrarInstrucoesAtivo = false
 
 function mostrarInstrucoes(){
   if (mostrarInstrucoesAtivo == false){
-    document.querySelector(".melhor-rota > div.instrutions").style.display = "flex";
+    document.querySelector("div.instrutions").style.display = "flex";
     document.querySelector(".container.pior-rota").style.display = "none";
+    document.querySelector(".container.melhor-rota").style.display = "none";
     mostrarInstrucoesAtivo = true
-    document.querySelector(".melhor-rota > p.btn-instrucoes").innerText = "▴ Ocultar instruções";
+    // document.querySelector(".melhor-rota > p.btn-instrucoes").innerText = "▴ Ocultar instruções";
   } else {
-    document.querySelector(".melhor-rota > div.instrutions").style.display = "none";
+    document.querySelector("div.instrutions").style.display = "none";
     document.querySelector(".container.pior-rota").style.display = "flex";
     mostrarInstrucoesAtivo = false
     document.querySelector(".melhor-rota > p.btn-instrucoes").innerText = "▸ Detalhes da rota";
