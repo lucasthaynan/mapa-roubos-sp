@@ -1,13 +1,27 @@
+
+@import url('https://fonts.googleapis.com/css2?family=Inter:wght@100;200;300;400;500;600;700;800;900&display=swap');
+
+
 body {
     margin: 0;
     padding: 0;
     height: 100vh;
     width: 100vw;
-    font-family: 'Open Sans', sans-serif;
+    font-family: 'Lato', sans-serif;
+    font-weight: 400;
     display: flex; /* Adicionada a propriedade display com o valor flex */
     /* flex-direction: column; */
     background-color: #272626;
 }
+
+:root {
+  --azul: rgba(95, 194, 203, 1); /* #5FC2CB */
+  --rosa: rgba(255, 141, 158, 1); /* #FF8D9E */ 
+  --cinza: rgba(101, 101, 101, 1); /* #656565 */
+  --branco: rgba(255, 255, 255, 1); /* #ffffff */
+  --branco-claro: rgba(255, 255, 255, 0.5); /* #ffffff */
+}
+
 
 #map {
     flex-grow: 1; /* Ocupa todo o espaço restante */
@@ -163,12 +177,12 @@ section.container {
 
 
 section.container.melhor-rota > p > strong {
-    color: #74C476;
+    color: var(--azul);
     font-weight: 500px;
 }
 
 section.container.pior-rota > p > strong {
-    color: #de2d26;
+    color: var(--rosa);
     font-weight: 500px;
 }
 
@@ -176,6 +190,23 @@ section.container.loading p {
     font-size: 14px;
     font-weight: 300;
 
+}
+
+div.container-geral div.percentual {
+  padding: 13px 17px;
+  border-radius: 50px;
+  margin-top: -50px;
+  margin-bottom: 10px;
+  font-size: 12px;
+  font-weight: 500;
+}
+
+section.container.melhor-rota > div.percentual {
+  background-color: var(--azul);
+}
+
+section.container.pior-rota > div.percentual {
+  background-color: var(--rosa);
 }
 
 
@@ -362,6 +393,7 @@ p.infos-rota {
     font-size: 14px;
     color: #b5b5b5;
     margin: 0;
+    font-weight: 400;
 }
 
 section.container > img {
@@ -372,7 +404,7 @@ section.container > img {
 
 p.btn-instrucoes {
 
-    color: #5c905e;
+    color: var(--branco-claro);
     font-weight: 500;
     /* text-decoration: underline; */
     cursor: pointer;

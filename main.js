@@ -632,7 +632,7 @@ directions.on("route", async (event) => {
             "line-cap": "round",
           },
           paint: {
-            "line-color": "#de2d26",
+            "line-color": "#FF8D9E",
             "line-width": 4,
           },
         });
@@ -648,7 +648,7 @@ directions.on("route", async (event) => {
             "line-cap": "round",
           },
           paint: {
-            "line-color": "#de2d26",
+            "line-color": "#FF8D9E",
             "line-opacity": 0.3,
             "line-width": 13,
           },
@@ -668,7 +668,7 @@ directions.on("route", async (event) => {
             "line-cap": "round",
           },
           paint: {
-            "line-color": "#74c476",
+            "line-color": "#5FC2CB",
             "line-width": 4,
           },
         });
@@ -685,7 +685,7 @@ directions.on("route", async (event) => {
             "line-cap": "round",
           },
           paint: {
-            "line-color": "#74c476",
+            "line-color": "#5FC2CB",
             "line-opacity": 0.3,
             "line-width": 13,
           },
@@ -936,15 +936,24 @@ function gerarResultado(element, rotasIguais) {
   
     document.querySelector(
       "section.container.melhor-rota > p.text"
-    ).innerHTML = `A melhor rota registrou <strong>${percentualMinObstacles.toFixed(1)}% assaltos a menos</strong> em relação à média das ${maxAttempts} verificadas`;
+    ).innerHTML = `Rota com<strong> -roubos</strong><br>teve <strong>${assaltosMelhorRota.toFixed(1)} casos</strong>`;
   
     document.querySelector(
       "section.container.pior-rota > p.text"
-    ).innerHTML = `A pior rota teve <strong>${percentualMaxObstacles.toFixed(1)}% mais assaltos </strong> do que o melhor trajeto`;
+    ).innerHTML = `Rota com<strong> +roubos</strong><br>teve <strong>${assaltosPiorRota.toFixed(1)} casos</strong>`;
     
     document.querySelector(
       "section.container.pior-rota > p.infos-rota"
     ).innerHTML = `${tempoPiorRota} min • ${distanciaPiorRota.toFixed(1)} km`;
+
+    // document.querySelector(
+    //   "section.container.melhor-rota > p.text"
+    // ).innerHTML = `A melhor rota registrou <strong>${percentualMinObstacles.toFixed(1)}% assaltos a menos</strong> em relação à média das ${maxAttempts} verificadas`;
+  
+    // document.querySelector(
+    //   "section.container.pior-rota > p.text"
+    // ).innerHTML = `A pior rota teve <strong>${percentualMaxObstacles.toFixed(1)}% mais assaltos </strong> do que o melhor trajeto`;
+    
   
 
   } else {
