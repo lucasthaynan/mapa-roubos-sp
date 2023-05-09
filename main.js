@@ -1,4 +1,11 @@
 
+let btnStart = document.querySelector("div.btn-tracar-rota")
+
+btnStart.addEventListener("click", e => {
+  document.querySelector("section.popup").style.display = "none";
+})
+
+
 // Função para desabilitar a entrada de texto no Geocoder
 
 function bloquearEntradaOrigemDestino(map) {
@@ -200,7 +207,7 @@ map.on("load", () => {
     layout: {},
     paint: {
       "fill-color": "#FFFFFF",
-      "fill-opacity": 0.15,
+      "fill-opacity": 0.2,
       "fill-outline-color": "#FFFFFF",
     },
   });
