@@ -34,10 +34,10 @@ let directions = new MapboxDirections({
   flyTo: true,
   interactive: true,
   language: "pt-BR",
-  placeholderOrigin: "Origem",
-  placeholderDestination: "Destino",
-  languagePlaceholderOrigin: "Origem",
-  languagePlaceholderDestination: "Destino",
+  placeholderOrigin: "ORIGEM",
+  placeholderDestination: "DESTINO",
+  languagePlaceholderOrigin: "ORIGEM",
+  languagePlaceholderDestination: "DESTINO",
   geocoder: {
     language: "pt-BR",
   },
@@ -1062,10 +1062,12 @@ function reiniciarDirecoes() {
 let instrucoesMelhorRota = [];
 let tempoMelhorRota = 0;
 let distanciaMelhorRota = 0;
+let assaltosMelhorRota = 0;
 
 let instrucoesPiorRota = [];
 let tempoPiorRota = 0;
 let distanciaPiorRota = 0;
+let assaltosPiorRota = 0;
 
 function obtendoInfosRotas(routesInfo) {
 
@@ -1079,6 +1081,7 @@ function obtendoInfosRotas(routesInfo) {
       instrucoesMelhorRota = instructions;
       tempoMelhorRota = item.durationMin;
       distanciaMelhorRota = item.distanceKm;
+      assaltosMelhorRota = item.obstacles;
 
     } 
     if (name.endsWith("worstRoute")) {
@@ -1086,6 +1089,7 @@ function obtendoInfosRotas(routesInfo) {
       instrucoesPiorRota = instructions;
       tempoPiorRota = item.durationMin;
       distanciaPiorRota = item.distanceKm;
+      assaltosPiorRota = item.obstacles;
 
     } 
   }

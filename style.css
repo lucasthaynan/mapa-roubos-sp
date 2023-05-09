@@ -18,26 +18,47 @@ canvas.mapboxgl-canvas {
     width: 100vw;
 }
 
+body > div.container-geral {
+  display: flex;
+    justify-content: center;
+    position: fixed;
+}
+
+.container-top {
+  display: none;
+}
+
 /*  MUDANDO LAYOUT ORIGINAL DA BARRA DE ORIGEM E DESTINO */
 .sidebar {
-    /* margin: 200px 20px 30px 20px; */
-    width: 300px; /* Alterado o valor da largura para 25% */
-    /* padding: 20px; */
-    /* background-color: #fff; */
-    /* overflow-y: scroll; */
-    position: fixed;
-    top: 180px;
-    left: 60px;
-    display: flex;
-    flex-direction: column;
-    gap: 20px;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  position: fixed;
+  bottom: 0;
+  left: 0;
+  width: 100%;
+  /* height: 100%; */
+  justify-content: flex-end;
+  margin-bottom: 30px;
+}
+
+.mapboxgl-control-container {
+  display: flex;
+  justify-content: center;
+}
+
+body > div.container-geral > div.sidebar > div.container-bottom {
+  display: flex;
+    flex-direction: row;
+    gap: 15px;
 }
 
 
 
 #map > div.mapboxgl-control-container > div.mapboxgl-ctrl-top-left {
     top: 50px;
-    left: 50px;
+    left: auto;
 }
 
 #map > div.mapboxgl-control-container > div.mapboxgl-ctrl-top-left > div > div > div > div.mapbox-directions-profile.mapbox-directions-component-keyline.mapbox-directions-clearfix {
@@ -47,7 +68,7 @@ canvas.mapboxgl-canvas {
 #map > div.mapboxgl-control-container > div.mapboxgl-ctrl-top-left > div > div > div > div:nth-child(1) {
     display: flex;
     flex-direction: column;
-    gap: 8px;
+    gap: 15px;
 }
 
 #map > div.mapboxgl-control-container > div.mapboxgl-ctrl-top-left > div > div > div > div:nth-child(1) > button {
@@ -56,21 +77,33 @@ canvas.mapboxgl-canvas {
 
 #mapbox-directions-origin-input > div {
     background-color: #00000091;
-    border-radius: 0 12px 12px 0;
+    border-radius: 0 20px 20px 0;
 }
 
 #mapbox-directions-destination-input > div {
     background-color: #00000091;
-    border-radius: 0 12px 12px 0;
+    border-radius: 0 20px 20px 0;
 }
 
 #map > div.mapboxgl-control-container > div.mapboxgl-ctrl-top-left > div > div > div > div:nth-child(1) > div.mapbox-directions-origin > label {
-    border-radius: 12px 0 0 12px;
+    border-radius: 20px;
 }
 
 #map > div.mapboxgl-control-container > div.mapboxgl-ctrl-top-left > div > div > div > div:nth-child(1) > div.mapbox-directions-destination > label {
-    border-radius: 12px 0 0 12px;
+    border-radius: 20px;
 }
+
+
+#map > div.mapboxgl-control-container > div.mapboxgl-ctrl-top-left > div > div > div > div:nth-child(1) > div.mapbox-directions-origin {
+  background-color: #00000091;
+  border-radius: 20px;
+}
+
+#map > div.mapboxgl-control-container > div.mapboxgl-ctrl-top-left > div > div > div > div:nth-child(1) > div.mapbox-directions-destination {
+  background-color: #00000091;
+  border-radius: 20px;
+}
+
 
 #mapbox-directions-destination-input > div > input[type=text] {
     box-shadow: 0 1px 0 0 rgba(255, 255, 255, 0);
@@ -80,6 +113,7 @@ canvas.mapboxgl-canvas {
 #mapbox-directions-origin-input > div > input[type=text] {
     box-shadow: 0 1px 0 0 rgba(255, 255, 255, 0);
     color: #FFFFFF;
+    /* border-left: solid #de2d26 15px; */
 }
 
 #mapbox-directions-origin-input > div > div > button {
@@ -112,6 +146,7 @@ canvas.mapboxgl-canvas {
 
 
 section.container {
+    width: 165px;
     background-color: rgba(0, 0, 0, 0.6);
     color: #FFFFFF;
     padding: 25px;
