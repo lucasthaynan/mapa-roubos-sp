@@ -361,8 +361,11 @@ directions.on("route", async (event) => {
     // chama a função que mostra os dados sobre as rotas geradas
     gerarResultado(reports, rotasIguais); // rotasIguais é true ou false
 
-    // champ a função que bloqueia as entradas de origem e destino
+    // chama a função que bloqueia as entradas de origem e destino
     bloquearEntradaOrigemDestino(map);
+
+    // ocultando a barra superior de direcoes do mapbox
+    ocultarBarraDirecoes()
 
     // inserindo instrucoes
     // inserindoInstrucoesRotas(routesInfo)
@@ -397,7 +400,7 @@ directions.on("route", async (event) => {
             padding: {
               top: 170,
               right: 50,
-              bottom: 300,
+              bottom: 260,
               left: 50,
             },
             maxZoom: map.getMaxZoom(),
@@ -408,10 +411,10 @@ directions.on("route", async (event) => {
         } else {
           map.fitBounds(bounds, {
             padding: {
-              top: 170,
-              right: 170,
-              bottom: 170,
-              left: 380,
+              top: 160,
+              right: 240,
+              bottom: 220,
+              left: 240,
             },
             maxZoom: map.getMaxZoom(),
             duration: 1500,
@@ -976,6 +979,9 @@ let mapaReiniciado = false
 // Adicione um event listener para o botão que reinicia a entrada dos pontos A e B
 function reiniciarDirecoes() {
 
+  // exibindo novamente a barra de direcoes do mapbox
+  document.querySelector("#map > div.mapboxgl-control-container > div.mapboxgl-ctrl-top-left").style.display = "block"
+
   mapaReiniciado = true
 
   map.removeControl(directions);
@@ -1270,4 +1276,8 @@ function ocultarContainerRotas() {
   map.setPaintProperty("bestRoute2", "line-color", "rgba(95, 194, 203, 1)");
 
 
+}
+
+function ocultarBarraDirecoes() {
+  document.querySelector("#map > div.mapboxgl-control-container > div.mapboxgl-ctrl-top-left").style.display = "none"
 }

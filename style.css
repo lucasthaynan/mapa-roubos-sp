@@ -38,11 +38,9 @@ body > div.container-geral {
   display: flex;
     justify-content: center;
     position: fixed;
+    width: 100%;
 }
 
-.container-top {
-  display: none;
-}
 
 /*  MUDANDO LAYOUT ORIGINAL DA BARRA DE ORIGEM E DESTINO */
 .sidebar {
@@ -70,6 +68,9 @@ body > div.container-geral > div.sidebar > div.container-bottom {
     gap: 15px;
 }
 
+#map > div.mapboxgl-control-container > div.mapboxgl-ctrl-top-left > div > div > div > div:nth-child(1) {
+  box-shadow: none;
+}
 
 
 #map > div.mapboxgl-control-container > div.mapboxgl-ctrl-top-left {
@@ -201,11 +202,18 @@ section.container.pior-rota > p > strong {
     font-weight: 500px;
 }
 
-section.container.loading p {
-    font-size: 14px;
-    font-weight: 300;
+
+section.container.loading {
+  width: 250px;
 
 }
+
+section.container.loading p {
+    font-size: 14px;
+    font-weight: 400;
+
+}
+
 
 div.container-geral div.percentual {
   padding: 13px 17px;
@@ -328,6 +336,11 @@ div.btn-voltar {
 }
 
 
+body > div.container-geral > section {
+  background-color: rgba(0, 0, 0, 0.0);;
+}
+
+
 .svg-rotating {
     animation: spin 0.9s linear infinite;
   }
@@ -342,25 +355,94 @@ div.btn-voltar {
   }
 
   section.container.nova-busca > div {
-    background-color: #3BB2D0;
-    padding: 10px 20px;
-    border-radius: 10px;
+    background-color: rgba(255, 255, 255, 0.9);
+    padding: 14px 20px;
+    border-radius: 30px;
     cursor: pointer;
     width: 100%;
+    font-size: 14px;
+    font-weight: 600;
+    text-transform: uppercase;
+    color: rgba(28, 28, 28, 1);
   }
 
   body > div.container-geral > div > section.container.nova-busca {
     background-color: rgb(0 0 0 / 0%);
     padding: 5px 20px;
+    width: 100%;
   }
   
+
+  #map > div.mapboxgl-control-container > div.mapboxgl-ctrl-top-right {
+    padding: 17px;
+  }
 
 
   /*  DESIGN RESPONSIVO */
 
   @media (max-width: 500px) {
 
-    #map > div.mapboxgl-control-container {
+
+    section.container {
+      padding: 10px;
+    }
+
+    div.container-geral div.percentual {
+      margin-top: -35px;
+    }
+
+    p.infos-rota {
+      font-size: 13px !important;
+    }
+
+    p.text {
+      font-size: 16px !important;
+    }
+
+    p.btn-instrucoes {
+      font-size: 14px !important;
+    }
+
+    body > div.container-geral > div.sidebar > div.container-bottom {
+      gap: 10px;
+      margin-bottom: 20px;
+    }
+
+    .container-instrutions {
+      width: 360px;
+      max-width: 95vw;
+    }
+
+    body > div.container-geral > div.sidebar > div.container-bottom {
+      max-width: 95vw;
+    }
+
+    div.infos-rota-selecao > div:nth-child(1) {
+      padding-right: 0px;
+
+    }
+
+    div.infos-rota-selecao > div:nth-child(2) {
+      padding-left: 0px;
+
+    }
+
+    #map > div.mapboxgl-control-container > div.mapboxgl-ctrl-top-left {
+
+      left: 0;
+      top: 20px;
+    }
+
+    #map > div.mapboxgl-control-container > div.mapboxgl-ctrl-top-right {
+      padding: 17px;
+    }
+
+    body > div.container-geral > section {
+      padding-top: 50px;
+    }
+
+
+    /* #map > div.mapboxgl-control-container {
         display: flex;
         justify-content: center;
     }
@@ -405,12 +487,15 @@ div.btn-voltar {
       .instrutions {
         height: 155px !important;
     
-    }
+    } */
 
   
 
 
   }
+
+
+  
 
  p.text {
     margin-bottom: 5px;

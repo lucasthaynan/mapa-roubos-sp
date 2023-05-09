@@ -32,8 +32,14 @@
   <div id="map"></div>
   <div class="container-geral">
 
-    <div class="container-top">
+    <section class="container nova-busca">
+      <div onclick="reiniciarDirecoes()">Traçar nova rota</div>
+    </section>
 
+
+
+    <div class="sidebar">
+      
       <section class="container loading">
         <div class="icon-load">
           <svg class="svg-rotating" xmlns="http://www.w3.org/2000/svg" width="130px" height="130px"
@@ -46,19 +52,10 @@
         <p class="text-load">Buscando rota... 1 de 10</p>
       </section>
 
-      <section class="container nova-busca">
-        <div onclick="reiniciarDirecoes()">Traçar nova rota</div>
-      </section>
-
-    </div>
-
-
-    <div class="sidebar">
-      
-      
-
 
       <div class="container-bottom">
+
+       
 
         <section class="container melhor-rota">
 
@@ -112,7 +109,7 @@
             </div>
           </div>
           <div class="instrutions">
-            <!-- Local onde as instruções serão exibidas -->
+            <!-- Local onde as instruções serão exibidas -->  
             <div id="routeInstructions"></div>
 
           </div>
