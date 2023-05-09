@@ -91,6 +91,7 @@ function coordenadasIguais(coord1, coord2) {
 }
 
 directions.on("origin", (origin) => {
+  mudaCorWaypoints()
   const novaOrigem = origin.feature.geometry.coordinates;
   if (origem === null || !coordenadasIguais(novaOrigem, origem)) {
     origem = novaOrigem;
@@ -99,6 +100,7 @@ directions.on("origin", (origin) => {
 });
 
 directions.on("destination", (destination) => {
+  mudaCorWaypoints()
   const novoDestino = destination.feature.geometry.coordinates;
   if (destino === null || !coordenadasIguais(novoDestino, destino)) {
     destino = novoDestino;
@@ -118,6 +120,7 @@ directions.on("profile", () => {
 
 map.on("load", () => {
 
+  mudaCorWaypoints()
 
   // desabilitando o scroll zoom do mapa
   // map.scrollZoom.disable();
@@ -196,11 +199,13 @@ map.on("load", () => {
     source: "theBox",
     layout: {},
     paint: {
-      "fill-color": "#FFC300",
-      "fill-opacity": 0.3,
-      "fill-outline-color": "#FFC300",
+      "fill-color": "#FFFFFF",
+      "fill-opacity": 0.15,
+      "fill-outline-color": "#FFFFFF",
     },
   });
+
+
 
 });
 
@@ -346,6 +351,8 @@ let maxObstacles = -Infinity;
 let rotasIguais = false
 
 directions.on("route", async (event) => {
+
+
 
   desabilitaBtnDirecoes()
   // map.setLayoutProperty("directions-route-line-casing", "visibility", "visible");
@@ -933,21 +940,35 @@ function gerarResultado(element, rotasIguais) {
   
 
   if (rotasIguais == false) {
+
+    // infos melhor rota
+    document.querySelector(
+      "section.container.melhor-rota > div.percentual"
+    ).innerHTML = `${percentualMinObstacles.toFixed(0)}% ↓ ASSALTOS`;
+
     document.querySelector(
       "section.container.melhor-rota > p.infos-rota"
     ).innerHTML = `${tempoMelhorRota} min • ${distanciaMelhorRota.toFixed(1)} km`;
   
     document.querySelector(
       "section.container.melhor-rota > p.text"
-    ).innerHTML = `Rota com<strong> -roubos</strong><br>teve <strong>${assaltosMelhorRota.toFixed(1)} casos</strong>`;
-  
+    ).innerHTML = `Rota com<strong> -roubos</strong><br>teve <strong>${assaltosMelhorRota.toFixed(0)} casos</strong>`;
+
+
+    // infos pior rota
     document.querySelector(
-      "section.container.pior-rota > p.text"
-    ).innerHTML = `Rota com<strong> +roubos</strong><br>teve <strong>${assaltosPiorRota.toFixed(1)} casos</strong>`;
-    
+      "section.container.pior-rota > div.percentual"
+    ).innerHTML = `${percentualMaxObstacles.toFixed(0)}% ↑ ASSALTOS`;
+
     document.querySelector(
       "section.container.pior-rota > p.infos-rota"
     ).innerHTML = `${tempoPiorRota} min • ${distanciaPiorRota.toFixed(1)} km`;
+  
+    document.querySelector(
+      "section.container.pior-rota > p.text"
+    ).innerHTML = `Rota com<strong> +roubos</strong><br>teve <strong>${assaltosPiorRota.toFixed(0)} casos</strong>`;
+    
+    
 
     // document.querySelector(
     //   "section.container.melhor-rota > p.text"
@@ -1052,6 +1073,8 @@ function reiniciarDirecoes() {
   document.querySelector("section.container.pior-rota").style.display = "none";
   document.querySelector("section.container.rotas-iguais").style.display = "none";
   document.querySelector("section.container.nova-busca").style.display = "none";  
+
+  
 
 };
 
@@ -1241,6 +1264,20 @@ function mostrarInstrucoes(tipoRota){
     map.setPaintProperty("worstRoute", "line-color", "rgba(255, 141, 158, 0.3)");
     map.setPaintProperty("worstRoute2", "line-color", "rgba(255, 141, 158, 0.3)");
 
+    // inserindo dados da rota
+    document.querySelector(
+      "div.infos-rota-selecao > div:nth-child(1) > p:nth-child(2)"
+    ).innerHTML = `${tempoMelhorRota} min • ${distanciaMelhorRota.toFixed(1)} km`;
+
+    document.querySelector(
+      "div.infos-rota-selecao > div:nth-child(2) > p:nth-child(1)"
+    ).innerHTML = `<strong> ↓ ${percentualMinObstacles.toFixed(1)}%</strong> menos assaltos`;
+    
+    document.querySelector(
+      "div.infos-rota-selecao > div:nth-child(2) > p:nth-child(2)"
+    ).innerHTML = `<strong>${assaltosMelhorRota.toFixed(0)}</strong> roubos registrados`;
+
+
     console.log("melhor-rota")
 
   } if (tipoRota == "pior-rota") {
@@ -1253,6 +1290,19 @@ function mostrarInstrucoes(tipoRota){
 
     map.setPaintProperty("bestRoute", "line-color", "rgba(95, 194, 203, 0.3)");
     map.setPaintProperty("bestRoute2", "line-color", "rgba(95, 194, 203, 0.3)");
+
+
+    document.querySelector(
+      "div.infos-rota-selecao > div:nth-child(1) > p:nth-child(2)"
+    ).innerHTML = `${tempoPiorRota} min • ${distanciaPiorRota.toFixed(1)} km`;
+
+    document.querySelector(
+      "div.infos-rota-selecao > div:nth-child(2) > p:nth-child(1)"
+    ).innerHTML = `<strong>↑ ${percentualMaxObstacles.toFixed(1)}%</strong> mais assaltos`;
+    
+    document.querySelector(
+      "div.infos-rota-selecao > div:nth-child(2) > p:nth-child(2)"
+    ).innerHTML = `<strong>${assaltosPiorRota.toFixed(0)}</strong> roubos registrados`;
 
 
     console.log("pior-rota")
@@ -1279,4 +1329,15 @@ function ocultarContainerRotas() {
 
 function ocultarBarraDirecoes() {
   document.querySelector("#map > div.mapboxgl-control-container > div.mapboxgl-ctrl-top-left").style.display = "none"
+}
+
+
+function mudaCorWaypoints() {
+      //  mudando a cor dos waypoints (A e B) do mapa
+      map.setPaintProperty('directions-origin-point', 'circle-color', '#707070');
+      map.setPaintProperty('directions-destination-point', 'circle-color', '#DFDFDF');
+    
+      map.setPaintProperty('directions-origin-label', 'text-color', '#0D0D0D');
+      map.setPaintProperty('directions-destination-label', 'text-color', '#0D0D0D');
+    
 }

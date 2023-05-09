@@ -1,5 +1,5 @@
 
-@import url('https://fonts.googleapis.com/css2?family=Inter:wght@100;200;300;400;500;600;700;800;900&display=swap');
+@import url('https://fonts.googleapis.com/css2?family=Inter:wght@100;200;300;350;400;500;600;700;800;900&display=swap');
 
 
 body {
@@ -209,18 +209,18 @@ section.container.loading {
 }
 
 section.container.loading p {
-    font-size: 14px;
+    font-size: 16px;
     font-weight: 400;
 
 }
 
 
 div.container-geral div.percentual {
-  padding: 13px 17px;
+  padding: 12px 17px;
   border-radius: 50px;
-  margin-top: -50px;
+  margin-top: -46px;
   margin-bottom: 10px;
-  font-size: 12px;
+  font-size: 12.7px;
   font-weight: 500;
 }
 
@@ -347,6 +347,24 @@ div.btn-voltar {
   color: #FFFFFF;
 }
 
+
+#map > div.mapboxgl-control-container > div.mapboxgl-ctrl-top-left > div > div > div > div:nth-child(1) > div.mapbox-directions-origin > label {
+  background-color: #707070;
+}
+
+#map > div.mapboxgl-control-container > div.mapboxgl-ctrl-top-left > div > div > div > div:nth-child(1) > div.mapbox-directions-destination > label {
+  background-color: #DFDFDF;
+}
+
+/* deixando as letras A e B do buscador em tom de preto */
+#map > div.mapboxgl-control-container > div.mapboxgl-ctrl-top-left > div > div > div > div:nth-child(1) > div.mapbox-directions-origin > label > span {
+  filter: grayscale(100%) brightness(0.1);
+}
+
+#map > div.mapboxgl-control-container > div.mapboxgl-ctrl-top-left > div > div > div > div:nth-child(1) > div.mapbox-directions-destination > label > span {
+  filter: grayscale(100%) brightness(0.2);
+
+}
 
 body > div.container-geral > section {
   background-color: rgba(0, 0, 0, 0.0);;
@@ -512,7 +530,8 @@ body > div.container-geral > section {
  p.text {
     margin-bottom: 5px;
     font-weight: 400;
-    font-size: 17px;
+    font-size: 17.5px;
+    line-height: 22px;
  }
 
 
@@ -520,8 +539,8 @@ body > div.container-geral > section {
   /* infos de tempo e distancia da rota */
 
 p.infos-rota {
-    font-size: 14px;
-    color: #b5b5b5;
+    font-size: 13.5px;
+    color: #7c7c7c;
     margin: 0;
     font-weight: 400;
     text-transform: uppercase;
@@ -529,6 +548,7 @@ p.infos-rota {
 
 section.container > img {
   width: 180px;
+  
 }
 
 /* instrucoes das rotas */
@@ -536,12 +556,13 @@ section.container > img {
 p.btn-instrucoes {
 
     color: var(--branco-claro);
-    font-weight: 500;
+    font-weight: 400;
     /* text-decoration: underline; */
     cursor: pointer;
-    font-size: 15px;
+    font-size: 14px;
     margin-top: 15px;
     margin-bottom: 5px;
+    text-transform: uppercase;
 }
 
 
@@ -561,8 +582,9 @@ div.infos-rota-selecao {
   display: flex;
   justify-content: space-between;
   flex-direction: row;
-  font-size: 12px;
+  font-size: 12.8px;
   width: 100%;
+  text-transform: uppercase;
 }
 
 div.infos-rota-selecao > div {
@@ -586,6 +608,11 @@ div.infos-rota-selecao > div:nth-child(2) {
 
 section.container.instrutions {
   width: 400px;
+}
+
+
+div.container-bottom > div > div:nth-child(1) > p:nth-child(1) {
+  font-weight: 7000;
 }
 
 
