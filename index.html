@@ -67,7 +67,7 @@
           <p class="infos-rota">20 min • 10,2 km</p>
           <p class="text"></p>
 
-          <p class="btn-instrucoes" onclick="mostrarInstrucoes()">▸ Detalhes da rota</p>
+          <p class="btn-instrucoes" onclick="mostrarInstrucoes('melhor-rota')">▸ Detalhes da rota</p>
       <!-- <div class="instrutions">
             <div id="routeInstructions"></div>
   
@@ -82,7 +82,7 @@
           <p class="infos-rota"></p>
           <p class="text"></p>
           
-          <p class="btn-instrucoes" onclick="mostrarInstrucoes()">▸ Detalhes da rota</p>
+          <p class="btn-instrucoes" onclick="mostrarInstrucoes('pior-rota')">▸ Detalhes da rota</p>
           <!-- <div class="instrutions">
             <div id="routeInstructions"></div>
   
@@ -99,7 +99,7 @@
         </section>
 
         <div class="container-instrutions">
-          <div class="btn-voltar">← VOLTAR</div>
+          <div class="btn-voltar" onclick="ocultarContainerRotas()">← VOLTAR</div>
           <div class="infos-rota-selecao">
             <div>
               <p>DETALHES DA ROTA</p>
@@ -139,6 +139,5 @@
 </body>
 
 </html>
-
 
 

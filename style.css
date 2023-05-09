@@ -162,7 +162,7 @@ body > div.container-geral > div.sidebar > div.container-bottom {
 
 
 section.container {
-    width: 165px;
+    width: 155px;
     background-color: rgba(0, 0, 0, 0.6);
     color: #FFFFFF;
     padding: 25px;
@@ -178,9 +178,9 @@ section.container {
 }
 
 .container-instrutions {
-  display: flex;
+  display: none;
   height: 270px;
-  width: 400px;
+  width: 425px;
   background-color: rgba(0, 0, 0, 0.6);
   /* padding: 25px; */
   color: var(--branco);
@@ -236,6 +236,7 @@ div.btn-voltar {
     font-weight: 600;
     background-color: var(--cinza-claro);
     color: var(--preto);
+    cursor: pointer;
 }
 
 
@@ -467,7 +468,7 @@ div.infos-rota-selecao {
 }
 
 div.infos-rota-selecao > div {
-  padding: 35px 25px;
+  padding: 33px 25px 25px 30px;
   display: flex;
   flex-direction: column;
   gap: 4px;

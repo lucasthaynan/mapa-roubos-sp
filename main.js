@@ -365,7 +365,7 @@ directions.on("route", async (event) => {
     bloquearEntradaOrigemDestino(map);
 
     // inserindo instrucoes
-    inserindoInstrucoesRotas(routesInfo)
+    // inserindoInstrucoesRotas(routesInfo)
 
     
 
@@ -1148,19 +1148,19 @@ function trajetoRotas(routesInfo) {
 }
 
 
-function inserindoInstrucoesRotas(routesInfo) {
+function inserindoInstrucoesRotas(intrucoesRota) {
 
   console.log("inserindo instrucoes da rota")
   // Obtém o elemento <ul> em que as instruções serão exibidas
   var routeInstructionsElement = document.getElementById("routeInstructions");
 
-  // excluindo dados casa exista
+  // excluindo dados caso exista
   routeInstructionsElement.innerHTML = ""
 		
   // Itera sobre as instruções e cria um elemento <div> para cada uma
-  for (var i = 0; i < instrucoesMelhorRota.length; i++) {
+  for (var i = 0; i < intrucoesRota.length; i++) {
     var instructionNumber = i + 1;
-    var instructionText = instrucoesMelhorRota[i];
+    var instructionText = intrucoesRota[i];
     
     var instructionElement = document.createElement("div");
     instructionElement.classList.add("routeInstruction");
@@ -1176,22 +1176,26 @@ function inserindoInstrucoesRotas(routesInfo) {
   }
 }
 
-mostrarInstrucoesAtivo = false
 
-function mostrarInstrucoes(){
-  if (mostrarInstrucoesAtivo == false){
-    document.querySelector("div.instrutions").style.display = "flex";
-    document.querySelector(".container.pior-rota").style.display = "none";
-    document.querySelector(".container.melhor-rota").style.display = "none";
-    mostrarInstrucoesAtivo = true
-    // document.querySelector(".melhor-rota > p.btn-instrucoes").innerText = "▴ Ocultar instruções";
-  } else {
-    document.querySelector("div.instrutions").style.display = "none";
-    document.querySelector(".container.pior-rota").style.display = "flex";
-    mostrarInstrucoesAtivo = false
-    document.querySelector(".melhor-rota > p.btn-instrucoes").innerText = "▸ Detalhes da rota";
-  }
-}
+
+
+// function mostrarInstrucoes(){
+//   if (mostrarInstrucoesAtivo == false){
+//     document.querySelector("div.container-instrutions").style.display = "flex";
+//     document.querySelector("div.instrutions").style.display = "flex";
+//     document.querySelector(".container.pior-rota").style.display = "none";
+//     document.querySelector(".container.melhor-rota").style.display = "none";
+//     mostrarInstrucoesAtivo = true
+//     // document.querySelector(".melhor-rota > p.btn-instrucoes").innerText = "▴ Ocultar instruções";
+//   } else {
+//     document.querySelector("div.container-instrutions").style.display = "flex";
+//     document.querySelector("div.instrutions").style.display = "flex";
+//     document.querySelector(".container.pior-rota").style.display = "flex";
+//     mostrarInstrucoesAtivo = false
+//     document.querySelector(".melhor-rota > p.btn-instrucoes").innerText = "▸ Detalhes da rota";
+//   }
+// }
+
 
 function removeLayersAndSources() {
   if (map.getLayer("clusters")) {
@@ -1208,4 +1212,62 @@ function removeLayersAndSources() {
 function desabilitaBtnDirecoes() {
   document.querySelector("#mapbox-directions-origin-input > div > div > button").style.display = "none"
   document.querySelector("#mapbox-directions-destination-input > div > div > button").style.display = "none"
+}
+
+
+mostrarInstrucoesAtivo = false
+
+function mostrarInstrucoes(tipoRota){
+
+  document.querySelector("div.container-instrutions").style.display = "flex";
+  document.querySelector("div.instrutions").style.display = "flex";
+  document.querySelector(".container.pior-rota").style.display = "none";
+  document.querySelector(".container.melhor-rota").style.display = "none";
+
+  if (tipoRota == "melhor-rota"){
+
+    document.querySelector("div.infos-rota-selecao").style.background = "#5FC2CB";
+    inserindoInstrucoesRotas(instrucoesMelhorRota)
+
+    map.setPaintProperty("bestRoute", "line-color", "rgba(95, 194, 203, 1)");
+    map.setPaintProperty("bestRoute2", "line-color", "rgba(95, 194, 203, 1)");
+
+    map.setPaintProperty("worstRoute", "line-color", "rgba(255, 141, 158, 0.3)");
+    map.setPaintProperty("worstRoute2", "line-color", "rgba(255, 141, 158, 0.3)");
+
+    console.log("melhor-rota")
+
+  } if (tipoRota == "pior-rota") {
+
+    document.querySelector("div.infos-rota-selecao").style.background = "#FF8D9E";
+    inserindoInstrucoesRotas(instrucoesPiorRota)
+
+    map.setPaintProperty("worstRoute", "line-color", "rgba(255, 141, 158, 1)");
+    map.setPaintProperty("worstRoute2", "line-color", "rgba(255, 141, 158, 1)");
+
+    map.setPaintProperty("bestRoute", "line-color", "rgba(95, 194, 203, 0.3)");
+    map.setPaintProperty("bestRoute2", "line-color", "rgba(95, 194, 203, 0.3)");
+
+    
+
+    console.log("pior-rota")
+ 
+
+  }
+}
+
+function ocultarContainerRotas() {
+
+  document.querySelector("div.container-instrutions").style.display = "none";
+  document.querySelector("div.instrutions").style.display = "none";
+  document.querySelector(".container.pior-rota").style.display = "flex";
+  document.querySelector(".container.melhor-rota").style.display = "flex";
+
+  map.setPaintProperty("worstRoute", "line-color", "rgba(255, 141, 158, 1)");
+  map.setPaintProperty("worstRoute2", "line-color", "rgba(255, 141, 158, 1)");
+
+  map.setPaintProperty("bestRoute", "line-color", "rgba(95, 194, 203, 1)");
+  map.setPaintProperty("bestRoute2", "line-color", "rgba(95, 194, 203, 1)");
+
+
 }
