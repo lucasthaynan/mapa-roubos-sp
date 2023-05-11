@@ -360,8 +360,10 @@ let minObstacles = Infinity;
 let maxObstacles = -Infinity;
 let rotasIguais = false
 
-directions.on("route", async (event) => {
+let loaderBar = document.querySelector('.custom-loader');
 
+
+directions.on("route", async (event) => {
 
 
   desabilitaBtnDirecoes()
@@ -392,6 +394,7 @@ directions.on("route", async (event) => {
     // addAreasMaiorVolume()
 
   } else {
+
     for (const route of event.route) {
       const routeLine = polyline.toGeoJSON(route.geometry);
 
@@ -402,7 +405,6 @@ directions.on("route", async (event) => {
       polygon = turf.bboxPolygon(bbox);
       map.getSource("theBox").setData(polygon);
       const clear = turf.booleanDisjoint(obstacle, routeLine);
-
 
       if (counter == 0) {
         // Cria um objeto de bounds do Mapbox GL a partir da bounding box
@@ -511,6 +513,9 @@ directions.on("route", async (event) => {
 
         totalObstacles += obstacles;
         numRoutes++;
+
+        
+
 
         if (obstacles < minObstacles) {
           minObstacles = obstacles;
@@ -936,7 +941,7 @@ function addCard(id, element, clear, detail) {
 
   document.querySelector(
     "section.container.loading > p"
-  ).innerHTML = `Buscando a melhor rota... <strong>${id}</strong> de ${maxAttempts}`;
+  ).innerHTML = `Buscando rota mais segura... <strong>${id}</strong> de ${maxAttempts}`;
 
 
 }
@@ -1370,3 +1375,19 @@ document.querySelector("#mapbox-directions-origin-input > div > input[type=text]
 document.querySelector("#mapbox-directions-destination-input > div > input[type=text]").addEventListener("click", e => {
   document.querySelector("div.mapboxgl-ctrl-top-left > div > div > div > div:nth-child(1) > div.mapbox-directions-destination").style.animation = "none"
 })
+
+
+// let currentItem = 0;
+// const loader = document.querySelector('.custom-loader');
+
+// function nextItem() {
+//   if (currentItem < items.length) {
+//     // Atualiza o tamanho da barra de progresso de acordo com o progresso do loop
+//     loader.style.backgroundSize = `${(currentItem / items.length) * 100}% 100%`;
+//     console.log(items[currentItem]);
+//     currentItem++;
+//     setTimeout(nextItem, 1000);
+//   }
+// }
+
+// nextItem();

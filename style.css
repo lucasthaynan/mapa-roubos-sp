@@ -286,14 +286,34 @@ section.container.pior-rota > p > strong {
 
 
 section.container.loading {
-  width: 250px;
+  width: 285px;
+  padding: 10px 20px 15px 20px;
 
 }
 
 section.container.loading p {
+    margin-top: 0px;
     font-size: 16px;
     font-weight: 400;
 
+}
+
+
+.custom-loader {
+  width: 120px;
+  height: 20px;
+  border-radius: 20px;
+  background: linear-gradient(#766DF4 0 0) left/0% 100% no-repeat #E4E4ED;
+  animation: p2 2s infinite;
+}
+
+@keyframes p2 {
+  0% {
+    background-size: 0% 100%;
+  }
+  100% {
+    background-size: 100% 100%;
+  }
 }
 
 
@@ -567,6 +587,20 @@ body > div.container-geral > section {
 
     body > div.container-geral > section {
       padding-top: 50px;
+    }
+
+    body > div.container-geral > div > section > div.icon-load > svg {
+      display: none;
+    }
+
+    section.container.loading {
+      width: 270px;
+      max-width: 95vw;
+      margin-bottom: 100px;
+    }
+
+    section.container.loading p {
+      margin-top: 15px;
     }
 
 
