@@ -44,22 +44,23 @@ function clickBtnCurrent() {
   // when the button is clicked, call the getUserLocation function
   tzButton.addEventListener("click", e => {
 
-    let input = document.querySelectorAll(
-        '.mapboxgl-ctrl-geocoder > input[type="text"]'
-      );
-      input.forEach((input) => {
-        if (input.placeholder == "ORIGEM") {
-          input.placeholder = "BUSCANDO SUA LOCALIZAÇÃO...";
-
-        } 
-      });
-
     getUserLocation()
   })
 }
   
 
 function getUserLocation() {
+
+  let input = document.querySelectorAll(
+    '.mapboxgl-ctrl-geocoder > input[type="text"]'
+  );
+  input.forEach((input) => {
+    if (input.placeholder == "ORIGEM") {
+      input.placeholder = "BUSCANDO SUA LOCALIZAÇÃO...";
+
+    } 
+  });
+
   // show a loading animation while we wait for the data
   // tzButton.classList.add('loading');
   // tzButton.disabled = true;
@@ -77,6 +78,17 @@ function getUserLocation() {
     document.querySelector('#mapbox-directions-origin-input > div > input[type=text]').value = longitude + "," + latitude
 
   }
+
+  input = document.querySelectorAll(
+    '.mapboxgl-ctrl-geocoder > input[type="text"]'
+  );
+
+  input.forEach((input) => {
+    if (input.placeholder == "BUSCANDO SUA LOCALIZAÇÃO...") {
+      input.placeholder = "ORIGEM";
+
+    } 
+  });
 
   }
     function error() {
