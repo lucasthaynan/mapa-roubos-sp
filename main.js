@@ -118,7 +118,7 @@ let directions = new MapboxDirections({
   geometries: "geojson",
   controls: { instructions: false },
   flyTo: true,
-  interactive: true,
+  interactive: false,
   language: "pt-BR",
   placeholderOrigin: "ORIGEM",
   placeholderDestination: "DESTINO",
@@ -228,7 +228,7 @@ map.on("load", () => {
   mudaCorWaypoints()
 
   // desabilitando o scroll zoom do mapa
-  // map.scrollZoom.disable();
+  map.scrollZoom.disable();
 
   map.addLayer({
     'id': 'sp-boundary',
