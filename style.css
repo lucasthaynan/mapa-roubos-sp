@@ -466,6 +466,22 @@ body > div.container-geral > section {
     }
   }
 
+  @media only screen and (max-width: 500px) {
+    .svg-rotating {
+      animation: spin-slow 2s linear infinite;
+    }
+  
+    @keyframes spin-slow {
+      from {
+        transform: rotate(0deg);
+      }
+      to {
+        transform: rotate(360deg);
+      }
+    }
+  }
+  
+
   section.container.nova-busca > div {
     background-color: rgba(255, 255, 255, 0.9);
     padding: 14px 20px;

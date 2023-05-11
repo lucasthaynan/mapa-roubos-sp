@@ -298,7 +298,7 @@ setInterval(() => {
 
 
 let counter = 0;
-const maxAttempts = 3;
+const maxAttempts = 10;
 
 directions.on("clear", () => {
   console.log("Limpando rotas...");
@@ -852,15 +852,15 @@ function pegarOrigemDestino() {
 
   // insere novamente as informacoes de origem e destino
 
-  input.forEach((input) => {
-    // console.log(input.value);
+  // input.forEach((input) => {
+  //   // console.log(input.value);
 
-    if (input.placeholder == "Origem") {
-      input.value = origemInserida;
-    } else {
-      input.value = destinoInserido;
-    }
-  });
+  //   if (input.placeholder == "Origem") {
+  //     input.value = origemInserida;
+  //   } else {
+  //     input.value = destinoInserido;
+  //   }
+  // });
 }
 
 function traduzirInput() {
@@ -930,7 +930,7 @@ const reports = document.getElementById("reports");
 // FUNÇAO PARA ADICIONAR CARD COM INFOS DAS ROTAS NA TELA
 function addCard(id, element, clear, detail) {
 
-  pegarOrigemDestino()
+  // pegarOrigemDestino()
 
   // desativarInterativideMapa()
 
