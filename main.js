@@ -164,13 +164,26 @@ map.addControl(directions, "top-left");
 let obstacle;
 
 // carregando os dados de assaltos (obstáculos)
-fetch("./seu_arquivo_modificado.json")
-  .then((response) => response.json())
-  .then((data) => {
-    clearances = data;
-    obstacle = turf.buffer(clearances, 0.035, { units: "kilometers" });
-  })
-  .catch((error) => console.error(error));
+let retries = 0;
+
+function loadClearances() {
+  fetch("./seu_arquivo_modificado.json")
+    .then((response) => response.json())
+    .then((data) => {
+      clearances = data;
+      obstacle = turf.buffer(clearances, 0.035, { units: "kilometers" });
+    })
+    .catch((error) => {
+      console.error(error);
+      if (retries < 2) {
+        retries++;
+        console.log(`Retrying... attempt ${retries}`);
+        loadClearances();
+      }
+    });
+}
+
+loadClearances();
 
 // carregando os dados de assaltos (obstáculos)
 let limitesSaoPaulo 
