@@ -54,11 +54,14 @@ function getUserLocation() {
   let input = document.querySelectorAll(
     '.mapboxgl-ctrl-geocoder > input[type="text"]'
   );
+
   input.forEach((input) => {
     if (input.placeholder == "ORIGEM") {
       input.placeholder = "BUSCANDO SUA LOCALIZAÇÃO...";
-
-    } 
+      setTimeout(() => {
+        input.placeholder = "ORIGEM";
+      }, 7000);
+    }
   });
 
   // show a loading animation while we wait for the data
@@ -214,6 +217,9 @@ directions.on("origin", (origin) => {
 });
 
 directions.on("destination", (destination) => {
+
+  document.querySelector("section.container.detalhes").style.display = "none";
+
   mudaCorWaypoints()
   const novoDestino = destination.feature.geometry.coordinates;
   if (destino === null || !coordenadasIguais(novoDestino, destino)) {
@@ -472,6 +478,7 @@ let loaderBar = document.querySelector('.custom-loader');
 
 directions.on("route", async (event) => {
 
+  
 
   desabilitaBtnDirecoes()
   // map.setLayoutProperty("directions-route-line-casing", "visibility", "visible");
@@ -1477,6 +1484,8 @@ let btnStart = document.querySelector("div.btn-tracar-rota")
 
 btnStart.addEventListener("click", e => {
   document.querySelector("section.popup").style.display = "none";
+
+  document.querySelector("section.container.detalhes").style.display = "flex";
 
   document.querySelector("div.mapboxgl-ctrl-top-left > div > div > div > div:nth-child(1) > div.mapbox-directions-origin").style.animation = "pulseinput 2s infinite"
 })
