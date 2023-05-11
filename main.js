@@ -75,7 +75,7 @@ function getUserLocation() {
 
   if (mapaReiniciado == true) {
 
-    document.querySelector('#mapbox-directions-origin-input > div > input[type=text]').value = longitude + "," + latitude
+    document.querySelector('#mapbox-directions-origin-input > div > input[type=text]').value = longitude.toFixed(5) + "," + latitude.toFixed(5);
 
   }
 
