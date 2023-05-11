@@ -89,6 +89,7 @@ body > section > div > div.btn .btn-tracar-rota {
 }
 
 
+
 /* criando animação de pulse */
 @keyframes pulse {
   0% {
@@ -103,6 +104,21 @@ body > section > div > div.btn .btn-tracar-rota {
   
   100% {
     transform: scale(0.95);
+    box-shadow: 0 0 0 0 rgba(255, 255, 255, 0);
+  }
+}
+
+
+@keyframes pulseinput {
+  0% {
+    box-shadow: 0 0 0 0 rgba(255, 255, 255, 0.724);
+  }
+  
+  70% {
+    box-shadow: 0 0 0 10px rgba(255, 255, 255, 0);
+  }
+  
+  100% {
     box-shadow: 0 0 0 0 rgba(255, 255, 255, 0);
   }
 }

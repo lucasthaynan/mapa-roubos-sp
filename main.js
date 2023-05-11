@@ -1,10 +1,4 @@
 
-let btnStart = document.querySelector("div.btn-tracar-rota")
-
-btnStart.addEventListener("click", e => {
-  document.querySelector("section.popup").style.display = "none";
-})
-
 
 // Função para desabilitar a entrada de texto no Geocoder
 
@@ -97,7 +91,16 @@ function coordenadasIguais(coord1, coord2) {
   return coord1[0] === coord2[0] && coord1[1] === coord2[1];
 }
 
+
+let animationApplied = false;
+
 directions.on("origin", (origin) => {
+
+  if (!animationApplied) {
+    document.querySelector("div.mapboxgl-ctrl-top-left > div > div > div > div:nth-child(1) > div.mapbox-directions-destination").style.animation = "pulseinput 2s infinite";
+    animationApplied = true;
+  }
+
   mudaCorWaypoints()
   const novaOrigem = origin.feature.geometry.coordinates;
   if (origem === null || !coordenadasIguais(novaOrigem, origem)) {
@@ -1348,3 +1351,22 @@ function mudaCorWaypoints() {
       map.setPaintProperty('directions-destination-label', 'text-color', '#0D0D0D');
     
 }
+
+
+let btnStart = document.querySelector("div.btn-tracar-rota")
+
+btnStart.addEventListener("click", e => {
+  document.querySelector("section.popup").style.display = "none";
+
+  document.querySelector("div.mapboxgl-ctrl-top-left > div > div > div > div:nth-child(1) > div.mapbox-directions-origin").style.animation = "pulseinput 2s infinite"
+})
+
+
+document.querySelector("#mapbox-directions-origin-input > div > input[type=text]").addEventListener("click", e => {
+  document.querySelector("div.mapboxgl-ctrl-top-left > div > div > div > div:nth-child(1) > div.mapbox-directions-origin").style.animation = "none"
+})
+
+
+document.querySelector("#mapbox-directions-destination-input > div > input[type=text]").addEventListener("click", e => {
+  document.querySelector("div.mapboxgl-ctrl-top-left > div > div > div > div:nth-child(1) > div.mapbox-directions-destination").style.animation = "none"
+})
