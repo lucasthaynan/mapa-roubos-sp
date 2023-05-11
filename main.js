@@ -20,6 +20,17 @@ function adicionarBtnLocalizacaoAtual() {
     tzButton = document.querySelector('.current-icon');
 
     clickBtnCurrent()
+
+    let inputElement = document.querySelector("#mapbox-directions-origin-input > div > input[type=text]");
+    
+    inputElement.addEventListener("input", function(event) {
+      if (inputElement.value === "") {
+        tzButton.style.display = "block";
+      } else {
+        tzButton.style.display = "none";
+      }
+    });
+
     
 }
 
