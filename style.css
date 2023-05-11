@@ -58,7 +58,7 @@ section.popup {
 .container-start {
 
   width: 240px;
-  height: 240px;
+  height: 250px;
   position: fixed;
   z-index: 10;
   background-color: #56BAC3;
@@ -76,7 +76,7 @@ body > section > div > div.btn {
 body > section > div > div.btn .btn-tracar-rota {
   padding: 13px 25px;
   border-radius: 50px;
-  margin-top: 31px;
+  margin-top: 28px;
   margin-bottom: 10px;
   font-size: 13px;
   font-weight: 600;
@@ -122,6 +122,11 @@ body > section > div > div.btn .btn-tracar-rota {
   100% {
     box-shadow: 0 0 0 0 rgba(255, 255, 255, 0);
   }
+}
+
+section > div > p.descricao {
+  font-size: 15px;
+
 }
 
 
