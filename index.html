@@ -1,154 +1,148 @@
 <!DOCTYPE html>
 <html lang="en">
+  <head>
+    <meta charset="utf-8" />
+    <title>Rota +Segura Estadão</title>
+    <meta name="robots" content="noindex, nofollow" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <!-- <script src="https://api.tiles.mapbox.com/mapbox-gl-js/v2.13.0/mapbox-gl.js"></script> -->
+    <link href="style.css" rel="stylesheet" />
 
-<head>
+    <!-- Import Mapbox GL JS -->
+    <script src="https://api.tiles.mapbox.com/mapbox-gl-js/v2.14.1/mapbox-gl.js"></script>
+    <link
+      href="https://api.tiles.mapbox.com/mapbox-gl-js/v2.14.1/mapbox-gl.css"
+      rel="stylesheet"
+    />
 
-  <meta charset="utf-8" />
-  <title>Rota +Segura Estadão</title>
-  <meta name="robots" content="noindex, nofollow" />
-  <meta name="viewport" content="width=device-width, initial-scale=1" />
-  <!-- <script src="https://api.tiles.mapbox.com/mapbox-gl-js/v2.13.0/mapbox-gl.js"></script> -->
-  <link href="style.css" rel="stylesheet" />
+    <!-- Import Mapbox GL Directions -->
+    <script src="https://api.mapbox.com/mapbox-gl-js/plugins/mapbox-gl-directions/v4.0.2/mapbox-gl-directions.js"></script>
+    <link
+      rel="stylesheet"
+      href="https://api.mapbox.com/mapbox-gl-js/plugins/mapbox-gl-directions/v4.0.2/mapbox-gl-directions.css"
+      type="text/css"
+    />
 
-  <!-- Import Mapbox GL JS -->
-  <script src="https://api.tiles.mapbox.com/mapbox-gl-js/v2.14.1/mapbox-gl.js"></script>
-  <link href="https://api.tiles.mapbox.com/mapbox-gl-js/v2.14.1/mapbox-gl.css" rel="stylesheet" />
+    <!-- Import Turf & Polyline -->
+    <script src="https://npmcdn.com/@turf/turf/turf.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/mapbox-polyline/1.1.1/polyline.js"></script>
+  </head>
 
-  <!-- Import Mapbox GL Directions -->
-  <script
-    src="https://api.mapbox.com/mapbox-gl-js/plugins/mapbox-gl-directions/v4.0.2/mapbox-gl-directions.js"></script>
-  <link rel="stylesheet"
-    href="https://api.mapbox.com/mapbox-gl-js/plugins/mapbox-gl-directions/v4.0.2/mapbox-gl-directions.css"
-    type="text/css" />
+  <body>
 
-  <!-- Import Turf & Polyline -->
-  <script src="https://npmcdn.com/@turf/turf/turf.min.js"></script>
-  <script src="https://cdnjs.cloudflare.com/ajax/libs/mapbox-polyline/1.1.1/polyline.js"></script>
-</head>
+    <section class="popup">
+      <div class="container-start">
+        <img src="./imagens/logo_rota_mais_segura.svg" alt="" />
 
-<body>
-
-  <section class="popup">
-    <div class="container-start">
-      <img src="./imagens/logo_rota_mais_segura.svg" alt="">
-  
-      <p>QUAL TRAJETO É O + SEGURO?</p>
-      <p>Lorem ipsum dolor sit amet, consectetur adipiscing elit. Aliquam in sodales elit. Maecenas sed nisl felis. Proin nec tortor tempusante</p>
-      <div class="btn">
-        <div class="btn-tracar-rota">TRAÇAR ROTA →</div>
+        <p>QUAL TRAJETO É O + SEGURO?</p>
+        <p>
+          Lorem ipsum dolor sit amet, consectetur adipiscing elit. Aliquam in
+          sodales elit. Maecenas sed nisl felis. Proin nec tortor tempusante
+        </p>
+        <div class="btn">
+          <div class="btn-tracar-rota">TRAÇAR ROTA →</div>
+        </div>
       </div>
-    </div>
-  </section>
-  
-
-  <div id="map"></div>
-  <div class="container-geral">
-
-    <section class="container nova-busca">
-      <div onclick="reiniciarDirecoes()">Traçar nova rota</div>
     </section>
 
+    <div id="map"></div>
+    <div class="container-geral">
 
-
-    <div class="sidebar">
       
-      <section class="container loading">
 
-
-        <div class="icon-load">
-          <svg class="svg-rotating" xmlns="http://www.w3.org/2000/svg" width="130px" height="130px"
-            viewBox="0 0 100 100">
-            <path d="M 50,50 L 33,60.5 a 20 20 -210 1 1 34,0 z" fill="#fff">
-            </path>
-            <circle cx="50" cy="50" r="16" fill=""></circle>
-          </svg>
-        </div>
-        <p class="text-load">Buscando rota... 1 de 10</p>
+      <section class="container nova-busca">
+        <div onclick="reiniciarDirecoes()">Traçar nova rota</div>
       </section>
 
+      <div class="sidebar">
+        <section class="container loading">
+          <div class="icon-load">
+            <svg
+              class="svg-rotating"
+              xmlns="http://www.w3.org/2000/svg"
+              width="130px"
+              height="130px"
+              viewBox="0 0 100 100"
+            >
+              <path
+                d="M 50,50 L 33,60.5 a 20 20 -210 1 1 34,0 z"
+                fill="#fff"
+              ></path>
+              <circle cx="50" cy="50" r="16" fill=""></circle>
+            </svg>
+          </div>
+          <p class="text-load">Buscando rota... 1 de 10</p>
+        </section>
 
-      <div class="container-bottom">
+        <div class="container-bottom">
+          <section class="container melhor-rota">
+            <div class="percentual">20% ↓ ASSALTOS</div>
 
-       
+            <p class="infos-rota">20 min • 10,2 km</p>
+            <p class="text"></p>
 
-        <section class="container melhor-rota">
-
-          <div class="percentual">20% ↓ ASSALTOS</div>
-  
-          <p class="infos-rota">20 min • 10,2 km</p>
-          <p class="text"></p>
-
-          <p class="btn-instrucoes" onclick="mostrarInstrucoes('melhor-rota')">+ Detalhes</p>
-      <!-- <div class="instrutions">
+            <p
+              class="btn-instrucoes"
+              onclick="mostrarInstrucoes('melhor-rota')"
+            >
+              + Detalhes
+            </p>
+            <!-- <div class="instrutions">
             <div id="routeInstructions"></div>
   
           </div>
    -->
-  
-        </section>
-  
-        <section class="container pior-rota">
-  
-          <div class="percentual">12% ↑ ASSALTOS</div>
-          <p class="infos-rota"></p>
-          <p class="text"></p>
-          
-          <p class="btn-instrucoes" onclick="mostrarInstrucoes('pior-rota')">+ Detalhes</p>
-          <!-- <div class="instrutions">
+          </section>
+
+          <section class="container pior-rota">
+            <div class="percentual">12% ↑ ASSALTOS</div>
+            <p class="infos-rota"></p>
+            <p class="text"></p>
+
+            <p class="btn-instrucoes" onclick="mostrarInstrucoes('pior-rota')">
+              + Detalhes
+            </p>
+            <!-- <div class="instrutions">
             <div id="routeInstructions"></div>
   
           </div>
    -->
-        </section>
-  
-        <section class="container rotas-iguais">
-  
-          <div class="percentual">SEM ALTERNATIVAS :(</div>
-          <p class="infos-rota"></p>
-          <p class="text"></p>
+          </section>
 
-        </section>
+          <section class="container rotas-iguais">
+            <div class="percentual">SEM ALTERNATIVAS :(</div>
+            <p class="infos-rota"></p>
+            <p class="text"></p>
+          </section>
 
-        <div class="container-instrutions">
-          <div class="btn-voltar" onclick="ocultarContainerRotas()">← VOLTAR</div>
-          <div class="infos-rota-selecao">
-            <div>
-              <p>DETALHES DA ROTA</p>
-              <p>30 MIN • 10 KM</p>
+          <div class="container-instrutions">
+            <div class="btn-voltar" onclick="ocultarContainerRotas()">
+              ← VOLTAR
             </div>
-            <div>
-              <p>20% MENOS ASSALTOS*</p>
-              <p>60 ROUBOS REGISTRADOS</p>
-
+            <div class="infos-rota-selecao">
+              <div>
+                <p>DETALHES DA ROTA</p>
+                <p>30 MIN • 10 KM</p>
+              </div>
+              <div>
+                <p>20% MENOS ASSALTOS*</p>
+                <p>60 ROUBOS REGISTRADOS</p>
+              </div>
+            </div>
+            <div class="instrutions">
+              <!-- Local onde as instruções serão exibidas -->
+              <div id="routeInstructions"></div>
             </div>
           </div>
-          <div class="instrutions">
-            <!-- Local onde as instruções serão exibidas -->  
-            <div id="routeInstructions"></div>
+        </div>
 
-          </div>
+        <!-- <h1>Detalhes</h1> -->
+        <!-- <button id="click-all-buttons">Clique em todos os botões</button> -->
+        <div id="sidebar2" class="sidebar_3"></div>
+        <div id="reports"></div>
       </div>
-  
-
-      </div>
-      
-      
-      
-      
-      <!-- <h1>Detalhes</h1> -->
-      <!-- <button id="click-all-buttons">Clique em todos os botões</button> -->
-      <div id="sidebar2" class="sidebar_3"></div>
-      <div id="reports">
-
-      </div>
-
-
     </div>
-  </div>
 
-  <script src="./main.js"></script>
-</body>
-
+    <script src="./main.js"></script>
+  </body>
 </html>
-
-

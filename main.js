@@ -1,4 +1,72 @@
+mapboxgl.accessToken =
+  "pk.eyJ1IjoibHVjYXN0aGF5bmFuLWVzdGFkYW8iLCJhIjoiY2xnM3N1amQzMGlqeDNrbWdla3doY2o2dCJ9.OXh3OY3_HFqAiF-zzZ6SDQ";
 
+
+function adicionarBtnLocalizacaoAtual() {
+
+    console.log("botão ativado")
+    // selecionar o elemento onde o ícone será adicionado
+    originInput = document.querySelector('#mapbox-directions-origin-input > div');
+  
+    // criar o elemento IMG
+    let locationIcon = document.createElement("img");
+    locationIcon.src = "./imagens/current-location.png";
+    locationIcon.alt = "Current Location";
+    locationIcon.classList.add("current-icon");
+  
+    // adicionar o ícone ao elemento pai
+    originInput.appendChild(locationIcon);
+
+    tzButton = document.querySelector('.current-icon');
+
+    clickBtnCurrent()
+    
+}
+
+let originInput
+let longitude
+let latitude 
+let tzButton
+
+
+function clickBtnCurrent() {
+  // when the button is clicked, call the getUserLocation function
+  tzButton.addEventListener("click", e => {
+
+    let input = document.querySelectorAll(
+        '.mapboxgl-ctrl-geocoder > input[type="text"]'
+      );
+      input.forEach((input) => {
+        if (input.placeholder == "ORIGEM") {
+          input.placeholder = "Buscando sua localização...";
+        } 
+      });
+
+    getUserLocation()
+  })
+}
+  
+
+function getUserLocation() {
+  // show a loading animation while we wait for the data
+  // tzButton.classList.add('loading');
+  // tzButton.disabled = true;
+  async function success(position) {
+  // create variables that will hold the
+  // user's latitude and longitude data
+  longitude = position.coords.longitude;
+  latitude = position.coords.latitude;
+
+  console.log(longitude, latitude)
+  directions.setOrigin([longitude, latitude]);
+
+  }
+    function error() {
+      console.log(error)
+  }
+  
+  navigator.geolocation.getCurrentPosition(success, error);
+}
 
 // Função para desabilitar a entrada de texto no Geocoder
 
@@ -9,8 +77,7 @@ function bloquearEntradaOrigemDestino(map) {
   });
 }
 
-mapboxgl.accessToken =
-  "pk.eyJ1IjoibHVjYXN0aGF5bmFuLWVzdGFkYW8iLCJhIjoiY2xnM3N1amQzMGlqeDNrbWdla3doY2o2dCJ9.OXh3OY3_HFqAiF-zzZ6SDQ";
+
 
 // criando mapa com mapbox
 const map = new mapboxgl.Map({
@@ -41,6 +108,7 @@ let directions = new MapboxDirections({
   languagePlaceholderDestination: "DESTINO",
   geocoder: {
     language: "pt-BR",
+    proximity: [-46.6388, -23.5505], // condicionar sugestoes de localidades para São Paulo capital
   },
   steps: true,
   
@@ -96,6 +164,8 @@ let animationApplied = false;
 
 directions.on("origin", (origin) => {
 
+  tzButton.style.display = "none"
+
   if (!animationApplied) {
     document.querySelector("div.mapboxgl-ctrl-top-left > div > div > div > div:nth-child(1) > div.mapbox-directions-destination").style.animation = "pulseinput 2s infinite";
     animationApplied = true;
@@ -105,6 +175,10 @@ directions.on("origin", (origin) => {
   const novaOrigem = origin.feature.geometry.coordinates;
   if (origem === null || !coordenadasIguais(novaOrigem, origem)) {
     origem = novaOrigem;
+
+    document.querySelector("div.mapboxgl-ctrl-top-left > div > div > div > div:nth-child(1) > div.mapbox-directions-origin").style.animation = "none"
+    animationApplied = true;
+
     console.log("Origem atualizada:", origem);
   }
 });
@@ -129,6 +203,9 @@ directions.on("profile", () => {
 // Adicione um event listener para quando as direções forem carregadas
 
 map.on("load", () => {
+
+  adicionarBtnLocalizacaoAtual() 
+
 
   mudaCorWaypoints()
 
@@ -298,7 +375,7 @@ setInterval(() => {
 
 
 let counter = 0;
-const maxAttempts = 10;
+const maxAttempts = 3;
 
 directions.on("clear", () => {
   console.log("Limpando rotas...");
@@ -389,7 +466,6 @@ directions.on("route", async (event) => {
     // inserindo instrucoes
     // inserindoInstrucoesRotas(routesInfo)
 
-    
 
     // addAreasMaiorVolume()
 
@@ -1015,8 +1091,14 @@ let mapaReiniciado = false
 // Adicione um event listener para o botão que reinicia a entrada dos pontos A e B
 function reiniciarDirecoes() {
 
+
+  // reativando botão de localizao atual
+  // tzButton.style.display = "block"
+
   // exibindo novamente a barra de direcoes do mapbox
   document.querySelector("#map > div.mapboxgl-control-container > div.mapboxgl-ctrl-top-left").style.display = "block"
+
+  document.querySelector("div.container-instrutions").style.display = "none"
 
   mapaReiniciado = true
 
@@ -1089,7 +1171,10 @@ function reiniciarDirecoes() {
   document.querySelector("section.container.rotas-iguais").style.display = "none";
   document.querySelector("section.container.nova-busca").style.display = "none";  
 
-  
+  setTimeout(() => {
+    adicionarBtnLocalizacaoAtual();
+  }, 500);
+ 
 
 };
 

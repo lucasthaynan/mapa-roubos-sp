@@ -299,23 +299,6 @@ section.container.loading p {
 }
 
 
-.custom-loader {
-  width: 120px;
-  height: 20px;
-  border-radius: 20px;
-  background: linear-gradient(#766DF4 0 0) left/0% 100% no-repeat #E4E4ED;
-  animation: p2 2s infinite;
-}
-
-@keyframes p2 {
-  0% {
-    background-size: 0% 100%;
-  }
-  100% {
-    background-size: 100% 100%;
-  }
-}
-
 
 div.container-geral div.percentual {
   padding: 12px 17px;
@@ -822,3 +805,13 @@ p.routeInstructionText strong {
     font-size: 1.1em;
     color: #333;
 } */ 
+
+
+#mapbox-directions-origin-input img.current-icon {
+    position: fixed;
+    right: 10px;
+    top: 8px;
+    z-index: 10;
+    cursor: pointer;
+    opacity: 0.7;
+}
