@@ -579,7 +579,7 @@ body > div.container-geral > section {
     section.container.loading {
       width: 270px;
       max-width: 95vw;
-      margin-bottom: 100px;
+      margin-bottom: 40px;
     }
 
     section.container.loading p {

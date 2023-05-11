@@ -39,6 +39,7 @@ function clickBtnCurrent() {
       input.forEach((input) => {
         if (input.placeholder == "ORIGEM") {
           input.placeholder = "Buscando sua localização...";
+
         } 
       });
 
@@ -59,6 +60,12 @@ function getUserLocation() {
 
   console.log(longitude, latitude)
   directions.setOrigin([longitude, latitude]);
+
+  if (mapaReiniciado == true) {
+
+    document.querySelector('#mapbox-directions-origin-input > div > input[type=text]').value = longitude + "," + latitude
+
+  }
 
   }
     function error() {
