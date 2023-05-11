@@ -22,7 +22,7 @@ function adicionarBtnLocalizacaoAtual() {
     clickBtnCurrent()
 
     let inputElement = document.querySelector("#mapbox-directions-origin-input > div > input[type=text]");
-    
+
     inputElement.addEventListener("input", function(event) {
       if (inputElement.value === "") {
         tzButton.style.display = "block";
@@ -49,7 +49,7 @@ function clickBtnCurrent() {
       );
       input.forEach((input) => {
         if (input.placeholder == "ORIGEM") {
-          input.placeholder = "Buscando sua localização...";
+          input.placeholder = "BUSCANDO SUA LOCALIZAÇÃO...";
 
         } 
       });
