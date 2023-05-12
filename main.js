@@ -516,6 +516,7 @@ directions.on("route", async (event) => {
     // inserindo instrucoes
     // inserindoInstrucoesRotas(routesInfo)
 
+  
 
     // addAreasMaiorVolume()
 
@@ -556,9 +557,9 @@ directions.on("route", async (event) => {
         } else {
           map.fitBounds(bounds, {
             padding: {
-              top: 160,
+              top: 170,
               right: 240,
-              bottom: 220,
+              bottom: 250,
               left: 240,
             },
             maxZoom: map.getMaxZoom(),

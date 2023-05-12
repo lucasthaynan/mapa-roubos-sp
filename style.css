@@ -150,6 +150,10 @@ section > div > p.descricao {
   justify-content: center;
 }
 
+.mapboxgl-ctrl-top-left .mapboxgl-ctrl {
+  margin: 5px 15px !important;
+}
+
 body > div.container-geral > div.sidebar > div.container-bottom {
   display: flex;
     flex-direction: row;
@@ -567,11 +571,11 @@ body > div.container-geral > section {
     #map > div.mapboxgl-control-container > div.mapboxgl-ctrl-top-left {
 
       left: 0;
-      top: 20px;
+      top: 35px;
     }
 
     #map > div.mapboxgl-control-container > div.mapboxgl-ctrl-top-right {
-      padding: 17px;
+      padding: 32px 7px;
     }
 
     body > div.container-geral > section {
