@@ -158,7 +158,7 @@ let directions = new MapboxDirections({
 
 // Adiciona um listener para o evento `result` do MapboxDirections
 
-map.scrollZoom.enable();
+// map.scrollZoom.enable();
 map.addControl(directions, "top-left");
 
 let obstacle;
