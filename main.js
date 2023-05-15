@@ -167,7 +167,7 @@ let obstacle;
 let retries = 0;
 
 function loadClearances() {
-  fetch("./seu_arquivo_modificado.json")
+  fetch("./clearance_map.json")
     .then((response) => response.json())
     .then((data) => {
       clearances = data;
