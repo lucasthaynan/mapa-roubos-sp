@@ -37,3 +37,34 @@ svg.styles__ShareIconContainer-vgu0n4-0.cVSgBA.share-icon-svg {
 #social-media-lower > div.share-container svg {
     color: white;
 }
+
+div#uva-embed > p,
+div#uva-embed > h3 {
+    color: white;
+}
+
+div#uva-embed > hr {
+    border-top: 1.5px dotted white;
+}
+
+p.svelte-1s4w66w::before {
+    background-color: #5FC2CB;
+}
+
+iframe#lgpd {
+    display: none;
+}
+
+a:link, a:visited, a:hover, a:active {
+    color: #5FC2CB;
+}
+
+body > div > header > h1.graphic-title {
+    display: none !important;
+}
+
+@media (max-width: 500px) {
+    #iFrameResizer01 {
+      height: 1011px !important; /* Ajuste a altura desejada para dispositivos móveis */
+    }
+  }

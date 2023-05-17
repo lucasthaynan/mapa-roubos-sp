@@ -117,7 +117,7 @@ const map = new mapboxgl.Map({
   container: "map", // Specify the container ID
   style: "mapbox://styles/mapbox/dark-v11", // Specify which map style to use
   center: [-46.62889, -23.55594], // Specify the starting position [lng, lat]
-  zoom: 10.8, // Specify the starting zoom
+  zoom: 10.2, // Specify the starting zoom
   
 });
 
@@ -352,8 +352,8 @@ function addAreasMaiorVolume() {
     type: "geojson",
     data: clearances,
     cluster: true,
-    clusterMaxZoom: 20,
-    clusterRadius: 200,
+    clusterMaxZoom: 30,
+    clusterRadius: 220,
   });
   
   
@@ -399,7 +399,7 @@ function addAreasMaiorVolume() {
     layout: {
       "text-field": ["get", "point_count"],
       "text-font": ["DIN Offc Pro Medium", "Arial Unicode MS Bold"],
-      "text-size": 12,
+      "text-size": 15,
     },
   });
 
@@ -409,15 +409,19 @@ setInterval(() => {
   t++;
   const scale = 1 + Math.abs(Math.sin(t / 10)) * 0.3; // calcula o tamanho do círculo
   map.setPaintProperty("clusters", "circle-radius", [
-    "step",
-    ["get", "point_count"],
-    50 * scale,
-    299,
-    60 * scale,
-    300,
-    100 * scale,
+  "step",
+  ["get", "point_count"],
+    20 * scale,
+    200, // intervalo de 100
+    40 * scale,
+    2000, // intervalo de 500
+    70 * scale,
+    6000, // intervalo de 14000
+    90 * scale,
+    10000, // intervalo de 15000
+    100 * scale // adicionar um valor final para completar o número par de argumentos
   ]);
-}, 50);
+  }, 50);
 }
 
 
