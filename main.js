@@ -428,7 +428,7 @@ setInterval(() => {
 
 
 let counter = 0;
-const maxAttempts = 3;
+const maxAttempts = 10;
 
 directions.on("clear", () => {
   console.log("Limpando rotas...");
