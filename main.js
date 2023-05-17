@@ -1542,16 +1542,16 @@ function ativarToolTip() {
   // ADICIONANDO TOOLTIP
 
   tippy('#infoMelhor', {
-    content: 'Percentual em comparação a média de casos das 10 rotas verificadas',
+    content: 'Percentual em comparação à média de casos das 10 rotas verificadas',
     theme: 'light-border',
-    maxWidth: 190,
+    maxWidth: 200,
   });
 
   tippy('#infoPior', {
     content: 'Percentual em comparação ao volume de casos da rota com menos assaltos',
     theme: 'translucent',
-    maxWidth: 190,
+    maxWidth: 200,
   });
 
-  console.log("tooltips ativados");
+  // console.log("tooltips ativados");
 }
