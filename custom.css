@@ -68,3 +68,12 @@ body > div > header > h1.graphic-title {
       height: 1011px !important; /* Ajuste a altura desejada para dispositivos móveis */
     }
   }
+
+
+  #fusion-app > div:nth-child(4) > div.styles__MockPlayerAudimaStyled-sc-1m08qj4-1.bKA-DcY {
+    color: white;
+  }
+
+  #content > div.styles__ContentWrapperContainerStyled-sc-1ehbu6v-0.klsZKo.content-wrapper.news-body.container.content.template-especial > p:nth-child(1) {
+    display: none;
+  }

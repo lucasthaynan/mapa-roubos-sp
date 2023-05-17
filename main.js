@@ -94,7 +94,7 @@ function getUserLocation() {
   });
 
   }
-    function error() {
+    function error(error) {
       console.log(error)
   }
   
