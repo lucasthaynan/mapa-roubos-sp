@@ -391,17 +391,17 @@ function addAreasMaiorVolume() {
     },
   });
   
-  map.addLayer({
-    id: "cluster-count",
-    type: "symbol",
-    source: "earthquakes",
-    filter: ["has", "point_count"],
-    layout: {
-      "text-field": ["get", "point_count"],
-      "text-font": ["DIN Offc Pro Medium", "Arial Unicode MS Bold"],
-      "text-size": 15,
-    },
-  });
+  // map.addLayer({
+  //   id: "cluster-count",
+  //   type: "symbol",
+  //   source: "earthquakes",
+  //   filter: ["has", "point_count"],
+  //   layout: {
+  //     "text-field": ["get", "point_count"],
+  //     "text-font": ["DIN Offc Pro Medium", "Arial Unicode MS Bold"],
+  //     "text-size": 15,
+  //   },
+  // });
 
   // Modificar tamanho do círculo para criar efeito de pulsação
 let t = 0;
@@ -428,7 +428,7 @@ setInterval(() => {
 
 
 let counter = 0;
-const maxAttempts = 10;
+const maxAttempts = 3;
 
 directions.on("clear", () => {
   console.log("Limpando rotas...");
@@ -954,6 +954,7 @@ function containerLoadingOn() {
 
 function containerLoadingOff(rotasIguais) {
 
+
   document.querySelector("section.container.loading").style.display = "none";
   // document.querySelector("section.container.loading").style.opacity = "0";
 
@@ -965,6 +966,8 @@ function containerLoadingOff(rotasIguais) {
   }
 
   document.querySelector("section.container.nova-busca").style.display = "flex";
+
+  ativarToolTip()
 
 }
 
@@ -1090,7 +1093,7 @@ function gerarResultado(element, rotasIguais) {
     // infos melhor rota
     document.querySelector(
       "section.container.melhor-rota > div.percentual"
-    ).innerHTML = `${percentualMinObstacles.toFixed(0)}% ↓ ASSALTOS`;
+    ).innerHTML = `<p>${percentualMinObstacles.toFixed(0)}% ↓ ASSALTOS </p><img id="infoMelhor" onmouseover="ativarToolTip()" src="./imagens/healthicons_alert-circle-outline.svg" alt="">`;
 
     document.querySelector(
       "section.container.melhor-rota > p.infos-rota"
@@ -1104,7 +1107,7 @@ function gerarResultado(element, rotasIguais) {
     // infos pior rota
     document.querySelector(
       "section.container.pior-rota > div.percentual"
-    ).innerHTML = `${percentualMaxObstacles.toFixed(0)}% ↑ ASSALTOS`;
+    ).innerHTML = `<p>${percentualMaxObstacles.toFixed(0)}% ↑ ASSALTOS </p><img id="infoPior" onmouseover="ativarToolTip()" src="./imagens/healthicons_alert-circle-outline.svg" alt="">`;
 
     document.querySelector(
       "section.container.pior-rota > p.infos-rota"
@@ -1533,3 +1536,22 @@ document.querySelector("#mapbox-directions-destination-input > div > input[type=
 // }
 
 // nextItem();
+
+
+function ativarToolTip() {
+  // ADICIONANDO TOOLTIP
+
+  tippy('#infoMelhor', {
+    content: 'Percentual em comparação a média de casos das 10 rotas verificadas',
+    theme: 'light-border',
+    maxWidth: 190,
+  });
+
+  tippy('#infoPior', {
+    content: 'Percentual em comparação ao volume de casos da rota com menos assaltos',
+    theme: 'translucent',
+    maxWidth: 190,
+  });
+
+  console.log("tooltips ativados");
+}

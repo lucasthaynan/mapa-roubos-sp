@@ -26,6 +26,11 @@
     <!-- Import Turf & Polyline -->
     <script src="https://npmcdn.com/@turf/turf/turf.min.js"></script>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/mapbox-polyline/1.1.1/polyline.js"></script>
+
+    <!-- Production tooltip -->
+    <script src="https://unpkg.com/popper.js@1"></script>
+    <script src="https://unpkg.com/tippy.js@5/dist/tippy-bundle.iife.js"></script>
+    <link rel="stylesheet" href="https://unpkg.com/tippy.js@6/animations/scale.css"/>
   </head>
 
   <body>
@@ -83,7 +88,9 @@
 
         <div class="container-bottom">
           <section class="container melhor-rota">
-            <div class="percentual">20% ↓ ASSALTOS</div>
+            <div id="testeUm" class="percentual">20% ↓ ASSALTOS
+              <img id="infoMelhor" src="./imagens/alert-circle.svg" alt="">
+            </div>
 
             <p class="infos-rota">20 min • 10,2 km</p>
             <p class="text"></p>
@@ -102,7 +109,9 @@
           </section>
 
           <section class="container pior-rota">
-            <div class="percentual">12% ↑ ASSALTOS</div>
+            <div class="percentual">12% ↑ ASSALTOS
+              <img id="infoPior" src="./imagens/alert-circle.svg" alt="">
+            </div>
             <p class="infos-rota"></p>
             <p class="text"></p>
 

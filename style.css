@@ -311,12 +311,29 @@ section.container.loading p {
 
 
 div.container-geral div.percentual {
-  padding: 12px 17px;
+  padding: 1px 10px 1px 15px;
   border-radius: 50px;
   margin-top: -46px;
   margin-bottom: 10px;
   font-size: 12.7px;
   font-weight: 500;
+  width: 130px;
+    display: flex;
+    flex-direction: row;
+    justify-content: center;
+    gap: 7px;
+}
+
+div.percentual > img {
+  width: 19px;
+  opacity: 0.7;
+  /* cursor: pointer; */
+  /* pointer-events:none; */
+}
+
+.tippy-tooltip.blue-theme .tippy-backdrop {
+  background-color: white;
+  color: #272626;
 }
 
 section.container.melhor-rota > div.percentual {
