@@ -142,6 +142,7 @@ let directions = new MapboxDirections({
   geocoder: {
     language: "pt-BR",
     proximity: [-46.6388, -23.5505], // condicionar sugestoes de localidades para São Paulo capital
+    localGeocoder: null, // ocultar logradouros e nomes de localidades
   },
   steps: true,
   
@@ -260,6 +261,15 @@ map.on("load", () => {
 
   // desabilitando o scroll zoom do mapa
   map.scrollZoom.disable();
+
+  // ocultar nomes de ruas e bairros do mapa
+  // const layersMap = map.getStyle().layers;
+  //   for (const layer of layersMap) {
+  //   if (layer.type === 'symbol' && layer.layout['text-field']) {
+  //   // remove text labels
+  //   map.removeLayer(layer.id);
+  //   }
+  //   }
 
   map.addLayer({
     'id': 'sp-boundary',
