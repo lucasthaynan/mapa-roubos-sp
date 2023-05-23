@@ -110,7 +110,8 @@ function bloquearEntradaOrigemDestino(map) {
   });
 }
 
-
+// Defina o tamanho de tela desejado para dispositivos móveis
+const isMobile = window.innerWidth <= 600; 
 
 // criando mapa com mapbox
 const map = new mapboxgl.Map({
@@ -118,7 +119,8 @@ const map = new mapboxgl.Map({
   style: "mapbox://styles/mapbox/dark-v11", // Specify which map style to use
   center: [-46.62889, -23.55594], // Specify the starting position [lng, lat]
   zoom: 10.2, // Specify the starting zoom
-  
+  dragPan: !isMobile, // Disable drag panning
+
 });
 
 // Add zoom and rotation controls to the map.
@@ -1103,7 +1105,7 @@ function gerarResultado(element, rotasIguais) {
     // infos melhor rota
     document.querySelector(
       "section.container.melhor-rota > div.percentual"
-    ).innerHTML = `<p>${percentualMinObstacles.toFixed(0)}% ↓ ASSALTOS </p><img id="infoMelhor" onmouseover="ativarToolTip()" src="./imagens/healthicons_alert-circle-outline.svg" alt="">`;
+    ).innerHTML = `<p>${percentualMinObstacles.toFixed(0)}% ↓ -ASSALTOS </p><img id="infoMelhor" onmouseover="ativarToolTip()" src="./imagens/healthicons_alert-circle-outline.svg" alt="">`;
 
     document.querySelector(
       "section.container.melhor-rota > p.infos-rota"
@@ -1111,13 +1113,13 @@ function gerarResultado(element, rotasIguais) {
   
     document.querySelector(
       "section.container.melhor-rota > p.text"
-    ).innerHTML = `Rota com<strong> -roubos</strong><br>teve <strong>${assaltosMelhorRota.toFixed(0)} casos</strong>`;
+    ).innerHTML = `Rota com<strong> -casos</strong><br>teve <strong>${assaltosMelhorRota.toFixed(0)} registros</strong>`;
 
 
     // infos pior rota
     document.querySelector(
       "section.container.pior-rota > div.percentual"
-    ).innerHTML = `<p>${percentualMaxObstacles.toFixed(0)}% ↑ ASSALTOS </p><img id="infoPior" onmouseover="ativarToolTip()" src="./imagens/healthicons_alert-circle-outline.svg" alt="">`;
+    ).innerHTML = `<p>${percentualMaxObstacles.toFixed(0)}% ↑ +ASSALTOS </p><img id="infoPior" onmouseover="ativarToolTip()" src="./imagens/healthicons_alert-circle-outline.svg" alt="">`;
 
     document.querySelector(
       "section.container.pior-rota > p.infos-rota"
@@ -1125,7 +1127,7 @@ function gerarResultado(element, rotasIguais) {
   
     document.querySelector(
       "section.container.pior-rota > p.text"
-    ).innerHTML = `Rota com<strong> +roubos</strong><br>teve <strong>${assaltosPiorRota.toFixed(0)} casos</strong>`;
+    ).innerHTML = `Rota com<strong> +casos</strong><br>teve <strong>${assaltosPiorRota.toFixed(0)} registros</strong>`;
     
     
 
@@ -1443,7 +1445,7 @@ function mostrarInstrucoes(tipoRota){
     
     document.querySelector(
       "div.infos-rota-selecao > div:nth-child(2) > p:nth-child(2)"
-    ).innerHTML = `<strong>${assaltosMelhorRota.toFixed(0)}</strong> roubos registrados`;
+    ).innerHTML = `<strong>${assaltosMelhorRota.toFixed(0)}</strong> casos registrados`;
 
 
     console.log("melhor-rota")
@@ -1470,7 +1472,7 @@ function mostrarInstrucoes(tipoRota){
     
     document.querySelector(
       "div.infos-rota-selecao > div:nth-child(2) > p:nth-child(2)"
-    ).innerHTML = `<strong>${assaltosPiorRota.toFixed(0)}</strong> roubos registrados`;
+    ).innerHTML = `<strong>${assaltosPiorRota.toFixed(0)}</strong> casos registrados`;
 
 
     console.log("pior-rota")

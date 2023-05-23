@@ -60,23 +60,28 @@ body > div > header > h1.graphic-title {
 
 @media (max-width: 500px) {
     #iFrameResizer01 {
-      height: 1011px !important; /* Ajuste a altura desejada para dispositivos mÃ³veis */
+      height: 1011px !important; /* Ajuste a altura desejada para dispositivos mÃƒÂ³veis */
     }
   }
 
 
   #fusion-app > div:nth-child(4) > div.styles__MockPlayerAudimaStyled-sc-1m08qj4-1.bKA-DcY {
     color: white;
+    display: none;
   }
 
   #content > div.styles__ContentWrapperContainerStyled-sc-1ehbu6v-0.klsZKo.content-wrapper.news-body.container.content.template-especial > p:nth-child(1) {
     display: none;
   }
 
+body {
+    background: #2e2e2e !important;
+    color: #ffffffcc !important;
+}
+
 html {
   --cor-primaria: #ffffff !important;
   --cor-texto: #ffffff !important;
-  --texto: #ffffffcc !important;
   --fio-solido-fino: 1px solid rgb(179 179 179 / 50%) !important;
 }
 
@@ -87,7 +92,35 @@ img.uva-image.svelte-pq5qhf {
   border: 2px solid #c6c6c612;
 }
 
-div#uva-embed > p {
-    font-size: 1.29rem;
-    line-height: 2.1rem;
+.p.svelte-1xcputd {
+  margin: 50px auto 40px auto;
+}
+
+.creditos {
+    display: flex;
+    flex-direction: column;
+    gap: 23px;
+    font: 500 var(--corpo-mobile) / var(--entrelinha-mobile) var(--texto);
+    font-size: 1.17rem;
+}
+
+.creditos > p {
+    font-weight: 200;
+}
+
+
+.bqNHVE > .bg-image > .shadow-image {
+    background-image: linear-gradient(to top, rgba(37, 117, 232, 0), rgb(0 0 0 / 0%)), linear-gradient(rgba(0, 0, 0, 0), rgb(0 0 0 / 71%)) !important;
+}
+
+.fwxdVH .head-navbar--bg-overlay-wrapper {
+    background: linear-gradient(0deg, rgba(37, 117, 232, 0) 1%, rgb(0 0 0) 100%);
+}
+
+#fusion-app > div:nth-child(4) > div:nth-child(7) > div > div > div > div {
+    display: none !important;
+}
+
+.styles__TempoLeituraStyled-sc-1p416jy-0.fvWkDi {
+    display: none;
 }

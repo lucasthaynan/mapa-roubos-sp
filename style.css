@@ -315,7 +315,7 @@ div.container-geral div.percentual {
   border-radius: 50px;
   margin-top: -46px;
   margin-bottom: 10px;
-  font-size: 12.7px;
+  font-size: 12.5px;
   font-weight: 500;
   width: 130px;
     display: flex;
@@ -872,9 +872,23 @@ section.container.detalhes > img {
 section.container.detalhes > p {
   text-align: start;
   font-weight: 400;
+  font-size: 14.4px;
 }
 
 
 section.container.detalhes strong {
   color: #D8524C;
+}
+
+@media (max-width: 380px) {
+
+  section.container.melhor-rota,
+  section.container.pior-rota {
+    padding: 6px;
+  }
+
+  div.container-geral div.percentual {
+    padding: 1px 5px 1px 11px;
+  }
+
 }
